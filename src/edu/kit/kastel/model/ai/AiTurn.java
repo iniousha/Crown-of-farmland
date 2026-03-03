@@ -143,7 +143,13 @@ public class AiTurn {
     private void moveUnits() {
         while (true) {
             List<Unit> aiUnits = game.getFarmlandBoard().getUnitsForTeam(aiTeam);
-            aiUnits.removeIf(Unit::hasMoved);
+            List<Unit> unmovedUnits = new ArrayList<>();
+            for (Unit unit : aiUnits) {
+                if (!unit.hasMoved()) {
+                    unmovedUnits.add(unit);
+                }
+            }
+            aiUnits = unmovedUnits;
 
             if (aiUnits.isEmpty()) {
                 break;
