@@ -3,7 +3,11 @@ package edu.kit.kastel.view;
 import edu.kit.kastel.model.Game;
 
 import java.io.PrintStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.Scanner;
+import java.util.Set;
 
 /**
  * this class manages and executes the commands.

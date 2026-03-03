@@ -13,7 +13,13 @@ import edu.kit.kastel.view.Result;
 import edu.kit.kastel.view.fileio.BoardPrinter;
 import edu.kit.kastel.view.fileio.Printer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * this class represents the place command.

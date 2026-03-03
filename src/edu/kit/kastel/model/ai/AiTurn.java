@@ -232,6 +232,7 @@ public class AiTurn {
             int blockScore = scoring.getBlockScore((RegularUnit) unit);
             int enPlaceScore = scoring.getEnPlaceScore((RegularUnit) unit);
             totalScore += blockScore + enPlaceScore;
+
             scoredUnits.computeIfAbsent(totalScore, key -> new LinkedHashSet<>())
                     .add(unit);
         }

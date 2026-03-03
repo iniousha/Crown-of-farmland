@@ -1,7 +1,16 @@
 package edu.kit.kastel.view;
 
 import edu.kit.kastel.model.Game;
-import edu.kit.kastel.view.commands.*;
+import edu.kit.kastel.view.commands.Block;
+import edu.kit.kastel.view.commands.BoardCommand;
+import edu.kit.kastel.view.commands.Flip;
+import edu.kit.kastel.view.commands.Hand;
+import edu.kit.kastel.view.commands.Move;
+import edu.kit.kastel.view.commands.Place;
+import edu.kit.kastel.view.commands.Select;
+import edu.kit.kastel.view.commands.Show;
+import edu.kit.kastel.view.commands.State;
+import edu.kit.kastel.view.commands.Yield;
 
 import java.util.ArrayList;
 import java.util.List;

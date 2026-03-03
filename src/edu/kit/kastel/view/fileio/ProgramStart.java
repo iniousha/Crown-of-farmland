@@ -6,7 +6,12 @@ import edu.kit.kastel.model.Verbosity;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.view.SymbolSet;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * this utility class is responsible for initializing and starting the game.

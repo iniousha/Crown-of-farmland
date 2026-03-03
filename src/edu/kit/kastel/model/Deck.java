@@ -2,7 +2,12 @@ package edu.kit.kastel.model;
 
 import edu.kit.kastel.model.unit.RegularUnit;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.List;
+import java.util.Random;
 
 /**
  * this class represents the deck owned by each team.
