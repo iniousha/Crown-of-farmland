@@ -11,7 +11,15 @@ import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * This class implements the logic for when it is AI's turn.
