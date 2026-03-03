@@ -119,8 +119,7 @@ public final class ProgramStart {
         }
 
         Random random = new Random(seed);
-        System.out.println("Use one of the following commands: select, board, move, flip, block, hand, place, show, yield,\n"
-                + "state, quit."
+        System.out.println("Use one of the following commands: select, board, move, flip, block, hand, place, show, yield, state, quit."
         );
         return new Game(team1Name, team2Name, deck1, deck2, random, verbosity, symbolSet);
     }
