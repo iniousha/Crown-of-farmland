@@ -94,11 +94,11 @@ public final class ProgramStart {
                 case BOARD -> symbolSet = SymbolSetReader.read(argumentValue.value());
                 case UNITS -> availableUnits = UnitReader.read(argumentValue.value());
                 case DECK -> {
-                    deck1 = DeckReader.read(argumentValue.value(), availableUnits);
-                    deck2 = DeckReader.read(argumentValue.value(), availableUnits);
+                    deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
+                    deck2 = DeckReader.read(argumentValue.value(), availableUnits, false);
                 }
-                case DECK1 -> deck1 = DeckReader.read(argumentValue.value(), availableUnits);
-                case DECK2 -> deck2 = DeckReader.read(argumentValue.value(), availableUnits);
+                case DECK1 -> deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
+                case DECK2 -> deck2 = DeckReader.read(argumentValue.value(), availableUnits, true);
                 case TEAM1 -> team1Name = argumentValue.value();
                 case TEAM2 -> team2Name = argumentValue.value();
                 case VERBOSITY -> verbosity = ProgramStart.parseVerbosity(argumentValue.value());

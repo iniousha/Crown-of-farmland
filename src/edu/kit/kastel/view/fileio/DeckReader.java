@@ -32,17 +32,18 @@ public final class DeckReader {
      * @return a parsed deck containing 40 units
      * @throws ProgramStartException if the file cannot be read or contains invalid data
      */
-    public static Deck read(String file, List<RegularUnit> units) throws ProgramStartException {
+    public static Deck read(String file, List<RegularUnit> units, boolean print) throws ProgramStartException {
         Optional<List<String>> lines = readFile(file);
 
         if (lines.isEmpty()) {
             throw new ProgramStartException(ERROR_FILE_NOT_FOUND.formatted(file));
         }
-
         List<String> lineList = lines.get();
 
-        for (String line : lineList) {
-            System.out.println(line);
+        if (print) {
+            for (String line : lineList) {
+                System.out.println(line);
+            }
         }
         if (lineList.size() != units.size()) {
             throw new ProgramStartException(ERROR_DECK_SIZE_MISMATCH.formatted(units.size(), lineList.size(), file));
