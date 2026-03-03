@@ -154,7 +154,6 @@ public class AiTurn {
             if (aiUnits.isEmpty()) {
                 break;
             }
-
             Unit winningUnit = getWinningUnit(aiUnits);
 
             if (winningUnit instanceof FarmerKing) {
