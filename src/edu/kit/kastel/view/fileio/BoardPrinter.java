@@ -289,6 +289,6 @@ public final class BoardPrinter {
     }
 
     private static String columnContent() {
-        return "    " + "A   " + "B   " + "C   " + "D   " + "E   " + "F   " + "G   ";
+        return "    " + "A   " + "B   " + "C   " + "D   " + "E   " + "F   " + "G";
     }
 }
