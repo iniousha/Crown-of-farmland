@@ -4,10 +4,7 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.board.FarmlandBoard;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
-import edu.kit.kastel.model.unit.FarmerKing;
-import edu.kit.kastel.model.unit.RegularUnit;
-import edu.kit.kastel.model.unit.Team;
-import edu.kit.kastel.model.unit.Unit;
+import edu.kit.kastel.model.unit.*;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
 import edu.kit.kastel.view.fileio.BoardPrinter;
@@ -54,7 +51,6 @@ public class Place implements Command<Game> {
 
         stringBuilder.append(placeUnitsFromHand(allIndexes, handle.getSavedPosition(), handle));
         handle.setSavedPosition(handle.getSavedPosition());
-        stringBuilder.append(System.lineSeparator());
         stringBuilder.append(BoardPrinter.boardDisplay(handle));
 
         Unit unitToDisplay = field.getUnit();
@@ -144,9 +140,13 @@ public class Place implements Command<Game> {
                 board.placeUnit(unitToPlace, position);
                 stringBuilder.append(Printer.noMergeDisplay(currentTeam, unitToPlace, field));
                 stringBuilder.append(System.lineSeparator());
-
             } else if (unitInField.getTeam() == currentTeam) {
-                stringBuilder.append(handle.mergeAction(unitInField, unitToPlace, position));
+                MergeResult mergeResult = handle.mergeAction(unitInField, unitToPlace, position);
+                stringBuilder.append(mergeResult.success()
+                        ? Printer.successfulMergeDisplay(handle.getCurrentTeam(), mergeResult.unitInField(),
+                        mergeResult.unitToPlace(), mergeResult.field())
+                        : Printer.failedMergeDisplay(handle.getCurrentTeam(),
+                        mergeResult.unitInField(), mergeResult.unitToPlace(), mergeResult.field()));
             }
         }
         currentTeam.setHasPlaced(true);
