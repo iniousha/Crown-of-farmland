@@ -26,13 +26,6 @@ public final class DeckReader {
     }
 
     /**
-     * returns a deck from the given file using the given list of available units.
-     * @param file the path to the file containing deck definitions
-     * @param units the list of available units to build the deck from
-     * @return a parsed deck containing 40 units
-     * @throws ProgramStartException if the file cannot be read or contains invalid data
-     */
-    /**
      *      * returns a deck from the given file using the given list of available units.
      * @param file the path to the file containing deck definitions
      * @param units the list of available units to build the deck from
