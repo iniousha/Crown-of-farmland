@@ -23,15 +23,15 @@ public final class Printer {
     private static final int LINE_WIDTH = 31;
     private static final String NO_UNIT_DISPLAY_FORMAT = "<no unit>";
     private static final String FLIP_DISPLAY_FORMAT = "%s (%d/%d) was flipped on %s!";
-    private static final String BLOCK_DISPLAY_FORMAT = "%s (%s) blocks";
+    private static final String BLOCK_DISPLAY_FORMAT = "%s (%s) blocks!";
     private static final String WINNER_DISPLAY_FORMAT = "%s wins!";
     private static final String DISCARD_DISPLAY_FORMAT = "%s discarded %s (%d/%d).";
     private static final String TURN_DISPLAY_FORMAT = "It is %s's turn!";
-    private static final String PLACE_DISPLAY_FORMAT = "%s places %s on %s";
+    private static final String PLACE_DISPLAY_FORMAT = "%s places %s on %s.";
     private static final String SUCCESSFUL_MERGE_FORMAT = "%s places %s on %s.%n%s and %s on %s join forces!%nSuccess!";
     private static final String FAILED_MERGE_DISPLAY = "%s places %s on %s.%n%s and"
             + " %s on %s join forces!%nUnion failed. %s was eliminated.";
-    private static final String SIXTH_UNIT_DISPLAY_FORMAT = "%s places %s on %s.%n%s was eliminated";
+    private static final String SIXTH_UNIT_DISPLAY_FORMAT = "%s places %s on %s.%n%s was eliminated.";
     private static final String NO_LONGER_BLOCKS = "%s no longer blocks.";
     private static final String NO_LONGER_BLOCKS_FORMAT = NO_LONGER_BLOCKS;
     private static final String MOVE_DISPLAY_FORMAT = "%s moves to %s.";
