@@ -1,0 +1,97 @@
+package edu.kit.kastel.view;
+
+import edu.kit.kastel.model.Game;
+import edu.kit.kastel.view.commands.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+/**
+ * This enum represents all keywords for commands handling a {@link Game}.
+ * @author ucktt
+ */
+public enum ModelKeyword implements Keyword<Game> {
+
+    /**
+     * the keyword for the {@link Select select} command.
+     */
+    SELECT(arguments -> new Select(arguments.parseField())),
+
+    /**
+     * the keyword for the {@link BoardCommand board} command.
+     */
+    BOARD(arguments -> new BoardCommand()),
+    /**
+     * the keyword for the {@link Move move} command.
+     */
+    MOVE(arguments -> new Move(arguments.parseField())),
+    /**
+     * the keyword for the {@link Flip flip} command.
+     */
+    FLIP(arguments -> new Flip()),
+    /**
+     * the keyword for the {@link Block block} command.
+     */
+    BLOCK(arguments -> new Block()),
+    /**
+     * the keyword for the {@link Show show} command.
+     */
+    SHOW(arguments -> new Show()),
+    /**
+     * the keyword for the {@link Hand hand} command.
+     */
+    HAND(arguments -> new Hand()),
+    /**
+     * the keyword for the {@link Place place} command.
+     */
+    PLACE(arguments -> {
+        List<Integer> indexes = new ArrayList<>();
+        indexes.add(arguments.parseIdx());
+        indexes.addAll(arguments.parseAllIndexes());
+        return new Place(indexes);
+    }),
+    /**
+     * the keyword for the {@link State state} command.
+     */
+    STATE(arguments -> new State()),
+    /**
+     * the keyword for the {@link Yield yield} command.
+     */
+    YIELD(arguments -> {
+        Optional<Integer> optional = arguments.parseOptionalIdx();
+        return new Yield(optional.orElse(null));
+    });
+
+
+    private static final String VALUE_NAME_DELIMITER = "_";
+    private final CommandProvider<Game> provider;
+
+    ModelKeyword(CommandProvider<Game> provider) {
+        this.provider = provider;
+    }
+
+    @Override
+    public Command<Game> provide(Arguments arguments) throws InvalidArgumentException {
+        return this.provider.provide(arguments);
+    }
+
+    @Override
+    public boolean matches(String[] command) {
+        String[] splitKeyword = name().split(VALUE_NAME_DELIMITER);
+        if (command.length < splitKeyword.length) {
+            return false;
+        }
+        for (int i = 0; i < splitKeyword.length; i++) {
+            if (!splitKeyword[i].toLowerCase().equals(command[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public int words() {
+        return name().split(VALUE_NAME_DELIMITER).length;
+    }
+}
