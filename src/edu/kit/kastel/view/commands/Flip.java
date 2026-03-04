@@ -6,7 +6,7 @@ import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.fileio.Printer;
+import edu.kit.kastel.model.ai.Printer;
 
 /**
  * this class represents the flip command.

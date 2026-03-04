@@ -36,9 +36,11 @@ public final class WeightedRandom {
         for (int i = 0; i < weights.size(); i++) {
             count += Math.max(0, weights.get(i));
             if (randomNumber <= count) {
+                System.err.println("Random: " + randomNumber + " => index: " + i);
                 return i;
             }
         }
+
         return 0;
     }
 

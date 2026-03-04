@@ -4,6 +4,7 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.board.FarmlandBoard;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
+import edu.kit.kastel.model.merge.Merge;
 import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
@@ -15,6 +16,7 @@ import java.util.List;
 
 /**
  * aslndf.
+ *
  * @author ucktt
  */
 public class AiScoring {
@@ -24,7 +26,8 @@ public class AiScoring {
 
     /**
      * d;dsi.
-     * @param game sdihf
+     *
+     * @param game   sdihf
      * @param aiTeam adfh
      */
     public AiScoring(Game game, Team aiTeam) {
@@ -34,8 +37,9 @@ public class AiScoring {
 
     /**
      * asdk;ads.
+     *
      * @param farmerKingPosition ;fvhds
-     * @param targetPosition ;dvhbsdiu
+     * @param targetPosition     ;dvhbsdiu
      * @return dhs
      */
     //moveFarmerKing helper methods:
@@ -53,7 +57,9 @@ public class AiScoring {
     private int fellowPresent(Position selectedPosition) {
         Field field = game.getFarmlandBoard().getField(selectedPosition);
         Unit fellowPresentUnit = field.getUnit();
-        if (fellowPresentUnit != null && fellowPresentUnit.getTeam() == aiTeam) {
+        if (fellowPresentUnit != null
+                && fellowPresentUnit.getTeam() == aiTeam
+                && !(fellowPresentUnit instanceof FarmerKing)) {
             return 1;
         }
         return 0;
@@ -68,7 +74,7 @@ public class AiScoring {
             if (currentPosition.isAdjacentTo(position, true) && !field.isEmpty()) {
                 Unit unitInField = field.getUnit();
                 Team unitTeam = unitInField.getTeam();
-                if (unitTeam == this.aiTeam) {
+                if (unitTeam == this.aiTeam && !(unitInField instanceof FarmerKing)) {
                     count++;
                 }
             }
@@ -95,8 +101,9 @@ public class AiScoring {
 
     /**
      * skd;jfhsa'h.
+     *
      * @param currentPosition dfvh
-     * @param targetPosition dh
+     * @param targetPosition  dh
      * @return duhvf
      */
     //placeUnit helper methods:
@@ -146,23 +153,31 @@ public class AiScoring {
 
     /**
      * asdfhe.
+     *
      * @param unit sduhf
      * @return asdoihc
      */
     //moveUnits helper methods:
-    public int getBlockScore(RegularUnit unit) {
+    public int getBlockScore(Unit unit) {
+        if (unit instanceof FarmerKing) {
+            return 0;
+        }
         int maximumAttackPoint = getMaximumAttackPoints();
-        return Math.max(1, (unit.getDefencePoints() - maximumAttackPoint) / 100);
+        return Math.max(1, (((RegularUnit) unit).getDefencePoints() - maximumAttackPoint) / 100);
     }
 
     /**
      * sdjf.
+     *
      * @param unit adfh
      * @return dfh
      */
-    public int getEnPlaceScore(RegularUnit unit) {
+    public int getEnPlaceScore(Unit unit) {
+        if (unit instanceof FarmerKing) {
+            return 0;
+        }
         int maximumAttackPoint = getMaximumAttackPoints();
-        return Math.max(0, (unit.getAttackPoints() - maximumAttackPoint) / 100);
+        return Math.max(0, (((RegularUnit) unit).getAttackPoints() - maximumAttackPoint) / 100);
     }
 
     private int getMaximumAttackPoints() {
@@ -182,41 +197,51 @@ public class AiScoring {
 
     /**
      * 'dofh.
-     * @param unit ;dfhv
-     * @param neighbor adfh
+     *
+     * @param unitToPlace         ;dfhv
+     * @param unitInFieldPosition adfh
      * @return dhv
      */
-    public int getMovementScore(Unit unit, Position neighbor) {
-        Field field = game.getFarmlandBoard().getField(neighbor);
+    public int getMovementScore(Unit unitToPlace, Position unitInFieldPosition) {
+        Field field = game.getFarmlandBoard().getField(unitInFieldPosition);
         if (field.isEmpty()) {
-            Position farmerKingPosition = game.getFarmlandBoard().findPosition(game.getOpponentTeam().getFarmerKing());
-            return steps(neighbor, farmerKingPosition) - enemiesOfUnit(neighbor);
+            Position enemyFarmerKingPosition = game.getFarmlandBoard().findPosition(game.getOpponentTeam().getFarmerKing());
+            return (10 * steps(unitInFieldPosition, enemyFarmerKingPosition)) - enemiesOfUnit(unitInFieldPosition);
         } else {
-            Unit neighborUnit = field.getUnit();
-            if (neighborUnit.getTeam() == aiTeam) {
-                return mergeAction((RegularUnit) unit, (RegularUnit) neighborUnit);
-            } else {
-                return duelAction(unit, neighborUnit);
+            Unit unitInField = field.getUnit();
+            if (unitInField.getTeam() == aiTeam
+                    && !(unitInField instanceof FarmerKing)
+                    && !(unitToPlace instanceof FarmerKing)) {
+                return mergeAction((RegularUnit) unitToPlace, (RegularUnit) unitInField);
+            } else if (unitInField.getTeam() != aiTeam
+                    && !(unitInField instanceof FarmerKing)
+                    && !(unitToPlace instanceof FarmerKing)) {
+                return duelAction(unitToPlace, unitInField);
+            } else if (unitInField.getTeam() == aiTeam
+                    && field.getUnit() instanceof FarmerKing) {
+                return 0;
             }
         }
+        return 0;
     }
 
-    private int duelAction(Unit unit, Unit neighborUnit) {
-        if (neighborUnit instanceof FarmerKing) {
-            return ((RegularUnit) unit).getAttackPoints();
-        } else if (!neighborUnit.isFaceUp()) {
-            return ((RegularUnit) unit).getAttackPoints() - 500;
-        } else if (neighborUnit instanceof RegularUnit
-                && ((RegularUnit) neighborUnit).isBlocking()) {
-            return ((RegularUnit) unit).getAttackPoints() - ((RegularUnit) neighborUnit).getDefencePoints();
-        } else {
-            assert neighborUnit instanceof RegularUnit;
-            return 2 * (((RegularUnit) unit).getAttackPoints() - ((RegularUnit) neighborUnit).getAttackPoints());
+    private int duelAction(Unit attacker, Unit defender) {
+        if (defender instanceof FarmerKing) {
+            return ((RegularUnit) attacker).getAttackPoints();
+        } else if (!defender.isFaceUp()) {
+            return ((RegularUnit) attacker).getAttackPoints() - 500;
+        } else if (defender instanceof RegularUnit
+                && ((RegularUnit) defender).isBlocking()) {
+            return ((RegularUnit) attacker).getAttackPoints() - ((RegularUnit) defender).getDefencePoints();
+        } else if (defender instanceof RegularUnit && attacker instanceof RegularUnit) {
+            return 2 * (((RegularUnit) attacker).getAttackPoints() - ((RegularUnit) defender).getAttackPoints());
         }
+        return 0;
     }
 
     private int mergeAction(RegularUnit unit, RegularUnit neighborUnit) {
-        RegularUnit mergedUnit = unit.mergeWith(neighborUnit);
+        Merge merge = new Merge(unit, neighborUnit);
+        RegularUnit mergedUnit = merge.mergeWith();
         if (mergedUnit != null) {
             return getMergePoint(unit, neighborUnit, mergedUnit);
         } else {

@@ -1,4 +1,4 @@
-package edu.kit.kastel.model.unit;
+package edu.kit.kastel.model.merge;
 
 /**
  * this enum represents the compatibility type between two units of the same team.

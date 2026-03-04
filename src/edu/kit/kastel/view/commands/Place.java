@@ -4,18 +4,17 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.board.FarmlandBoard;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
-import edu.kit.kastel.model.unit.*;
+import edu.kit.kastel.model.unit.FarmerKing;
+import edu.kit.kastel.model.unit.RegularUnit;
+import edu.kit.kastel.model.unit.Team;
+import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
 import edu.kit.kastel.view.fileio.BoardPrinter;
-import edu.kit.kastel.view.fileio.Printer;
+import edu.kit.kastel.model.ai.Printer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -49,7 +48,7 @@ public class Place implements Command<Game> {
         FarmlandBoard board = handle.getFarmlandBoard();
         Field field = board.getField(handle.getSavedPosition());
 
-        stringBuilder.append(placeUnitsFromHand(allIndexes, handle.getSavedPosition(), handle));
+        stringBuilder.append(handle.placeUnitsFromHand(allIndexes, handle.getSavedPosition()));
         handle.setSavedPosition(handle.getSavedPosition());
         stringBuilder.append(BoardPrinter.boardDisplay(handle));
 
@@ -111,52 +110,5 @@ public class Place implements Command<Game> {
             return Result.error("cannot place on your own Farmer King.");
         }
         return null;
-    }
-
-    private String placeUnitsFromHand(List<Integer> indexes, Position position, Game handle) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        FarmlandBoard board = handle.getFarmlandBoard();
-        Field field = board.getField(position);
-        List<RegularUnit> hand = handle.getCurrentTeam().getHand();
-        Map<Integer, RegularUnit> indexedUnits = new HashMap<>();
-        Team currentTeam = handle.getCurrentTeam();
-        for (int index : indexes) {
-            indexedUnits.put(index, hand.get(index));
-        }
-        List<Integer> sortedIndexes = new ArrayList<>(indexes);
-        sortedIndexes.sort(Collections.reverseOrder());
-        for (int index : sortedIndexes) {
-            hand.remove(index);
-        }
-        for (int index : indexes) {
-            RegularUnit unitToPlace = indexedUnits.get(index);
-            unitToPlace.setTeam(handle.getCurrentTeam());
-            unitToPlace.flip();
-
-            Unit unitInField = field.getUnit();
-
-            if (unitInField == null) {
-                board.placeUnit(unitToPlace, position);
-                stringBuilder.append(Printer.noMergeDisplay(currentTeam, unitToPlace, field));
-                stringBuilder.append(System.lineSeparator());
-            } else if (unitInField.getTeam() == currentTeam) {
-                MergeResult mergeResult = handle.mergeAction(unitInField, unitToPlace, position);
-                stringBuilder.append(mergeResult.success()
-                        ? Printer.successfulMergeDisplay(handle.getCurrentTeam(), mergeResult.unitInField(),
-                        mergeResult.unitToPlace(), mergeResult.field())
-                        : Printer.failedMergeDisplay(handle.getCurrentTeam(),
-                        mergeResult.unitInField(), mergeResult.unitToPlace(), mergeResult.field()));
-            }
-        }
-        currentTeam.setHasPlaced(true);
-
-        if (board.getUnitsForTeam(currentTeam).size() > 5) {
-            Unit placedUnit = field.getUnit();
-            board.removeUnit(position);
-            stringBuilder.append(Printer.sixthUnitDisplay(currentTeam, placedUnit, field));
-            stringBuilder.append(System.lineSeparator());
-        }
-        return stringBuilder.toString();
     }
 }

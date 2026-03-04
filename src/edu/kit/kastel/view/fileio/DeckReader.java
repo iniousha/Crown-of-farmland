@@ -66,7 +66,9 @@ public final class DeckReader {
                 int count = Integer.parseInt(lineList.get(i));
                 RegularUnit unit = units.get(i);
                 for (int j = 0; j < count; j++) {
-                    deck.add(unit);
+                    RegularUnit copy = new RegularUnit(unit.getQualifier(), unit.getRole(),
+                            unit.getAttackPoints(), unit.getDefencePoints());
+                    deck.add(copy);
                 }
             } catch (NumberFormatException e) {
                 throw new ProgramStartException(ERROR_LINE_PARSE.formatted(lineList.get(i)));

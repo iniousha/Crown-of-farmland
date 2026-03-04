@@ -5,7 +5,6 @@ import edu.kit.kastel.model.Verbosity;
 import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
-import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.SymbolSet;
 
@@ -21,6 +20,7 @@ public final class BoardPrinter {
 
     /**
      * Formats the current game board as a string.
+     *
      * @param game the game providing the board state and display settings
      * @return the formatted board representation
      */
@@ -251,21 +251,18 @@ public final class BoardPrinter {
         if (unit == null) {
             return " ";
         }
-
-        Team currentTeam = game.getCurrentTeam();
-        boolean isCurrentTeam = (unit.getTeam() == currentTeam);
         boolean star = isSelected && game.isJustSelected();
 
         if (star) {
             switch (unit) {
                 case FarmerKing ignored -> {
-                    return "*" + (isCurrentTeam ? "X" : "Y");
+                    return "*" + (!unit.getTeam().isAiTeam() ? "X" : "Y");
                 }
                 case RegularUnit regularUnit when regularUnit.isBlocking() -> {
-                    return "*" + (isCurrentTeam ? "x" : "y") + "b";
+                    return "*" + (!unit.getTeam().isAiTeam() ? "x" : "y") + "b";
                 }
                 case RegularUnit regularUnit when !regularUnit.isBlocking() -> {
-                    return "*" + (isCurrentTeam ? "x" : "y");
+                    return "*" + (!unit.getTeam().isAiTeam() ? "x" : "y");
                 }
                 default -> {
                     return "   ";
@@ -274,21 +271,18 @@ public final class BoardPrinter {
         }
 
         if (unit instanceof FarmerKing) {
-            return (isCurrentTeam) ? "X" : "Y";
+            return (!unit.getTeam().isAiTeam()) ? "X" : "Y";
         }
 
         RegularUnit regularUnit = (RegularUnit) unit;
         if (regularUnit.isBlocking()) {
-            return (isCurrentTeam ? "x" : "y") + 'b';
+            return (!unit.getTeam().isAiTeam() ? "x" : "y") + 'b';
         }
 
-        if (!regularUnit.isFaceUp() && !(isCurrentTeam)) {
-            return "?";
-        }
-        return (isCurrentTeam) ? "x" : "y";
+        return (!unit.getTeam().isAiTeam()) ? "x" : "y";
     }
 
     private static String columnContent() {
-        return "    " + "A   " + "B   " + "C   " + "D   " + "E   " + "F   " + "G";
+        return "    A   B   C   D   E   F   G";
     }
 }

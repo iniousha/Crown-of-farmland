@@ -7,7 +7,7 @@ import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.fileio.Printer;
+import edu.kit.kastel.model.ai.Printer;
 
 import java.util.List;
 
@@ -49,12 +49,16 @@ public class Yield implements Command<Game> {
                 stringBuilder.append(Printer.discardedCardDisplay(currentTeam, removedUnit));
                 stringBuilder.append(System.lineSeparator());
             }
+
             handle.nextTurn();
             if (handle.getCurrentTeam().isAiTeam()) {
-                new AiTurn(handle, handle.getRandom()).executeTurn();
+                stringBuilder.append(Printer.turnDisplay(handle.getCurrentTeam()));
+                stringBuilder.append(System.lineSeparator());
+                stringBuilder.append(new AiTurn(handle, handle.getRandom()).executeTurn());
+                handle.nextTurn();
             }
+
             stringBuilder.append(Printer.turnDisplay(handle.getCurrentTeam()));
-            stringBuilder.append(System.lineSeparator());
             if (handle.isGameOver()) {
                 Team winnerTeam = handle.getWinner();
                 Team loserTeam = handle.getCurrentTeam();

@@ -17,20 +17,23 @@ public class Team {
     private final List<RegularUnit> hand;
     private int lifePoints;
     private boolean hasSetPlace;
-    private boolean isAiTeam;
+    private boolean isAiTeam = false;
 
     /**
      * constructs a team using the specified name and deck.
      * @param name the name of the team
      * @param deck the deck owned by the team and from which the cards are drawn
+     * @param isAiTeam whether the current team is AI team
      */
-    public Team(String name, Deck deck) {
+    public Team(String name, Deck deck, Boolean isAiTeam) {
         this.name = name;
         this.farmerKing = new FarmerKing();
         this.farmerKing.setTeam(this);
         this.deck = deck;
         this.hand = new ArrayList<>();
         this.lifePoints = 8000;
+        this.hasSetPlace = false;
+        this.isAiTeam = isAiTeam;
 
         for (int i = 0; i < 4; i++) {
             RegularUnit unit = deck.drawFromTop();
@@ -128,9 +131,8 @@ public class Team {
      * @return the unit that is to be removed
      */
     public Unit removeUnitFromHand(int idx) {
-        int zeroBasedIdx = idx - 1;
-        Unit unit = hand.get(zeroBasedIdx);
-        hand.remove(zeroBasedIdx);
+        Unit unit = hand.get(idx);
+        hand.remove(idx);
         return unit;
     }
 

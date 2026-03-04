@@ -1,4 +1,4 @@
-package edu.kit.kastel.view.fileio;
+package edu.kit.kastel.model.ai;
 
 import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.board.Field;
@@ -334,9 +334,10 @@ public final class Printer {
      * @param unit1 the attacking unit
      * @param unit2 the defencing unit
      * @param field the field on which the duel happened
+     * @param defenderWasFaceDown whether the defender was faced down
      * @return the formatted message
      */
-    public static String duelWithRegularUnitDisplay(Unit unit1, Unit unit2, Field field) {
+    public static String duelWithRegularUnitDisplay(Unit unit1, Unit unit2, Field field, boolean defenderWasFaceDown) {
         String unit1Name = unit1.getName();
         int attackPoints1 = ((RegularUnit) unit1).getAttackPoints();
         int defencePoints1 = ((RegularUnit) unit1).getDefencePoints();
@@ -345,10 +346,13 @@ public final class Printer {
         int attackPoints = ((RegularUnit) unit2).getAttackPoints();
         int defencePoint2 = ((RegularUnit) unit2).getDefencePoints();
         String fieldName = field.getPosition().toString();
-
-        return String.format(DUEL_REGULAR_UNIT_FORMAT, unit1Name, attackPoints1,
-                defencePoints1, unit2Name, attackPoints, defencePoint2, fieldName);
+        if (defenderWasFaceDown && unit1.getTeam() != unit2.getTeam()) {
+            return String.format("%s (%d/%d) attacks ??? on %s!", unit1Name, attackPoints1,
+                    defencePoints1, fieldName);
+        } else {
+            return String.format(DUEL_REGULAR_UNIT_FORMAT, unit1Name, attackPoints1,
+                    defencePoints1, unit2Name, attackPoints, defencePoint2, fieldName);
+        }
     }
-//"%s was (%d/%d) was flipped on %s!"
 }
 //"/Users/niousha/Downloads/board_boxes.txt"

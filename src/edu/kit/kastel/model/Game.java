@@ -1,19 +1,25 @@
 package edu.kit.kastel.model;
 
+import edu.kit.kastel.model.ai.Printer;
 import edu.kit.kastel.model.board.FarmlandBoard;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
-import edu.kit.kastel.model.unit.MergeResult;
+import edu.kit.kastel.model.merge.Merge;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.SymbolSet;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
  * this class represents the core game logic.
+ *
  * @author ucktt
  */
 public class Game {
@@ -31,11 +37,12 @@ public class Game {
 
     /**
      * constructs the game with the specified parameters.
+     *
      * @param team1Name name of the first team
      * @param team2Name name of the second team
-     * @param deck1 deck of the first team
-     * @param deck2 deck of the second team
-     * @param random random number used for randomized decisions
+     * @param deck1     deck of the first team
+     * @param deck2     deck of the second team
+     * @param random    random number used for randomized decisions
      * @param verbosity determining whether the board display should be compact or fully displayed
      * @param symbolSet the symbol set used to build the board with
      */
@@ -53,8 +60,8 @@ public class Game {
         deck1.shuffle(random);
         deck2.shuffle(random);
 
-        this.team1 = new Team(team1Name, deck1);
-        this.team2 = new Team(team2Name, deck2);
+        this.team1 = new Team(team1Name, deck1, false);
+        this.team2 = new Team(team2Name, deck2, true);
 
         Position team1King = new Position(3, 0);
         Position team2King = new Position(3, 6);
@@ -70,6 +77,7 @@ public class Game {
 
     /**
      * checks whether yield has failed.
+     *
      * @return true if yield has failed; false otherwise
      */
     public boolean hasYieldFailed() {
@@ -78,6 +86,7 @@ public class Game {
 
     /**
      * sets whether yield has failed.
+     *
      * @param yieldFailed true if yield has failed; false otherwise
      */
     public void setYieldFailed(boolean yieldFailed) {
@@ -86,6 +95,7 @@ public class Game {
 
     /**
      * returns the current team whose turn it is.
+     *
      * @return the current team
      */
     public Team getCurrentTeam() {
@@ -94,6 +104,7 @@ public class Game {
 
     /**
      * returns the opposing team of the current team.
+     *
      * @return the opponent team
      */
     public Team getOpponentTeam() {
@@ -102,6 +113,7 @@ public class Game {
 
     /**
      * returns the game board.
+     *
      * @return the farmland game board
      */
     public FarmlandBoard getFarmlandBoard() {
@@ -134,8 +146,10 @@ public class Game {
     private void setWinner(Team winner) {
         this.winner = winner;
     }
+
     /**
      * checks whether the game is over.
+     *
      * @return true if the winner object is not null; false otherwise
      */
     public boolean isGameOver() {
@@ -144,6 +158,7 @@ public class Game {
 
     /**
      * returns the winning team of the game.
+     *
      * @return the winner team, or null if the game is not over
      */
     public Team getWinner() {
@@ -152,6 +167,7 @@ public class Game {
 
     /**
      * returns a list containing the regular units in the current team's hand.
+     *
      * @return the current team's hand
      */
     public List<RegularUnit> hand() {
@@ -161,6 +177,7 @@ public class Game {
 
     /**
      * returns the currently saved position on the board.
+     *
      * @return the saved position
      */
     public Position getSavedPosition() {
@@ -169,6 +186,7 @@ public class Game {
 
     /**
      * sets the saved position on the board and marks it as just selected.
+     *
      * @param newPosition the new position to be set
      */
     public void setSavedPosition(Position newPosition) {
@@ -178,6 +196,7 @@ public class Game {
 
     /**
      * checks whether the position is just selected.
+     *
      * @return true if the position is newly selected; false otherwise
      */
     public boolean isJustSelected() {
@@ -193,6 +212,7 @@ public class Game {
 
     /**
      * returns the unit at the specified position.
+     *
      * @param position the specified position
      * @return the unit in the given position
      */
@@ -204,6 +224,7 @@ public class Game {
 
     /**
      * returns the verbosity of the current board.
+     *
      * @return the current verbosity setting
      */
     public Verbosity getVerbosity() {
@@ -212,43 +233,94 @@ public class Game {
 
     /**
      * returns the random number generator used by this game.
+     *
      * @return the random number generator
      */
     public Random getRandom() {
         return this.random;
     }
 
-    /**
-     * returns the merge result between two units of the same team.
-     * @param unitInField unit positioned on the selected field
-     * @param unitToPlace unit to place on the selected field
-     * @param position position of the selected field
-     * @return the result of the merge between the two units.
-     */
-    public MergeResult mergeAction(Unit unitInField, RegularUnit unitToPlace, Position position) {
-        RegularUnit mergedUnit = ((RegularUnit) unitInField).mergeWith(unitToPlace);
-        FarmlandBoard board = getFarmlandBoard();
-        Field field = getFarmlandBoard().getField(position);
-
-        if (mergedUnit != null) {
-            board.placeUnit(mergedUnit, position);
-            return new MergeResult(true, unitInField, unitToPlace, field);
-        } else {
-            board.removeUnit(position);
-            board.placeUnit(unitToPlace, position);
-            return new MergeResult(false, unitInField, unitToPlace, field);
-        }
-    }
 
     /**
      * moves the unit from the current position to the target position.
-     * @param unitToPlace unit that is to change fields
+     *
+     * @param unitToPlace     unit that is to change fields
      * @param currentPosition the current position of the unit
-     * @param targetPosition the target position of the unit
+     * @param targetPosition  the target position of the unit
+     * @return formatted message of move execution
      */
-    public void moveUnit(Unit unitToPlace, Position currentPosition, Position targetPosition) {
+    public String moveUnit(Unit unitToPlace, Position currentPosition, Position targetPosition) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Field targetedField = getFarmlandBoard().getField(targetPosition);
         farmlandBoard.removeUnit(currentPosition);
         farmlandBoard.placeUnit(unitToPlace, targetPosition);
         this.savedPosition = targetPosition;
+        unitToPlace.setHasMoved(true);
+        stringBuilder.append(Printer.moveDisplay(unitToPlace, targetedField));
+        stringBuilder.append(System.lineSeparator());
+        return stringBuilder.toString();
+    }
+
+    /**
+     * ends bocking for the selected unit.
+     * @param selectedUnit the specified unit to be unblocked
+     * @return formatted message indicating that blocking has ended for the given unit
+     */
+    public String endBlocking(Unit selectedUnit) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (selectedUnit instanceof RegularUnit && ((RegularUnit) selectedUnit).isBlocking()) {
+            stringBuilder.append(Printer.noLongerBlockDisplay(selectedUnit));
+            stringBuilder.append(System.lineSeparator());
+            ((RegularUnit) selectedUnit).endBlocking();
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * places one or more units from hand onto the specified position on the board.
+     * @param indexes the zero-based indexes of the units in hand to place
+     * @param position the specified position on which the unit is placed
+     * @return formatted message describing the placement outcome
+     */
+    public String placeUnitsFromHand(List<Integer> indexes, Position position) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        FarmlandBoard board = getFarmlandBoard();
+        Field field = board.getField(position);
+        List<RegularUnit> hand = getCurrentTeam().getHand();
+        Map<Integer, RegularUnit> indexedUnits = new HashMap<>();
+        Team currentTeam = getCurrentTeam();
+        for (int index : indexes) {
+            indexedUnits.put(index, hand.get(index));
+        }
+        List<Integer> sortedIndexes = new ArrayList<>(indexes);
+        sortedIndexes.sort(Collections.reverseOrder());
+        for (int index : sortedIndexes) {
+            hand.remove(index);
+        }
+        for (int index : indexes) {
+            RegularUnit unitToPlace = indexedUnits.get(index);
+            unitToPlace.setTeam(getCurrentTeam());
+
+            Unit unitInField = field.getUnit();
+
+            if (unitInField == null) {
+                board.placeUnit(unitToPlace, position);
+                stringBuilder.append(Printer.noMergeDisplay(currentTeam, unitToPlace, field));
+                stringBuilder.append(System.lineSeparator());
+            } else if (unitInField.getTeam() == currentTeam) {
+                Merge merge = new Merge((RegularUnit) unitInField, unitToPlace);
+                stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, position, this));
+            }
+        }
+        currentTeam.setHasPlaced(true);
+
+        if (board.getUnitsForTeam(currentTeam).size() > 5) {
+            Unit placedUnit = field.getUnit();
+            board.removeUnit(position);
+            stringBuilder.append(Printer.sixthUnitDisplay(currentTeam, placedUnit, field));
+            stringBuilder.append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
     }
 }

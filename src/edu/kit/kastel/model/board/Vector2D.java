@@ -16,7 +16,12 @@ public record Vector2D(int horizontal, int vertical) {
     private static final Vector2D DOWN = new Vector2D(0, -1);
     private static final Vector2D LEFT = new Vector2D(-1, 0);
     private static final Vector2D ZERO = new Vector2D(0, 0);
+    private static final Vector2D UP_RIGHT = new Vector2D(1, 1);
+    private static final Vector2D DOWN_RIGHT = new Vector2D(1, -1);
+    private static final Vector2D DOWN_LEFT = new Vector2D(-1, -1);
+    private static final Vector2D UP_LEFT = new Vector2D(-1, 1);
     private static final String REPRESENTATION = "(%d,%d)";
+
 
     /**
      * sums the specified vector and this vector.
@@ -55,6 +60,23 @@ public record Vector2D(int horizontal, int vertical) {
         directions.add(RIGHT);
         directions.add(DOWN);
         directions.add(LEFT);
+        return directions;
+    }
+
+    /**
+     * returns a list containing diagonal directions and cardinal directions.
+     * @return a list of directions
+     */
+    public static List<Vector2D> getEightDirections() {
+        List<Vector2D> directions = new ArrayList<>();
+        directions.add(UP);
+        directions.add(UP_RIGHT);
+        directions.add(RIGHT);
+        directions.add(DOWN_RIGHT);
+        directions.add(DOWN);
+        directions.add(DOWN_LEFT);
+        directions.add(LEFT);
+        directions.add(UP_LEFT);
         return directions;
     }
 

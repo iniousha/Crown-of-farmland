@@ -4,6 +4,7 @@ package edu.kit.kastel.view;
  * The result of a command execution.
  *
  * @author Programmieren-Team
+ * @author ucktt
  */
 public final class Result {
 

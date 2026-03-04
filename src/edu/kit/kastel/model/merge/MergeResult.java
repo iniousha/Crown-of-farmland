@@ -1,6 +1,8 @@
-package edu.kit.kastel.model.unit;
+package edu.kit.kastel.model.merge;
 
 import edu.kit.kastel.model.board.Field;
+import edu.kit.kastel.model.unit.RegularUnit;
+import edu.kit.kastel.model.unit.Unit;
 
 /**
  * this record represents the merge result between two units of the same team.
