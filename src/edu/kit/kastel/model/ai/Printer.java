@@ -106,7 +106,7 @@ public final class Printer {
     }
 
     private static int padding(String left, String right) {
-        return LINE_WIDTH - left.length() - right.length();
+        return LINE_WIDTH - left.length() - right.length() - 2;
     }
 
     /**
@@ -126,28 +126,28 @@ public final class Printer {
         String currentTeamName = currentTeam.getName();
         String opponentTeamName = opponentTeam.getName();
         int teamSpace = padding(currentTeamName, opponentTeamName);
-        stringBuilder.append(currentTeamName).append(" ".repeat(teamSpace)).append(opponentTeamName)
+        stringBuilder.append("  ").append(currentTeamName).append(" ".repeat(teamSpace)).append(opponentTeamName)
                 .append(System.lineSeparator());
 
         //life points
         String currentTeamLifePoints = currentTeam.getLifePoints() + "/8000 LP";
         String opponentTeamLifePoints = opponentTeam.getLifePoints() + "/8000 LP";
         int lifePointsSpace = padding(currentTeamLifePoints, opponentTeamLifePoints);
-        stringBuilder.append(currentTeamLifePoints).append(" ".repeat(lifePointsSpace)).append(opponentTeamLifePoints)
+        stringBuilder.append("  ").append(currentTeamLifePoints).append(" ".repeat(lifePointsSpace)).append(opponentTeamLifePoints)
                 .append(System.lineSeparator());
 
         //deck count
         String currentTeamDeck = "DC: " + currentTeam.getDeck().getDeckSize() + "/40";
         String opponentTeamDeck = "DC: " + opponentTeam.getDeck().getDeckSize() + "/40";
         int deckSpace = padding(currentTeamDeck, opponentTeamDeck);
-        stringBuilder.append(currentTeamDeck).append(" ".repeat(deckSpace)).append(opponentTeamDeck)
+        stringBuilder.append("  ").append(currentTeamDeck).append(" ".repeat(deckSpace)).append(opponentTeamDeck)
                 .append(System.lineSeparator());
 
         //board count
         String currentTeamUnit = "BC: " + game.getFarmlandBoard().unitCount(currentTeam) + "/5";
         String opponentTeamUnit = "BC: " + game.getFarmlandBoard().unitCount(opponentTeam) + "/5";
         int unitSpace = padding(currentTeamUnit, opponentTeamUnit);
-        stringBuilder.append(currentTeamUnit).append(" ".repeat(unitSpace)).append(opponentTeamUnit);
+        stringBuilder.append("  ").append(currentTeamUnit).append(" ".repeat(unitSpace)).append(opponentTeamUnit);
 
         return stringBuilder.toString();
     }
