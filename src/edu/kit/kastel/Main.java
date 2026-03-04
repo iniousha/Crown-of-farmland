@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 /**
  * hfeed.
+ *
  * @author ucktt
  */
 public final class Main {
@@ -19,21 +20,25 @@ public final class Main {
 
     /**
      * efhwe.
+     *
      * @param args dfh
      * @throws ProgramStartException adhf
      */
-    public static void main(String[] args) throws ProgramStartException {
-        Game game = ProgramStart.initialize(args);
-        Scanner scanner = new Scanner(System.in);
-        PrintStream out = System.out;
-        PrintStream err = System.err;
+    public static void main(String[] args) {
+        try {
+            Game game = ProgramStart.initialize(args);
+            Scanner scanner = new Scanner(System.in);
+            PrintStream out = System.out;
+            PrintStream err = System.err;
 
-        CommandExecutor executor = new CommandExecutor(scanner, out, err);
+            CommandExecutor executor = new CommandExecutor(scanner, out, err);
+            executor.setModel(game);
 
-        executor.setModel(game);
-
-        while (executor.isRunning() && scanner.hasNextLine()) {
-            executor.handleUserInput();
+            while (executor.isRunning() && scanner.hasNextLine()) {
+                executor.handleUserInput();
+            }
+        } catch (ProgramStartException e) {
+            System.err.println(e.getMessage());
         }
     }
 }
