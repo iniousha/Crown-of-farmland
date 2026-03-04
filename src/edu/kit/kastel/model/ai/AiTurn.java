@@ -97,6 +97,7 @@ public class AiTurn {
         stringBuilder.append(game.moveUnit(farmerKing, farmerKingPosition, targetPosition));
         stringBuilder.append(BoardPrinter.boardDisplay(game));
         stringBuilder.append(System.lineSeparator());
+        stringBuilder.append(Printer.displayUnit(farmerKing, game));
         return stringBuilder.toString();
     }
 
