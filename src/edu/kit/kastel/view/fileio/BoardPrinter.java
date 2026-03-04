@@ -241,17 +241,14 @@ public final class BoardPrinter {
     private static String getFieldSymbol(Position position, Game game) {
         Unit unit = game.getFarmlandBoard().getField(position).getUnit();
 
-        Position selectedPosition = game.getSavedPosition();
-        boolean isSelected = (position.equals(selectedPosition));
-
-        return getUnitSymbol(unit, game, isSelected);
+        return getUnitSymbol(unit, game);
     }
 
-    private static String getUnitSymbol(Unit unit, Game game, boolean isSelected) {
+    private static String getUnitSymbol(Unit unit, Game game) {
         if (unit == null) {
             return " ";
         }
-        boolean star = isSelected && game.isJustSelected();
+        boolean star = unit.getTeam() == game.getCurrentTeam() && !unit.hasMoved();
 
         if (star) {
             switch (unit) {
