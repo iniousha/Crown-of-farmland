@@ -190,19 +190,10 @@ public class AiTurn {
                 continue;
             }
             Position winningUnitPosition = game.getFarmlandBoard().findPosition(winningUnit);
-            List<Vector2D> directions = Vector2D.getFourDirections();
-            List<Integer> moveScores = new ArrayList<>();
+
             boolean isPositive = false;
-            for (Vector2D direction : directions) {
-                Position neighbor = winningUnitPosition.move(direction);
-                if (!Position.isInBounds(neighbor.column(), neighbor.row())) {
-                    moveScores.add(0);
-                } else {
-                    moveScores.add(scoring.getMovementScore(winningUnit, neighbor));
-                }
-            }
-            moveScores.add(scoring.getBlockScore(winningUnit));
-            moveScores.add(scoring.getEnPlaceScore(winningUnit));
+            List<Integer> moveScores = getMoveScores(winningUnit, winningUnitPosition);
+
             for (int moveScore : moveScores) {
                 if (moveScore > 0) {
                     isPositive = true;
@@ -216,7 +207,7 @@ public class AiTurn {
             }
             int index = WeightedRandom.weightedRandomSelection(moveScores, random);
             if (index < 4) {
-                Position targetPosition = winningUnitPosition.move(directions.get(index));
+                Position targetPosition = winningUnitPosition.move(Vector2D.getFourDirections().get(index));
                 stringBuilder.append(executeMove(winningUnit, winningUnitPosition, targetPosition));
             } else if (index == 4) {
                 ((RegularUnit) winningUnit).startBlocking();
@@ -256,6 +247,22 @@ public class AiTurn {
         }
         winningUnit.setHasMoved(true);
         return stringBuilder.toString();
+    }
+
+    private List<Integer> getMoveScores(Unit winningUnit, Position position) {
+        List<Vector2D> directions = Vector2D.getFourDirections();
+        List<Integer> moveScores = new ArrayList<>();
+        for (Vector2D direction : directions) {
+            Position neighbor = position.move(direction);
+            if (!Position.isInBounds(neighbor.column(), neighbor.row())) {
+                moveScores.add(0);
+            } else {
+                moveScores.add(scoring.getMovementScore(winningUnit, neighbor));
+            }
+        }
+        moveScores.add(scoring.getBlockScore(winningUnit));
+        moveScores.add(scoring.getEnPlaceScore(winningUnit));
+        return moveScores;
     }
 
     private Unit getWinningUnit(List<Unit> aiUnits) {
