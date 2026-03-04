@@ -43,18 +43,18 @@ public final class ProgramStart {
         for (String argument : arguments) {
             String[] split = argument.split("=", 2);
             if (split.length != 2) {
-                throw new ProgramStartException("Error, invalid argument format" + argument);
+                throw new ProgramStartException("ERROR: invalid argument format" + argument);
             }
             String keyString = split[0];
             String value = split[1];
 
             ProgramArgument key = ProgramArgument.fromString(keyString);
             if (key == null) {
-                throw new ProgramStartException("Error, invalid argument format" + argument);
+                throw new ProgramStartException("ERROR: invalid argument format" + argument);
             }
 
             if (!seenKeys.add(key)) {
-                throw new ProgramStartException("Error, duplicate key" + keyString);
+                throw new ProgramStartException("ERROR: duplicate key" + keyString);
             }
             list.add(new ArgumentValue(key, value));
         }
@@ -65,7 +65,7 @@ public final class ProgramStart {
         try {
             return Long.parseLong(value);
         } catch (NumberFormatException e) {
-            throw new ProgramStartException("Error, invalid seed: " + value);
+            throw new ProgramStartException("ERROR: invalid seed: " + value);
         }
     }
 
@@ -75,7 +75,7 @@ public final class ProgramStart {
         } else if (value.equalsIgnoreCase("compact")) {
             return Verbosity.COMPACT;
         }
-        throw new ProgramStartException("Error, invalid verbosity: " + value);
+        throw new ProgramStartException("ERROR: invalid verbosity: " + value);
     }
 
     private static Game buildGame(List<ArgumentValue> argumentValues) throws ProgramStartException {
@@ -102,20 +102,20 @@ public final class ProgramStart {
                 case TEAM1 -> team1Name = argumentValue.value();
                 case TEAM2 -> team2Name = argumentValue.value();
                 case VERBOSITY -> verbosity = ProgramStart.parseVerbosity(argumentValue.value());
-                default -> throw new ProgramStartException("Error: invalid argument: " + argumentValue.key());
+                default -> throw new ProgramStartException("ERROR: invalid argument: " + argumentValue.key());
             }
         }
 
         if (seed == null) {
-            throw new ProgramStartException("Error: missing required argument: seed");
+            throw new ProgramStartException("ERROR: missing required argument: seed");
         }
 
         if (availableUnits == null) {
-            throw new ProgramStartException("Error: missing required argument: units");
+            throw new ProgramStartException("ERROR: missing required argument: units");
         }
 
         if (deck1 == null || deck2 == null) {
-            throw new ProgramStartException("Error: missing required argument: deck or deck1 and deck2.");
+            throw new ProgramStartException("ERROR: missing required argument: deck or deck1 and deck2.");
         }
 
         Random random = new Random(seed);

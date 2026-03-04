@@ -15,8 +15,8 @@ import java.util.Optional;
  */
 public final class SymbolSetReader {
 
-    private static final String ERROR_FILE_NOT_FOUND = "Error, could not read file: %s";
-    private static final String ERROR_INVALID_SYMBOL_SET_LENGTH = "Error, invalid symbol set length. expected 29 but found: %d.";
+    private static final String ERROR_FILE_NOT_FOUND = "ERROR: could not read file: %s";
+    private static final String ERROR_INVALID_SYMBOL_SET_LENGTH = "ERROR: invalid symbol set length. expected 29 but found: %d.";
 
     private SymbolSetReader() {
     }

@@ -17,10 +17,10 @@ import java.util.Optional;
  */
 public final class DeckReader {
 
-    private static final String ERROR_FILE_NOT_FOUND = "Error, could not read file: %s";
-    private static final String ERROR_DECK_SIZE_MISMATCH = "Error, invalid deck file: expected %d lines, but found %d lines in %s.";
-    private static final String ERROR_INVALID_DECK_SIZE = "Error, deck must contain exactly 40 units, but found: %s ";
-    private static final String ERROR_LINE_PARSE = "Error, could not parse line as Integer: %s.";
+    private static final String ERROR_FILE_NOT_FOUND = "ERROR: could not read file: %s";
+    private static final String ERROR_DECK_SIZE_MISMATCH = "ERROR: invalid deck file: expected %d lines, but found %d lines in %s.";
+    private static final String ERROR_INVALID_DECK_SIZE = "ERROR: deck must contain exactly 40 units, but found: %s ";
+    private static final String ERROR_LINE_PARSE = "ERROR: could not parse line as Integer: %s.";
 
     private DeckReader() {
     }

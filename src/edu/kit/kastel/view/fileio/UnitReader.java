@@ -15,9 +15,9 @@ import java.util.Optional;
  */
 public final class UnitReader {
 
-    private static final String ERROR_FILE_NOT_FOUND = "Error, could not read file: %s";
-    private static final String ERROR_INVALID_UNIT_FORMAT = "Error, invalid unit format in line %s.";
-    private static final String ERROR_INVALID_NUMBER_FORMAT = "Error, invalid number format in line %s ";
+    private static final String ERROR_FILE_NOT_FOUND = "ERROR: could not read file: %s";
+    private static final String ERROR_INVALID_UNIT_FORMAT = "ERROR: invalid unit format in line %s.";
+    private static final String ERROR_INVALID_NUMBER_FORMAT = "ERROR: invalid number format in line %s ";
 
     private UnitReader() {
     }

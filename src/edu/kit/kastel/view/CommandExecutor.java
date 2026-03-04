@@ -16,7 +16,7 @@ import java.util.Set;
 public class CommandExecutor {
 
     private static final String COMMAND_SEPARATOR = " ";
-    private static final String ERROR_PREFIX = "Error: ";
+    private static final String ERROR_PREFIX = "ERROR: ";
     private static final String ERROR_UNKNOWN_COMMAND = ERROR_PREFIX + "unknown command";
     private static final String ERROR_TOO_MANY_ARGUMENTS = ERROR_PREFIX + "too many arguments provided.";
     private final Set<ModelKeyword> modelKeywords;
