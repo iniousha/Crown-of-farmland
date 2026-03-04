@@ -238,8 +238,6 @@ public class AiTurn {
             } else if (unitInField.getTeam() != aiTeam && !(winningUnit instanceof FarmerKing)) {
                 boolean attackerWasFaceDown = !winningUnit.isFaceUp();
                 boolean defenderWasFaceDown = (unitInField instanceof RegularUnit) && !unitInField.isFaceUp();
-                System.err.println("defenderWasFaceDown: " + defenderWasFaceDown + " isFaceUp: " + unitInField.isFaceUp());
-
                 DuelResult duelResult = Duel.executeDuel((RegularUnit) winningUnit, unitInField);
                 stringBuilder.append(Duel.duelExecutionDisplay(duelResult, winningUnit, unitInField,
                         game, attackerWasFaceDown, defenderWasFaceDown, targetPosition));
