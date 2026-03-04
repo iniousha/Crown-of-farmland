@@ -33,7 +33,8 @@ public final class SymbolSetReader {
             throw new ProgramStartException(ERROR_FILE_NOT_FOUND.formatted(file));
         }
         String symbolString = lines.get().getFirst();
-        if (symbolString.length() != 29) {
+        System.out.println(symbolString);
+        if (symbolString.length() < 29) {
             throw new ProgramStartException(ERROR_INVALID_SYMBOL_SET_LENGTH.formatted(symbolString.length()));
         }
         return new SymbolSet(symbolString);
