@@ -4,14 +4,13 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.board.FarmlandBoard;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
+import edu.kit.kastel.model.board.Vector2D;
 import edu.kit.kastel.model.merge.Merge;
 import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -162,7 +161,8 @@ public class AiScoring {
         if (unit instanceof FarmerKing) {
             return 0;
         }
-        int maximumAttackPoint = getMaximumAttackPoints();
+        Position unitPosition = game.getFarmlandBoard().findPosition(unit);
+        int maximumAttackPoint = getMaximumAttackPoints(unitPosition);
         return Math.max(1, (((RegularUnit) unit).getDefencePoints() - maximumAttackPoint) / 100);
     }
 
@@ -176,23 +176,28 @@ public class AiScoring {
         if (unit instanceof FarmerKing) {
             return 0;
         }
-        int maximumAttackPoint = getMaximumAttackPoints();
+        Position unitPosition = game.getFarmlandBoard().findPosition(unit);
+        int maximumAttackPoint = getMaximumAttackPoints(unitPosition);
         return Math.max(0, (((RegularUnit) unit).getAttackPoints() - maximumAttackPoint) / 100);
     }
 
-    private int getMaximumAttackPoints() {
-        List<Integer> attackPoints = new ArrayList<>();
-        List<Unit> enemyUnits = game.getFarmlandBoard().getUnitsForTeam(game.getOpponentTeam());
-        for (Unit enemyUnit : enemyUnits) {
-            if (!(enemyUnit instanceof FarmerKing)) {
-                int attackPoint = ((RegularUnit) enemyUnit).getAttackPoints();
-                attackPoints.add(attackPoint);
+    private int getMaximumAttackPoints(Position unitPosition) {
+        int max = 0;
+        for (Vector2D direction : Vector2D.getFourDirections()) {
+            Position neighbor = unitPosition.move(direction);
+            if (!Position.isInBounds(neighbor.column(), neighbor.row())) {
+                continue;
             }
-            if (attackPoints.isEmpty()) {
-                return 0;
+            Field field = game.getFarmlandBoard().getField(neighbor);
+            if (!field.isEmpty() && field.getUnit().getTeam() != aiTeam
+                    && field.getUnit() instanceof RegularUnit) {
+                int attackPoints = ((RegularUnit) field.getUnit()).getAttackPoints();
+                if (attackPoints > max) {
+                    max = attackPoints;
+                }
             }
         }
-        return Collections.max(attackPoints);
+        return max;
     }
 
     /**

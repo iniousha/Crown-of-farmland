@@ -32,7 +32,6 @@ public final class WeightedRandom {
             return 0;
         }
         int randomNumber = random.nextInt(1, totalWeight + 1);
-
         for (int i = 0; i < weights.size(); i++) {
             count += Math.max(0, weights.get(i));
             if (randomNumber <= count) {

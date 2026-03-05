@@ -136,31 +136,6 @@ public class AiTurn {
         return stringBuilder.toString();
     }
 
-//    private String executePlacement(int selectedUnitIndex, Position targetPosition) {
-//        StringBuilder stringBuilder = new StringBuilder();
-//        RegularUnit unitToPlace = aiTeam.getHand().get(selectedUnitIndex);
-//        aiTeam.getHand().remove(selectedUnitIndex);
-//        unitToPlace.setTeam(aiTeam);
-//
-//        Field field = game.getFarmlandBoard().getField(targetPosition);
-//        Unit unitInField = field.getUnit();
-//
-//        if (unitInField == null) {
-//            game.getFarmlandBoard().placeUnit(unitToPlace, targetPosition);
-//            stringBuilder.append(Printer.noMergeDisplay(aiTeam, unitToPlace, game.getFarmlandBoard().getField(targetPosition)));
-//        } else {
-//            Merge merge = new Merge(unitToPlace, (RegularUnit) unitInField);
-//            stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, targetPosition, game));
-//        }
-//        aiTeam.setHasPlaced(true);
-//
-//        if (game.getFarmlandBoard().getUnitsForTeam(aiTeam).size() > 5) {
-//            game.getFarmlandBoard().removeUnit(targetPosition);
-//            stringBuilder.append(Printer.sixthUnitDisplay(aiTeam, unitToPlace, field));
-//        }
-//        return stringBuilder.toString();
-//    }
-
     private String moveUnits() {
         game.clearJustSelected();
         StringBuilder stringBuilder = new StringBuilder();
@@ -176,16 +151,13 @@ public class AiTurn {
             if (aiUnits.isEmpty()) {
                 break;
             }
-
             Unit winningUnit = getWinningUnit(aiUnits);
             if (winningUnit instanceof FarmerKing) {
                 continue;
             }
             Position winningUnitPosition = game.getFarmlandBoard().findPosition(winningUnit);
-
             boolean isPositive = false;
             List<Integer> moveScores = getMoveScores(winningUnit, winningUnitPosition);
-
             for (int moveScore : moveScores) {
                 if (moveScore > 0) {
                     isPositive = true;
