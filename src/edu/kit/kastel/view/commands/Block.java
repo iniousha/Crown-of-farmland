@@ -8,6 +8,7 @@ import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
 import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.fileio.BoardPrinter;
 
 /**
  * this class represents the block command.
@@ -17,6 +18,7 @@ public class Block implements Command<Game> {
 
     @Override
     public Result execute(Game handle) {
+        StringBuilder stringBuilder = new StringBuilder();
         Position position = handle.getSavedPosition();
         handle.clearJustSelected();
 
@@ -44,7 +46,12 @@ public class Block implements Command<Game> {
         } else {
             ((RegularUnit) unit).startBlocking();
             unit.setHasMoved(true);
-            return Result.success(Printer.blockDisplay(unit, field));
+            stringBuilder.append(Printer.blockDisplay(unit, field));
+            stringBuilder.append(System.lineSeparator());
+            stringBuilder.append(BoardPrinter.boardDisplay(handle));
+            stringBuilder.append(System.lineSeparator());
+            stringBuilder.append(Printer.displayUnit(unit, handle));
+            return Result.success(stringBuilder.toString());
         }
     }
 
