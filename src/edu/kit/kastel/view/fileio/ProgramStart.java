@@ -124,10 +124,10 @@ public final class ProgramStart {
                 case UNITS -> availableUnits = UnitReader.read(argumentValue.value());
                 case DECK -> {
                     deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
-                    deck2 = DeckReader.read(argumentValue.value(), availableUnits, true);
+                    deck2 = DeckReader.read(argumentValue.value(), availableUnits, false);
                 }
                 case DECK1 -> deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
-                case DECK2 -> deck2 = DeckReader.read(argumentValue.value(), availableUnits, false);
+                case DECK2 -> deck2 = DeckReader.read(argumentValue.value(), availableUnits, true);
                 case TEAM1 -> {
                     team1Name = argumentValue.value();
                     if (team1Name.length() > 14) {
