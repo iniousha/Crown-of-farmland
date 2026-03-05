@@ -34,6 +34,10 @@ public final class UnitReader {
             throw new ProgramStartException(ERROR_FILE_NOT_FOUND.formatted(file));
         }
 
+        if (lines.get().isEmpty()) {
+            throw new ProgramStartException("ERROR: units file is empty");
+        }
+
         List<RegularUnit> units = new ArrayList<>();
         for (String line : lines.get()) {
             System.out.println(line);
