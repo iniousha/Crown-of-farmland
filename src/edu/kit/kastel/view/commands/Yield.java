@@ -55,6 +55,7 @@ public class Yield implements Command<Game> {
                 stringBuilder.append(Printer.turnDisplay(handle.getCurrentTeam()));
                 stringBuilder.append(System.lineSeparator());
                 stringBuilder.append(new AiTurn(handle, handle.getRandom()).executeTurn());
+                handle.setSavedPosition(null);
                 handle.nextTurn();
             }
 

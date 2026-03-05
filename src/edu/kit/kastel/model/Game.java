@@ -72,7 +72,8 @@ public class Game {
         farmlandBoard.placeUnit(team2.getFarmerKing(), team2King);
 
         this.currentTeam = team1;
-        currentTeam.drawCard();
+        team1.drawCard();
+        team2.drawCard();
     }
 
     /**
