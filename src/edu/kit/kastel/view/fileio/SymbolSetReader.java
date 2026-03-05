@@ -34,7 +34,7 @@ public final class SymbolSetReader {
         }
         String symbolString = lines.get().getFirst();
         System.out.println(symbolString);
-        if (symbolString.length() < 29) {
+        if (symbolString.length() != 29) {
             throw new ProgramStartException(ERROR_INVALID_SYMBOL_SET_LENGTH.formatted(symbolString.length()));
         }
         return new SymbolSet(symbolString);
