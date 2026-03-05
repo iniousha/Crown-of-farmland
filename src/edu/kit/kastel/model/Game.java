@@ -161,7 +161,11 @@ public class Game {
         }
     }
 
-    private void setWinner(Team winner) {
+    /**
+     * sets the winner to the specified team.
+     * @param winner the specified team to be the winner
+     */
+    public void setWinner(Team winner) {
         this.winner = winner;
     }
 

@@ -142,6 +142,7 @@ public class Team {
      */
     public void takeDamage(int damage) {
         this.lifePoints = getLifePoints() - damage;
+
     }
 }
 

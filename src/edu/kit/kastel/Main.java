@@ -33,7 +33,7 @@ public final class Main {
             CommandExecutor executor = new CommandExecutor(scanner, out, err);
             executor.setModel(game);
 
-            while (executor.isRunning() && scanner.hasNextLine()) {
+            while (executor.isRunning() && scanner.hasNextLine() && !game.isGameOver()) {
                 executor.handleUserInput();
             }
         } catch (ProgramStartException e) {
