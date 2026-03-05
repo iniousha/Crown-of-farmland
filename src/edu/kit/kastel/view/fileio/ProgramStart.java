@@ -106,7 +106,6 @@ public final class ProgramStart {
             throw new ProgramStartException("ERROR: invalid deck file.");
         }
     }
-
     private static Game buildGame(List<ArgumentValue> argumentValues) throws ProgramStartException {
         Long seed = null;
         SymbolSet symbolSet = SymbolSet.defaultAscii();
