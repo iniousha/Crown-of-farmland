@@ -154,10 +154,10 @@ public final class Duel {
             stringBuilder.append(game.moveUnit(attacker, game.getSavedPosition(), targetPosition));
         }
         if (game.getCurrentTeam().getLifePoints() <= 0) {
-            stringBuilder.append(String.format("%s's life points dropped to 0!.", game.getCurrentTeam().getName()));
+            stringBuilder.append(String.format("%s's life points dropped to 0!", game.getCurrentTeam().getName()));
             stringBuilder.append(System.lineSeparator());
         } else if (game.getOpponentTeam().getLifePoints() <= 0) {
-            stringBuilder.append(String.format("%s's life points dropped to 0!.", game.getOpponentTeam().getName()));
+            stringBuilder.append(String.format("%s's life points dropped to 0!", game.getOpponentTeam().getName()));
             stringBuilder.append(System.lineSeparator());
         }
         if (game.isGameOver()) {
