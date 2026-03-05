@@ -33,9 +33,6 @@ public final class UnitReader {
         if (lines.isEmpty()) {
             throw new ProgramStartException(ERROR_FILE_NOT_FOUND.formatted(file));
         }
-        if (lines.get().size() > 80) {
-            throw new ProgramStartException("ERROR: too many units in file");
-        }
 
         List<RegularUnit> units = new ArrayList<>();
         for (String line : lines.get()) {
@@ -53,6 +50,9 @@ public final class UnitReader {
             } catch (NumberFormatException e) {
                 throw new ProgramStartException(ERROR_INVALID_NUMBER_FORMAT.formatted(line));
             }
+        }
+        if (lines.get().size() > 80) {
+            throw new ProgramStartException("ERROR: too many units in file");
         }
         return units;
     }
