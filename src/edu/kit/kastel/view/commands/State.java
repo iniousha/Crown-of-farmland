@@ -37,8 +37,6 @@ public class State implements Command<Game> {
         stringBuilder.append(System.lineSeparator());
         if (unit != null) {
             stringBuilder.append(Printer.displayUnit(unit, handle));
-        } else {
-            stringBuilder.append(Printer.noUnitDisplay());
         }
         return Result.success(stringBuilder.toString());
     }
