@@ -225,6 +225,8 @@ public final class BoardPrinter {
 
             if (unitSymbol.length() == 3) {
                 stringBuilder.append(leftBorder).append(unitSymbol);
+            } else if (unitSymbol.length() == 2) {
+                stringBuilder.append(leftBorder).append(unitSymbol).append(" ");
             } else {
                 stringBuilder.append(leftBorder).append(" ").append(unitSymbol).append(" ");
             }
@@ -251,10 +253,13 @@ public final class BoardPrinter {
         if (star) {
             switch (unit) {
                 case FarmerKing ignored -> {
-                    return "*" + (!unit.getTeam().isAiTeam() ? "X" : "Y") + " ";
+                    return "*" + (!unit.getTeam().isAiTeam() ? "X" : "Y");
                 }
-                case RegularUnit regularUnit -> {
-                    return "*" + (!regularUnit.getTeam().isAiTeam() ? "x" : "y") + " ";
+                case RegularUnit regularUnit when regularUnit.isBlocking() -> {
+                    return "*" + (!unit.getTeam().isAiTeam() ? "x" : "y") + "b";
+                }
+                case RegularUnit regularUnit when !regularUnit.isBlocking() -> {
+                    return "*" + (!unit.getTeam().isAiTeam() ? "x" : "y");
                 }
                 default -> {
                     return "   ";
