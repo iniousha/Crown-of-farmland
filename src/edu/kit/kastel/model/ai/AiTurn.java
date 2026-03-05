@@ -76,7 +76,6 @@ public class AiTurn {
 //        endTurn();
         return result;
     }
-
     private String moveFarmerKing() {
         StringBuilder stringBuilder = new StringBuilder();
         Map<Integer, List<Position>> scoredPositions = new HashMap<>();
