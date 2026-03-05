@@ -55,11 +55,26 @@ public class AiTurn {
      * @return returns a string formatted logic of AI's turn
      */
     public String executeTurn() {
-        String sb = moveFarmerKing()
-                + placeUnit()
-                + moveUnits();
-        endTurn();
-        return sb;
+        if (game.isGameOver()) {
+            return "";
+        }
+        String result = moveFarmerKing();
+        if (game.isGameOver()) {
+            return result;
+        }
+        result += placeUnit();
+        if (game.isGameOver()) {
+            return result;
+        }
+        result += moveUnits();
+        if (!game.isGameOver()) {
+            endTurn();
+        }
+//        String sb = moveFarmerKing()
+//                + placeUnit()
+//                + moveUnits();
+//        endTurn();
+        return result;
     }
 
     private String moveFarmerKing() {
