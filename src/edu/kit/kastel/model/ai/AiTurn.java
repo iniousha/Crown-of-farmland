@@ -119,7 +119,6 @@ public class AiTurn {
                 continue;
             }
             int score = scoring.getScoreForUnit(neighbor, enemyFarmerKingPosition);
-            System.err.println("Position: " + neighbor + " Score: " + score);
             scoredPositions.computeIfAbsent(score, key -> new ArrayList<>())
                     .add(neighbor);
         }
