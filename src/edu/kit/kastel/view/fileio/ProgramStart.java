@@ -54,7 +54,7 @@ public final class ProgramStart {
 
             ProgramArgument key = ProgramArgument.fromString(keyString);
             if (key == null) {
-                throw new ProgramStartException("ERROR: invalid argument format" + argument);
+                throw new ProgramStartException("ERROR: invalid argument format: " + argument);
             }
 
             if (!seenKeys.add(key)) {
@@ -105,16 +105,6 @@ public final class ProgramStart {
         if (hasDeck && (hasDeck1 || hasDeck2)) {
             throw new ProgramStartException("ERROR: invalid deck file.");
         }
-        for (ArgumentValue argumentValue : argumentValues) {
-            if (argumentValue.key() == ProgramArgument.TEAM1
-                    && argumentValue.value().length() > 14) {
-                throw new ProgramStartException("ERROR: team1 name too long");
-            }
-            if (argumentValue.key() == ProgramArgument.TEAM2
-                    && argumentValue.value().length() > 14) {
-                throw new ProgramStartException("ERROR: team2 name too long");
-            }
-        }
     }
 
     private static Game buildGame(List<ArgumentValue> argumentValues) throws ProgramStartException {
@@ -138,8 +128,16 @@ public final class ProgramStart {
                 }
                 case DECK1 -> deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
                 case DECK2 -> deck2 = DeckReader.read(argumentValue.value(), availableUnits, false);
-                case TEAM1 -> team1Name = argumentValue.value();
-                case TEAM2 -> team2Name = argumentValue.value();
+                case TEAM1 -> {team1Name = argumentValue.value();
+                    if(team1Name.length() > 14) {
+                        throw new ProgramStartException("ERROR: team1 name too long");
+                    }
+                }
+                case TEAM2 -> {team2Name = argumentValue.value();
+                    if(team2Name.length() > 14) {
+                        throw new ProgramStartException("ERROR: team2 name too long");
+                    }
+                }
                 case VERBOSITY -> verbosity = ProgramStart.parseVerbosity(argumentValue.value());
                 default -> throw new ProgramStartException("ERROR: invalid argument: " + argumentValue.key());
             }
