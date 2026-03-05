@@ -47,6 +47,7 @@ public class RegularUnit extends Unit {
         return this.blocking;
     }
 
+
     /**
      * sets this regular unit to blocking state.
      */

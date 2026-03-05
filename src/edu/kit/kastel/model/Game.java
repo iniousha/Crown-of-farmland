@@ -34,6 +34,7 @@ public class Game {
     private Position savedPosition;
     private boolean yieldHasFailed;
     private boolean justSelected;
+    private boolean BlockedThisTurn;
 
     /**
      * constructs the game with the specified parameters.
@@ -104,6 +105,21 @@ public class Game {
     }
 
     /**
+     * checks whether the unit started blocking this turn.
+     * @return true if blocking happened this turn; false otherwise
+     */
+    public boolean isBlockedThisTurn() {
+        return BlockedThisTurn;
+    }
+
+    /**
+     * sets whether the unit has been blocked during this turn.
+     * @param blockedThisTurn true if unit was blocked this turn; false other wise
+     */
+    public void setBlockedThisTurn(boolean blockedThisTurn) {
+        BlockedThisTurn = blockedThisTurn;
+    }
+    /**
      * returns the opposing team of the current team.
      *
      * @return the opponent team
@@ -131,6 +147,7 @@ public class Game {
             this.currentTeam.setHasPlaced(false);
         }
         setYieldFailed(false);
+        setBlockedThisTurn(false);
         toggleTurn();
     }
 

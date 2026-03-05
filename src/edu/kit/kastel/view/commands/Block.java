@@ -39,10 +39,11 @@ public class Block implements Command<Game> {
             return Result.error("unit is Farmer King.");
         } else if (unit.hasMoved() && !(((RegularUnit) unit).isBlocking())) {
             return Result.error("unit has already moved.");
-        } else if (((RegularUnit) unit).isBlocking()) {
-            return Result.error("unit is already Blocking");
+        } else if ((handle.isBlockedThisTurn())) {
+            return Result.error("unit is already Blocking this Turn.");
         } else {
             ((RegularUnit) unit).startBlocking();
+            handle.setBlockedThisTurn(true);
             unit.setHasMoved(true);
             stringBuilder.append(Printer.blockDisplay(unit, field));
             stringBuilder.append(System.lineSeparator());
