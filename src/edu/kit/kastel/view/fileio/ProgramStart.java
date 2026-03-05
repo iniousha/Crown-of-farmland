@@ -124,7 +124,7 @@ public final class ProgramStart {
                 case UNITS -> availableUnits = UnitReader.read(argumentValue.value());
                 case DECK -> {
                     deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
-                    deck2 = DeckReader.read(argumentValue.value(), availableUnits, false);
+                    deck2 = DeckReader.read(argumentValue.value(), availableUnits, true);
                 }
                 case DECK1 -> deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
                 case DECK2 -> deck2 = DeckReader.read(argumentValue.value(), availableUnits, false);
