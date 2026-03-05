@@ -105,6 +105,16 @@ public final class ProgramStart {
         if (hasDeck && (hasDeck1 || hasDeck2)) {
             throw new ProgramStartException("ERROR: invalid deck file.");
         }
+        for (ArgumentValue argumentValue : argumentValues) {
+            if (argumentValue.key() == ProgramArgument.TEAM1
+                    && argumentValue.value().length() > 14) {
+                throw new ProgramStartException("ERROR: team1 name too long");
+            }
+            if (argumentValue.key() == ProgramArgument.TEAM2
+                    && argumentValue.value().length() > 14) {
+                throw new ProgramStartException("ERROR: team2 name too long");
+            }
+        }
     }
 
     private static Game buildGame(List<ArgumentValue> argumentValues) throws ProgramStartException {
