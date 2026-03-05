@@ -12,12 +12,12 @@ import java.util.Optional;
  */
 public class Arguments {
 
-    private static final String ERROR_TOO_FEW_ARGUMENTS = "ERROR: too few arguments";
-    private static final String ERROR_NOT_NUMBER_FORMAT = "ERROR: '%s' must be an integer.";
-    private static final String ERROR_NOT_IN_BOUNDS = "ERROR: position not in bounds.";
+    private static final String ERROR_TOO_FEW_ARGUMENTS = "too few arguments";
+    private static final String ERROR_NOT_NUMBER_FORMAT = "'%s' must be an integer.";
+    private static final String ERROR_NOT_IN_BOUNDS = "position not in bounds.";
     private static final int INDEX_OFFSET = 1;
     private static final int POSITION_ARGUMENT_LENGTH = 2;
-    private static final String ERROR_INVALID_FIELD_FORMAT = "ERROR: invalid field format.";
+    private static final String ERROR_INVALID_FIELD_FORMAT = "invalid field format.";
     private static final int COLUMN_CHAR_INDEX = 0;
     private static final int ROW_CHAR_INDEX = 1;
     private static final char ROW_OFFSET = '1';

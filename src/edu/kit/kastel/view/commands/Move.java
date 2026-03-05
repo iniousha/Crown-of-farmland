@@ -106,6 +106,8 @@ public class Move implements Command<Game> {
         } else if (!handle.getSavedPosition().equals(targetPosition)
                 && !handle.getSavedPosition().isAdjacentTo(targetPosition, false)) {
             return "selected field not adjacent to targeted field.";
+        } else if (selectedUnit.hasMoved()) {
+            return "selected unit has already moved this turn.";
         } else if (targetPosition.equals(farmerKingPosition)) {
             return "You can't move to the Farmer King's position.";
         } else if (selectedUnit.equals(farmerKing)

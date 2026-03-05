@@ -22,7 +22,6 @@ public final class Main {
      * efhwe.
      *
      * @param args dfh
-     * @throws ProgramStartException adhf
      */
     public static void main(String[] args) {
         try {
