@@ -106,6 +106,7 @@ public final class ProgramStart {
             throw new ProgramStartException("ERROR: invalid deck file.");
         }
     }
+
     private static Game buildGame(List<ArgumentValue> argumentValues) throws ProgramStartException {
         Long seed = null;
         SymbolSet symbolSet = SymbolSet.defaultAscii();
@@ -127,13 +128,15 @@ public final class ProgramStart {
                 }
                 case DECK1 -> deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
                 case DECK2 -> deck2 = DeckReader.read(argumentValue.value(), availableUnits, false);
-                case TEAM1 -> {team1Name = argumentValue.value();
-                    if(team1Name.length() > 14) {
+                case TEAM1 -> {
+                    team1Name = argumentValue.value();
+                    if (team1Name.length() > 14) {
                         throw new ProgramStartException("ERROR: team1 name too long");
                     }
                 }
-                case TEAM2 -> {team2Name = argumentValue.value();
-                    if(team2Name.length() > 14) {
+                case TEAM2 -> {
+                    team2Name = argumentValue.value();
+                    if (team2Name.length() > 14) {
                         throw new ProgramStartException("ERROR: team2 name too long");
                     }
                 }
