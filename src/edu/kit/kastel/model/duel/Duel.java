@@ -97,17 +97,17 @@ public final class Duel {
 
     /**
      * returns a formatted string of the duel logic.
-     * @param duelResult result of the duel
-     * @param attackerUnit attacker unit
-     * @param defender defender unit
-     * @param game the game in which the duel logic takes place
+     *
+     * @param duelResult          result of the duel
+     * @param attackerUnit        attacker unit
+     * @param defender            defender unit
+     * @param game                the game in which the duel logic takes place
      * @param attackerWasFaceDown whether the attacker was hidden
      * @param defenderWasFaceDown whether the defender was hidden
-     * @param targetPosition the position in which the duel takes place
+     * @param targetPosition      the position in which the duel takes place
      * @return formatted duel message
      */
-    public static String duelExecutionDisplay(DuelResult duelResult, Unit attackerUnit,
-                                              Unit defender, Game game,
+    public static String duelExecutionDisplay(DuelResult duelResult, Unit attackerUnit, Unit defender, Game game,
                                               boolean attackerWasFaceDown,
                                               boolean defenderWasFaceDown,
                                               Position targetPosition) {
@@ -121,28 +121,10 @@ public final class Duel {
             stringBuilder.append(Printer.duelWithRegularUnitDisplay(attacker, defender, targetedField, defenderWasFaceDown));
             stringBuilder.append(System.lineSeparator());
         }
-        if (attackerWasFaceDown) {
-            stringBuilder.append(String.format("%s (%d/%d) was flipped on %s!",
-                    attacker.getName(), attacker.getAttackPoints(),
-                    attacker.getDefencePoints(), selectedField.getPosition().toString()));
-            stringBuilder.append(System.lineSeparator());
-        }
-        if (defenderWasFaceDown) {
-            stringBuilder.append(String.format("%s (%d/%d) was flipped on %s!",
-                    defender.getName(), ((RegularUnit) defender).getAttackPoints(),
-                    ((RegularUnit) defender).getDefencePoints(), targetedField.getPosition().toString()));
-            stringBuilder.append(System.lineSeparator());
-        }
-        if (duelResult.attackerEliminated()) {
-            game.getFarmlandBoard().removeUnit(game.getSavedPosition());
-            stringBuilder.append(String.format("%s was eliminated!", attacker.getName()));
-            stringBuilder.append(System.lineSeparator());
-        }
-        if (duelResult.defenderEliminated()) {
-            game.getFarmlandBoard().removeUnit(targetPosition);
-            stringBuilder.append(String.format("%s was eliminated!", defender.getName()));
-            stringBuilder.append(System.lineSeparator());
-        }
+        stringBuilder.append(flipDisplay(attacker, defender,
+                attackerWasFaceDown, defenderWasFaceDown, selectedField, targetedField));
+        stringBuilder.append(eliminationDisplay(duelResult, attacker, defender, game, targetPosition));
+
         if (duelResult.damagedTeam() != null) {
             Team damagedTeam = duelResult.damagedTeam();
             int damage = duelResult.damage();
@@ -152,6 +134,8 @@ public final class Duel {
         }
         if (duelResult.attackerMoves()) {
             stringBuilder.append(game.moveUnit(attacker, game.getSavedPosition(), targetPosition));
+        } else {
+            attacker.setHasMoved(true);
         }
         if (game.getCurrentTeam().getLifePoints() <= 0) {
             game.setWinner(game.getOpponentTeam());
@@ -165,6 +149,41 @@ public final class Duel {
         if (game.isGameOver()) {
             Team winnerTeam = game.getWinner();
             stringBuilder.append(String.format("%s wins!", winnerTeam.getName()));
+            stringBuilder.append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
+    }
+
+    private static String flipDisplay(RegularUnit attacker, Unit defender,
+                                      boolean attackerWasFaceDown, boolean defenderWasFaceDown,
+                                      Field selectedField, Field targetedField) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (attackerWasFaceDown) {
+            stringBuilder.append(String.format("%s (%d/%d) was flipped on %s!",
+                    attacker.getName(), attacker.getAttackPoints(),
+                    attacker.getDefencePoints(), selectedField.getPosition().toString()));
+            stringBuilder.append(System.lineSeparator());
+        }
+        if (defenderWasFaceDown) {
+            stringBuilder.append(String.format("%s (%d/%d) was flipped on %s!",
+                    defender.getName(), ((RegularUnit) defender).getAttackPoints(),
+                    ((RegularUnit) defender).getDefencePoints(), targetedField.getPosition().toString()));
+            stringBuilder.append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
+    }
+
+    private static String eliminationDisplay(DuelResult duelResult, RegularUnit attacker,
+                                             Unit defender, Game game, Position targetPosition) {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (duelResult.attackerEliminated()) {
+            game.getFarmlandBoard().removeUnit(game.getSavedPosition());
+            stringBuilder.append(String.format("%s was eliminated!", attacker.getName()));
+            stringBuilder.append(System.lineSeparator());
+        }
+        if (duelResult.defenderEliminated()) {
+            game.getFarmlandBoard().removeUnit(targetPosition);
+            stringBuilder.append(String.format("%s was eliminated!", defender.getName()));
             stringBuilder.append(System.lineSeparator());
         }
         return stringBuilder.toString();
