@@ -55,26 +55,13 @@ public class AiTurn {
      * @return returns a string formatted logic of AI's turn
      */
     public String executeTurn() {
-        if (game.isGameOver()) {
-            return "";
-        }
-        String result = moveFarmerKing();
-        if (game.isGameOver()) {
-            return result;
-        }
-        result += placeUnit();
-        if (game.isGameOver()) {
-            return result;
-        }
-        result += moveUnits();
-        if (!game.isGameOver()) {
-            endTurn();
-        }
-//        String sb = moveFarmerKing()
-//                + placeUnit()
-//                + moveUnits();
-//        endTurn();
-        return result;
+        StringBuilder stringBuilder = new StringBuilder();
+        String sb = moveFarmerKing()
+                + placeUnit()
+                + moveUnits();
+        endTurn();
+        stringBuilder.append(sb);
+        return stringBuilder.toString();
     }
     private String moveFarmerKing() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -189,6 +176,7 @@ public class AiTurn {
             if (aiUnits.isEmpty()) {
                 break;
             }
+
             Unit winningUnit = getWinningUnit(aiUnits);
             if (winningUnit instanceof FarmerKing) {
                 continue;
@@ -226,6 +214,7 @@ public class AiTurn {
         }
         return stringBuilder.toString();
     }
+
 
     private String executeMove(Unit winningUnit, Position selectedPosition, Position targetPosition) {
         StringBuilder stringBuilder = new StringBuilder();
