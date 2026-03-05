@@ -104,39 +104,30 @@ public class AiTurn {
 
     private String placeUnit() {
         StringBuilder stringBuilder = new StringBuilder();
-        List<Unit> units = game.getFarmlandBoard().getUnitsForTeam(aiTeam);
         Map<Integer, List<Position>> scoredPositions = new HashMap<>();
-        Set<Position> alreadyScored = new HashSet<>();
         FarmerKing enemyFarmerKing = game.getOpponentTeam().getFarmerKing();
         Position enemyFarmerKingPosition = game.getFarmlandBoard().findPosition(enemyFarmerKing);
-        for (Unit unit : units) {
-            Position currentPosition = game.getFarmlandBoard().findPosition(unit);
-            List<Position> neighbors = game.getFarmlandBoard().getNeighbors(currentPosition, true);
+        Position farmerKingPosition = game.getFarmlandBoard().findPosition(aiTeam.getFarmerKing());
+        List<Position> neighbors = game.getFarmlandBoard().getNeighbors(farmerKingPosition, true);
 
-            for (Position neighbor : neighbors) {
-                if (alreadyScored.contains(neighbor)) {
-                    continue;
-                }
-                Field field = game.getFarmlandBoard().getField(neighbor);
-                if (!field.isEmpty() && field.getUnit().getTeam() != aiTeam) {
-                    continue;
-                }
-                if (!field.isEmpty() && field.getUnit() instanceof FarmerKing) {
-                    continue;
-                }
-                int score = scoring.getScoreForUnit(neighbor, enemyFarmerKingPosition);
-                alreadyScored.add(neighbor);
-                scoredPositions.computeIfAbsent(score, key -> new ArrayList<>())
-                        .add(neighbor);
+        for (Position neighbor : neighbors) {
+            Field field = game.getFarmlandBoard().getField(neighbor);
+            if (!field.isEmpty() && field.getUnit().getTeam() != aiTeam) {
+                continue;
             }
+            if (!field.isEmpty() && field.getUnit() instanceof FarmerKing) {
+                continue;
+            }
+            int score = scoring.getScoreForUnit(neighbor, enemyFarmerKingPosition);
+            System.err.println("Position: " + neighbor + " Score: " + score);
+            scoredPositions.computeIfAbsent(score, key -> new ArrayList<>())
+                    .add(neighbor);
         }
-
         int maxScore = Collections.max(scoredPositions.keySet());
         List<Position> selectedPositions = scoredPositions.get(maxScore);
         Position targetPosition = select(selectedPositions);
         int selectedIndex = getSelectedUnitIndex();
-        stringBuilder.append(executePlacement(selectedIndex, targetPosition));
-        stringBuilder.append(System.lineSeparator());
+        stringBuilder.append(game.placeUnitsFromHand(List.of(selectedIndex), targetPosition));
         game.setSavedPosition(targetPosition);
         stringBuilder.append(BoardPrinter.boardDisplay(game));
         stringBuilder.append(System.lineSeparator());
@@ -145,30 +136,30 @@ public class AiTurn {
         return stringBuilder.toString();
     }
 
-    private String executePlacement(int selectedUnitIndex, Position targetPosition) {
-        StringBuilder stringBuilder = new StringBuilder();
-        RegularUnit unitToPlace = aiTeam.getHand().get(selectedUnitIndex);
-        aiTeam.getHand().remove(selectedUnitIndex);
-        unitToPlace.setTeam(aiTeam);
-
-        Field field = game.getFarmlandBoard().getField(targetPosition);
-        Unit unitInField = field.getUnit();
-
-        if (unitInField == null) {
-            game.getFarmlandBoard().placeUnit(unitToPlace, targetPosition);
-            stringBuilder.append(Printer.noMergeDisplay(aiTeam, unitToPlace, game.getFarmlandBoard().getField(targetPosition)));
-        } else {
-            Merge merge = new Merge(unitToPlace, (RegularUnit) unitInField);
-            stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, targetPosition, game));
-        }
-        aiTeam.setHasPlaced(true);
-
-        if (game.getFarmlandBoard().getUnitsForTeam(aiTeam).size() > 5) {
-            game.getFarmlandBoard().removeUnit(targetPosition);
-            stringBuilder.append(Printer.sixthUnitDisplay(aiTeam, unitToPlace, field));
-        }
-        return stringBuilder.toString();
-    }
+//    private String executePlacement(int selectedUnitIndex, Position targetPosition) {
+//        StringBuilder stringBuilder = new StringBuilder();
+//        RegularUnit unitToPlace = aiTeam.getHand().get(selectedUnitIndex);
+//        aiTeam.getHand().remove(selectedUnitIndex);
+//        unitToPlace.setTeam(aiTeam);
+//
+//        Field field = game.getFarmlandBoard().getField(targetPosition);
+//        Unit unitInField = field.getUnit();
+//
+//        if (unitInField == null) {
+//            game.getFarmlandBoard().placeUnit(unitToPlace, targetPosition);
+//            stringBuilder.append(Printer.noMergeDisplay(aiTeam, unitToPlace, game.getFarmlandBoard().getField(targetPosition)));
+//        } else {
+//            Merge merge = new Merge(unitToPlace, (RegularUnit) unitInField);
+//            stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, targetPosition, game));
+//        }
+//        aiTeam.setHasPlaced(true);
+//
+//        if (game.getFarmlandBoard().getUnitsForTeam(aiTeam).size() > 5) {
+//            game.getFarmlandBoard().removeUnit(targetPosition);
+//            stringBuilder.append(Printer.sixthUnitDisplay(aiTeam, unitToPlace, field));
+//        }
+//        return stringBuilder.toString();
+//    }
 
     private String moveUnits() {
         game.clearJustSelected();
