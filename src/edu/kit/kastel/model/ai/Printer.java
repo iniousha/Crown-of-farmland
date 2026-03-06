@@ -30,7 +30,7 @@ public final class Printer {
     private static final String PLACE_DISPLAY_FORMAT = "%s places %s on %s.";
     private static final String SUCCESSFUL_MERGE_FORMAT = "%s and %s on %s join forces!%nSuccess!";
     private static final String FAILED_MERGE_DISPLAY = "%s and %s on %s join forces!%nUnion failed. %s was eliminated.";
-    private static final String SIXTH_UNIT_DISPLAY_FORMAT = "%s was eliminated.";
+    private static final String SIXTH_UNIT_DISPLAY_FORMAT = "%s was eliminated!";
     private static final String NO_LONGER_BLOCKS_FORMAT = "%s no longer blocks.";
     private static final String MOVE_DISPLAY_FORMAT = "%s moves to %s.";
     private static final String DUEL_FARMER_KING_FORMAT = "%s (%d/%d) attacks %s on %s!";
