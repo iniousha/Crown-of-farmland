@@ -34,9 +34,11 @@ public class State implements Command<Game> {
         stringBuilder.append(Printer.stateDisplay(handle));
         stringBuilder.append(System.lineSeparator());
         stringBuilder.append(board);
+        stringBuilder.append(System.lineSeparator());
         if (unit != null) {
-            stringBuilder.append(System.lineSeparator());
             stringBuilder.append(Printer.displayUnit(unit, handle));
+        } else {
+            stringBuilder.append(Printer.noUnitDisplay());
         }
         return Result.success(stringBuilder.toString());
     }
