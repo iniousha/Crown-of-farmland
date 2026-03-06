@@ -207,6 +207,7 @@ public class AiTurn {
     private String executeMove(Unit winningUnit, Position selectedPosition, Position targetPosition) {
         StringBuilder stringBuilder = new StringBuilder();
         Field targetField = game.getFarmlandBoard().getField(targetPosition);
+        stringBuilder.append(game.endBlocking(winningUnit));
         if (targetField.isEmpty()) {
             stringBuilder.append(game.moveUnit(winningUnit, selectedPosition, targetPosition));
         } else {
