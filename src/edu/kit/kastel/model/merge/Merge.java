@@ -145,6 +145,8 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
 
         if (mergedUnit != null) {
             board.placeUnit(mergedUnit, position);
+            board.removeUnit(board.findPosition(unitToPlace));
+            game.setSavedPosition(position);
             return new MergeResult(true, unitInField, unitToPlace, field);
         } else {
             board.removeUnit(position);

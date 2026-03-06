@@ -183,20 +183,19 @@ public class AiTurn {
             if (index < 4) {
                 Position targetPosition = winningUnitPosition.move(Vector2D.getFourDirections().get(index));
                 stringBuilder.append(executeMove(winningUnit, winningUnitPosition, targetPosition));
+                winningUnit = game.getFarmlandBoard().getField(targetPosition).getUnit();
             } else if (index == 4) {
                 ((RegularUnit) winningUnit).startBlocking();
                 stringBuilder.append(Printer.blockDisplay(winningUnit, game.getFarmlandBoard().getField(winningUnitPosition)));
+                stringBuilder.append(System.lineSeparator());
             } else {
                 stringBuilder.append(game.moveUnit(winningUnit, winningUnitPosition, winningUnitPosition));
             }
-            stringBuilder.append(BoardPrinter.boardDisplay(game));
-            stringBuilder.append(System.lineSeparator());
-            stringBuilder.append(Printer.displayUnit(winningUnit, game));
-            stringBuilder.append(System.lineSeparator());
+            stringBuilder.append(BoardPrinter.boardDisplay(game)).append(System.lineSeparator());
+            stringBuilder.append(Printer.displayUnit(winningUnit, game)).append(System.lineSeparator());
         }
         return stringBuilder.toString();
     }
-
 
     private String executeMove(Unit winningUnit, Position selectedPosition, Position targetPosition) {
         StringBuilder stringBuilder = new StringBuilder();
