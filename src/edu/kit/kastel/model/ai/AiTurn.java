@@ -167,7 +167,6 @@ public class AiTurn {
 //                System.err.println(dirs[i] + ": " + moveScores.get(i) + " (" + start + "-" + cumulative + ")");
 //            }
 //            System.err.println("Random: nextInt(1, " + (cumulative + 1) + ")");
-
             for (int moveScore : moveScores) {
                 if (moveScore > 0) {
                     isPositive = true;
