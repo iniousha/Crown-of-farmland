@@ -72,7 +72,7 @@ public class Move implements Command<Game> {
             } else if (selectedUnit.getTeam() == targetedUnit.getTeam()) {
                 stringBuilder.append(Printer.moveDisplay(selectedUnit, targetedField));
                 stringBuilder.append(System.lineSeparator());
-                Merge merge = new Merge((RegularUnit) targetedUnit, movingUnit);
+                Merge merge = new Merge(movingUnit, (RegularUnit) targetedUnit);
                 stringBuilder.append(merge.mergeResult(targetedUnit, movingUnit, targetPosition, handle));
             }
         }
