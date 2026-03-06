@@ -177,26 +177,32 @@ public class AiTurn {
             if (!isPositive) {
                 ((RegularUnit) winningUnit).startBlocking();
                 winningUnit.setHasMoved(true);
+                game.setBlockedThisTurn(true);
                 continue;
             }
             int index = WeightedRandom.weightedRandomSelection(moveScores, random);
-            if (index < 4) {
-                Position targetPosition = winningUnitPosition.move(Vector2D.getFourDirections().get(index));
-                stringBuilder.append(executeMove(winningUnit, winningUnitPosition, targetPosition));
-                winningUnit = game.getFarmlandBoard().getField(targetPosition).getUnit();
-            } else if (index == 4) {
-                ((RegularUnit) winningUnit).startBlocking();
-                stringBuilder.append(Printer.blockDisplay(winningUnit, game.getFarmlandBoard().getField(winningUnitPosition)));
-                stringBuilder.append(System.lineSeparator());
-            } else {
-                stringBuilder.append(game.moveUnit(winningUnit, winningUnitPosition, winningUnitPosition));
-            }
+            winningUnit = executeUnitMove(winningUnit, winningUnitPosition, index, stringBuilder);
             stringBuilder.append(BoardPrinter.boardDisplay(game)).append(System.lineSeparator());
             stringBuilder.append(Printer.displayUnit(winningUnit, game)).append(System.lineSeparator());
         }
         return stringBuilder.toString();
     }
 
+    private Unit executeUnitMove(Unit winningUnit, Position winningUnitPosition, int index, StringBuilder stringBuilder) {
+        if (index < 4) {
+            Position targetPosition = winningUnitPosition.move(Vector2D.getFourDirections().get(index));
+            stringBuilder.append(executeMove(winningUnit, winningUnitPosition, targetPosition));
+            return game.getFarmlandBoard().getField(targetPosition).getUnit();
+        } else if (index == 4) {
+            ((RegularUnit) winningUnit).startBlocking();
+            winningUnit.setHasMoved(true);
+            stringBuilder.append(Printer.blockDisplay(winningUnit, game.getFarmlandBoard().getField(winningUnitPosition)));
+            stringBuilder.append(System.lineSeparator());
+        } else {
+            stringBuilder.append(game.moveUnit(winningUnit, winningUnitPosition, winningUnitPosition));
+        }
+        return winningUnit;
+    }
     private String executeMove(Unit winningUnit, Position selectedPosition, Position targetPosition) {
         StringBuilder stringBuilder = new StringBuilder();
         Field targetField = game.getFarmlandBoard().getField(targetPosition);
