@@ -146,9 +146,11 @@ public class AiTurn {
     }
 
     private String moveUnits() {
-        game.clearJustSelected();
         StringBuilder stringBuilder = new StringBuilder();
         while (true) {
+            if (game.isGameOver()) {
+                break;
+            }
             List<Unit> aiUnits = game.getFarmlandBoard().getUnitsForTeam(aiTeam);
             List<Unit> unmovedUnits = new ArrayList<>();
             for (Unit unit : aiUnits) {
