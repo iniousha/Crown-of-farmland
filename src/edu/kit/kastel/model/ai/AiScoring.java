@@ -248,7 +248,7 @@ public class AiScoring {
         Merge merge = new Merge(unit, neighborUnit);
         RegularUnit mergedUnit = merge.mergeWith();
         if (mergedUnit != null) {
-            return getMergePoint(unit, neighborUnit, mergedUnit);
+            return getMergePoint(unit, mergedUnit);
         } else {
             int attackPointsB = neighborUnit.getAttackPoints();
             int defencePointsB = neighborUnit.getDefencePoints();
@@ -256,11 +256,11 @@ public class AiScoring {
         }
     }
 
-    private int getMergePoint(RegularUnit unit, RegularUnit neighborUnit, RegularUnit mergedUnit) {
+    private int getMergePoint(RegularUnit unit, RegularUnit mergedUnit) {
         int attackPointsA = unit.getAttackPoints();
-        int defencePointsB = neighborUnit.getDefencePoints();
+        int defencePointsA = unit.getDefencePoints();
         int attackPointsAB = mergedUnit.getAttackPoints();
         int defencePointsAB = mergedUnit.getDefencePoints();
-        return attackPointsAB + defencePointsAB - attackPointsA - defencePointsB;
+        return attackPointsAB + defencePointsAB - attackPointsA - defencePointsA;
     }
 }
