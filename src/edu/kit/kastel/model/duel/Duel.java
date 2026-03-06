@@ -117,11 +117,11 @@ public final class Duel {
         Field selectedField = game.getFarmlandBoard().getField(game.getSavedPosition());
         if (defender instanceof FarmerKing) {
             stringBuilder.append(Printer.duelWithFarmerKingDisplay(attacker, defender, targetedField));
+            stringBuilder.append(System.lineSeparator());
         } else if (defender instanceof RegularUnit) {
             stringBuilder.append(Printer.duelWithRegularUnitDisplay(attacker, defender, targetedField, defenderWasFaceDown));
             stringBuilder.append(System.lineSeparator());
         }
-        stringBuilder.append(System.lineSeparator());
         stringBuilder.append(flipDisplay(attacker, defender,
                 attackerWasFaceDown, defenderWasFaceDown, selectedField, targetedField));
         stringBuilder.append(eliminationDisplay(duelResult, attacker, defender, game, targetPosition));
