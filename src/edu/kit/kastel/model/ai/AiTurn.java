@@ -194,7 +194,7 @@ public class AiTurn {
             int index = WeightedRandom.weightedRandomSelection(moveScores, random);
             winningUnit = executeUnitMove(winningUnit, winningUnitPosition, index, stringBuilder);
             stringBuilder.append(BoardPrinter.boardDisplay(game)).append(System.lineSeparator());
-            stringBuilder.append(Printer.displayUnit(winningUnit, game)).append(System.lineSeparator());
+            stringBuilder.append(Printer.displayUnit(winningUnit, game));
         }
         return stringBuilder.toString();
     }
