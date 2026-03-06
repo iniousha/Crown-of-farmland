@@ -196,6 +196,7 @@ public class AiTurn {
         } else if (index == 4) {
             ((RegularUnit) winningUnit).startBlocking();
             winningUnit.setHasMoved(true);
+            game.setSavedPosition(winningUnitPosition);
             stringBuilder.append(Printer.blockDisplay(winningUnit, game.getFarmlandBoard().getField(winningUnitPosition)));
             stringBuilder.append(System.lineSeparator());
         } else {
