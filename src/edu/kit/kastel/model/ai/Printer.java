@@ -30,7 +30,7 @@ public final class Printer {
     private static final String PLACE_DISPLAY_FORMAT = "%s places %s on %s.";
     private static final String SUCCESSFUL_MERGE_FORMAT = "%s and %s on %s join forces!%nSuccess!";
     private static final String FAILED_MERGE_DISPLAY = "%s and %s on %s join forces!%nUnion failed. %s was eliminated.";
-    private static final String SIXTH_UNIT_DISPLAY_FORMAT = "%s places %s on %s.%n%s was eliminated.";
+    private static final String SIXTH_UNIT_DISPLAY_FORMAT = "%s was eliminated.";
     private static final String NO_LONGER_BLOCKS_FORMAT = "%s no longer blocks.";
     private static final String MOVE_DISPLAY_FORMAT = "%s moves to %s.";
     private static final String DUEL_FARMER_KING_FORMAT = "%s (%d/%d) attacks %s on %s!";
@@ -281,16 +281,12 @@ public final class Printer {
     /**
      * returns a formatted string indicating that a team tried to place their sixth unit on a field.
      *
-     * @param team  the team attempting the placement
-     * @param unit  the unit that was being placed
-     * @param field the target field
+     * @param unit the unit that was being placed
      * @return the formatted message
      */
-    public static String sixthUnitDisplay(Team team, Unit unit, Field field) {
-        String teamName = team.getName();
+    public static String sixthUnitDisplay(Unit unit) {
         String unitName = unit.getName();
-        String fieldName = field.getPosition().toString();
-        return String.format(SIXTH_UNIT_DISPLAY_FORMAT, teamName, unitName, fieldName, unitName);
+        return String.format(SIXTH_UNIT_DISPLAY_FORMAT, unitName);
     }
 
     /**

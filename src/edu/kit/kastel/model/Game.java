@@ -342,7 +342,7 @@ public class Game {
         if (board.getUnitsForTeam(currentTeam).size() > 5) {
             Unit placedUnit = field.getUnit();
             board.removeUnit(position);
-            stringBuilder.append(Printer.sixthUnitDisplay(currentTeam, placedUnit, field));
+            stringBuilder.append(Printer.sixthUnitDisplay(placedUnit));
             stringBuilder.append(System.lineSeparator());
         }
         return stringBuilder.toString();
