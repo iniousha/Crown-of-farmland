@@ -57,6 +57,9 @@ public class Place implements Command<Game> {
         if (unitToDisplay != null) {
             stringBuilder.append(System.lineSeparator());
             stringBuilder.append(Printer.displayUnit(unitToDisplay, handle));
+        } else if (handle.getSavedPosition() != null) {
+            stringBuilder.append(System.lineSeparator());
+            stringBuilder.append(Printer.noUnitDisplay());
         }
         return Result.success(stringBuilder.toString());
     }
