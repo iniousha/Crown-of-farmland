@@ -62,14 +62,6 @@ public class Yield implements Command<Game> {
                     stringBuilder.append(Printer.turnDisplay(handle.getCurrentTeam()));
                 }
             }
-
-            if (handle.isGameOver()) {
-                Team winnerTeam = handle.getWinner();
-                Team loserTeam = handle.getCurrentTeam();
-                stringBuilder.append(Printer.deckEmptyDisplay(loserTeam));
-                stringBuilder.append(System.lineSeparator());
-                stringBuilder.append(Printer.winnerDisplay(winnerTeam));
-            }
             return Result.success(stringBuilder.toString());
         }
     }

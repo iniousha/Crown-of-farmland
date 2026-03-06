@@ -150,6 +150,9 @@ public final class Duel {
         }
         if (game.isGameOver()) {
             Team winnerTeam = game.getWinner();
+            if (game.getOpponentTeam().isDeckEmpty()) {
+                stringBuilder.append(Printer.deckEmptyDisplay(game.getOpponentTeam()));
+            }
             stringBuilder.append(String.format("%s wins!", winnerTeam.getName()));
             stringBuilder.append(System.lineSeparator());
         }
