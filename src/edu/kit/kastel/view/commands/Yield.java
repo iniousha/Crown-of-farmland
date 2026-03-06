@@ -59,6 +59,7 @@ public class Yield implements Command<Game> {
                 handle.setSavedPosition(null);
                 if (!handle.isGameOver()) {
                     handle.nextTurn();
+                    stringBuilder.append(System.lineSeparator());
                     stringBuilder.append(Printer.turnDisplay(handle.getCurrentTeam()));
                 }
             }
