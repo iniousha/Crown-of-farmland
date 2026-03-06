@@ -64,7 +64,7 @@ public class AiTurn {
         if (game.isGameOver()) {
             return stringBuilder.toString();
         }
-        moveUnits();
+        stringBuilder.append(moveUnits());
         if (game.isGameOver()) {
             return stringBuilder.toString();
         }
