@@ -30,9 +30,9 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
         StringBuilder stringBuilder = new StringBuilder();
         MergeResult mergeResult = mergeAction(targetedUnit, movingUnit, targetPosition, game);
         stringBuilder.append(mergeResult.success()
-                ? Printer.successfulMergeDisplay(game.getCurrentTeam(), mergeResult.unitInField(),
+                ? Printer.successfulMergeDisplay(mergeResult.unitInField(),
                 mergeResult.unitToPlace(), mergeResult.field())
-                : Printer.failedMergeDisplay(game.getCurrentTeam(),
+                : Printer.failedMergeDisplay(
                 mergeResult.unitInField(), mergeResult.unitToPlace(), mergeResult.field()));
         stringBuilder.append(System.lineSeparator());
         return stringBuilder.toString();

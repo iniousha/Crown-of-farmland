@@ -28,9 +28,8 @@ public final class Printer {
     private static final String DISCARD_DISPLAY_FORMAT = "%s discarded %s (%d/%d).";
     private static final String TURN_DISPLAY_FORMAT = "It is %s's turn!";
     private static final String PLACE_DISPLAY_FORMAT = "%s places %s on %s.";
-    private static final String SUCCESSFUL_MERGE_FORMAT = "%s places %s on %s.%n%s and %s on %s join forces!%nSuccess!";
-    private static final String FAILED_MERGE_DISPLAY = "%s places %s on %s.%n%s and"
-            + " %s on %s join forces!%nUnion failed. %s was eliminated.";
+    private static final String SUCCESSFUL_MERGE_FORMAT = "%s and %s on %s join forces!%nSuccess!";
+    private static final String FAILED_MERGE_DISPLAY = "%s and %s on %s join forces!%nUnion failed. %s was eliminated.";
     private static final String SIXTH_UNIT_DISPLAY_FORMAT = "%s places %s on %s.%n%s was eliminated.";
     private static final String NO_LONGER_BLOCKS = "%s no longer blocks.";
     private static final String NO_LONGER_BLOCKS_FORMAT = NO_LONGER_BLOCKS;
@@ -188,6 +187,16 @@ public final class Printer {
         return String.format(WINNER_DISPLAY_FORMAT, teamName);
     }
 
+    //[<name> no longer blocks.]
+    //<name> moves to <field>.
+    //<name> and <name> on <field> join forces!
+    //Union failed. <name> was eliminated.
+
+    //[<name> no longer blocks.]
+    //<name> moves to <field>.
+    //<name> and <name> on <field> join forces!
+    //Success!
+
     /**
      * returns a formatted string indicating that the specifies team's deck is empty.
      *
@@ -231,7 +240,7 @@ public final class Printer {
      * @param field the field where the unit was placed
      * @return the formatted message
      */
-    public static String noMergeDisplay(Team team, Unit unit, Field field) {
+    public static String PlaceDisplay(Team team, Unit unit, Field field) {
         String teamName = team.getName();
         String unitName = unit.getName();
         String fieldName = field.getPosition().toString();
@@ -242,36 +251,32 @@ public final class Printer {
      * returns a formatted string indicating that a successful merge between units
      * of the same team on the specified field happened.
      *
-     * @param team  the team performing the merge
      * @param unit1 the first unit involved in the merge
      * @param unit2 the second unit involved in the merge
      * @param field the field on which the merge happened
      * @return the formatted message
      */
-    public static String successfulMergeDisplay(Team team, Unit unit1, Unit unit2, Field field) {
-        String teamName = team.getName();
+    public static String successfulMergeDisplay(Unit unit1, Unit unit2, Field field) {
         String unit1Name = unit1.getName();
         String unit2Name = unit2.getName();
         String fieldName = field.getPosition().toString();
-        return String.format(SUCCESSFUL_MERGE_FORMAT, teamName, unit2Name, fieldName, unit1Name, unit2Name, fieldName);
+        return String.format(SUCCESSFUL_MERGE_FORMAT, unit1Name, unit2Name, fieldName);
     }
 
     /**
      * returns a formatted string indicating that a failed merge between units
      * of the same team on the specified field happened.
      *
-     * @param team  the team performing the merge
      * @param unit1 the first unit involved in the merge
      * @param unit2 the second unit involved in the merge
      * @param field the field on which the merge happened
      * @return the formatted message
      */
-    public static String failedMergeDisplay(Team team, Unit unit1, Unit unit2, Field field) {
-        String teamName = team.getName();
+    public static String failedMergeDisplay(Unit unit1, Unit unit2, Field field) {
         String unit1Name = unit1.getName();
         String unit2Name = unit2.getName();
         String fieldName = field.getPosition().toString();
-        return String.format(FAILED_MERGE_DISPLAY, teamName, unit2Name, fieldName, unit1Name, unit2Name, fieldName, unit2Name);
+        return String.format(FAILED_MERGE_DISPLAY, unit1Name, unit2Name, fieldName, unit2Name);
     }
 
     /**
