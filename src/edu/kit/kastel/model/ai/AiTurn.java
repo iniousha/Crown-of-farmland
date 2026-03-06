@@ -56,11 +56,21 @@ public class AiTurn {
      */
     public String executeTurn() {
         StringBuilder stringBuilder = new StringBuilder();
-        String sb = moveFarmerKing()
-                + placeUnit()
-                + moveUnits();
-        endTurn();
-        stringBuilder.append(sb);
+        stringBuilder.append(moveFarmerKing());
+        if (game.isGameOver()) {
+            return stringBuilder.toString();
+        }
+        stringBuilder.append(placeUnit());
+        if (game.isGameOver()) {
+            return stringBuilder.toString();
+        }
+        moveUnits();
+        if (game.isGameOver()) {
+            return stringBuilder.toString();
+        }
+        if (!game.isGameOver()) {
+            endTurn();
+        }
         return stringBuilder.toString();
     }
     private String moveFarmerKing() {
@@ -191,7 +201,10 @@ public class AiTurn {
         if (index < 4) {
             Position targetPosition = winningUnitPosition.move(Vector2D.getFourDirections().get(index));
             stringBuilder.append(executeMove(winningUnit, winningUnitPosition, targetPosition));
-            return game.getFarmlandBoard().getField(targetPosition).getUnit();
+            Unit unitAtTargetPosition = game.getFarmlandBoard().getField(targetPosition).getUnit();
+            if (unitAtTargetPosition != null && unitAtTargetPosition.getTeam() == aiTeam) {
+                return unitAtTargetPosition;
+            }
         } else if (index == 4) {
             ((RegularUnit) winningUnit).startBlocking();
             winningUnit.setHasMoved(true);
