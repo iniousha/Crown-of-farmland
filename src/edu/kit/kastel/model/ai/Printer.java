@@ -240,7 +240,7 @@ public final class Printer {
      * @param field the field where the unit was placed
      * @return the formatted message
      */
-    public static String PlaceDisplay(Team team, Unit unit, Field field) {
+    public static String placeDisplay(Team team, Unit unit, Field field) {
         String teamName = team.getName();
         String unitName = unit.getName();
         String fieldName = field.getPosition().toString();

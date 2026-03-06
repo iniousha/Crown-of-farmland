@@ -328,10 +328,10 @@ public class Game {
 
             if (unitInField == null) {
                 board.placeUnit(unitToPlace, position);
-                stringBuilder.append(Printer.PlaceDisplay(currentTeam, unitToPlace, field));
+                stringBuilder.append(Printer.placeDisplay(currentTeam, unitToPlace, field));
                 stringBuilder.append(System.lineSeparator());
             } else if (unitInField.getTeam() == currentTeam) {
-                stringBuilder.append(Printer.PlaceDisplay(currentTeam, unitToPlace, field));
+                stringBuilder.append(Printer.placeDisplay(currentTeam, unitToPlace, field));
                 Merge merge = new Merge((RegularUnit) unitInField, unitToPlace);
                 stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, position, this));
             }
