@@ -121,6 +121,7 @@ public final class Duel {
             stringBuilder.append(Printer.duelWithRegularUnitDisplay(attacker, defender, targetedField, defenderWasFaceDown));
             stringBuilder.append(System.lineSeparator());
         }
+        stringBuilder.append(System.lineSeparator());
         stringBuilder.append(flipDisplay(attacker, defender,
                 attackerWasFaceDown, defenderWasFaceDown, selectedField, targetedField));
         stringBuilder.append(eliminationDisplay(duelResult, attacker, defender, game, targetPosition));

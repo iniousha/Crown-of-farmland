@@ -219,7 +219,6 @@ public class AiScoring {
                     && !(unitToPlace instanceof FarmerKing)) {
                 return mergeAction((RegularUnit) unitToPlace, (RegularUnit) unitInField);
             } else if (unitInField.getTeam() != aiTeam
-                    && !(unitInField instanceof FarmerKing)
                     && !(unitToPlace instanceof FarmerKing)) {
                 return duelAction(unitToPlace, unitInField);
             } else if (unitInField.getTeam() == aiTeam
