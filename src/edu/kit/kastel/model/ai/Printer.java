@@ -260,7 +260,7 @@ public final class Printer {
         String unit1Name = unit1.getName();
         String unit2Name = unit2.getName();
         String fieldName = field.getPosition().toString();
-        return String.format(SUCCESSFUL_MERGE_FORMAT, unit1Name, unit2Name, fieldName);
+        return String.format(SUCCESSFUL_MERGE_FORMAT, unit2Name, unit1Name, fieldName);
     }
 
     /**
@@ -276,7 +276,7 @@ public final class Printer {
         String unit1Name = unit1.getName();
         String unit2Name = unit2.getName();
         String fieldName = field.getPosition().toString();
-        return String.format(FAILED_MERGE_DISPLAY, unit1Name, unit2Name, fieldName, unit2Name);
+        return String.format(FAILED_MERGE_DISPLAY, unit2Name, unit1Name, fieldName, unit2Name);
     }
 
     /**
