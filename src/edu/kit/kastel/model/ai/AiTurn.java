@@ -208,6 +208,8 @@ public class AiTurn {
             if (unitInField.getTeam() == aiTeam
                     && !(winningUnit instanceof FarmerKing)
                     && !(unitInField instanceof FarmerKing)) {
+                stringBuilder.append(Printer.moveDisplay(winningUnit, targetField));
+                stringBuilder.append(System.lineSeparator());
                 Merge merge = new Merge((RegularUnit) winningUnit, (RegularUnit) unitInField);
                 stringBuilder.append(merge.mergeResult(unitInField, (RegularUnit) winningUnit, targetPosition, game));
             } else if (unitInField.getTeam() != aiTeam && !(winningUnit instanceof FarmerKing)) {
