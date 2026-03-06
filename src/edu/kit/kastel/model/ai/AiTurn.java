@@ -128,7 +128,7 @@ public class AiTurn {
             if (!field.isEmpty() && field.getUnit() instanceof FarmerKing) {
                 continue;
             }
-            int score = scoring.getScoreForUnit(neighbor, enemyFarmerKingPosition);
+            int score = scoring.getPlacementScoreForUnit(neighbor, enemyFarmerKingPosition);
             scoredPositions.computeIfAbsent(score, key -> new ArrayList<>())
                     .add(neighbor);
         }
@@ -169,16 +169,6 @@ public class AiTurn {
             Position winningUnitPosition = game.getFarmlandBoard().findPosition(winningUnit);
             boolean isPositive = false;
             List<Integer> moveScores = getMoveScores(winningUnit, winningUnitPosition);
-//            System.err.println("Unit: " + winningUnit.getName() + " at " + winningUnitPosition);
-//            String[] dirs = {"Up", "Right", "Down", "Left", "Block", "In-place"};
-//            int cumulative = 0;
-//            for (int i = 0; i < moveScores.size(); i++) {
-//                int score = Math.max(0, moveScores.get(i));
-//                int start = cumulative + 1;
-//                cumulative += score;
-//                System.err.println(dirs[i] + ": " + moveScores.get(i) + " (" + start + "-" + cumulative + ")");
-//            }
-//            System.err.println("Random: nextInt(1, " + (cumulative + 1) + ")");
             for (int moveScore : moveScores) {
                 if (moveScore > 0) {
                     isPositive = true;

@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 /**
- * hfeed.
+ * this class offers the entry point for the Main.
  *
  * @author ucktt
  */
@@ -19,9 +19,9 @@ public final class Main {
     }
 
     /**
-     * efhwe.
+     * the entry point for the Main. no command line arguments expected
      *
-     * @param args dfh
+     * @param args the commandline arguments
      */
     public static void main(String[] args) {
         try {

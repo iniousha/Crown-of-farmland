@@ -47,10 +47,6 @@ public record Position(int column, int row) {
         return "" + columnChar + rowChar;
     }
 
-//    public Position getPosition(int column, int row) {
-//        return new Position(column, row);
-//    }
-
     /**
      * returns a new position created by moving the current position.
      * @param direction the direction vector of the movement
@@ -59,10 +55,6 @@ public record Position(int column, int row) {
     public Position move(Vector2D direction) {
         return new Position(this.column + direction.horizontal(), this.row + direction.vertical());
     }
-
-//    public Vector2D vectorTo(Position position) {
-//        return null;
-//    }
 
     /**
      * returns the distance between this position and the given other position.
@@ -89,12 +81,4 @@ public record Position(int column, int row) {
             return columnSteps + rowSteps == 1;
         }
     }
-
-//    public List<Position> getAdjacentPositions() {
-//        return null;
-//    }
-//
-//    public List<Position> getSurroundingPositions() {
-//        return null;
-//    }
 }

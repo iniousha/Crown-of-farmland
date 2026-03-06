@@ -14,7 +14,7 @@ import edu.kit.kastel.model.unit.Unit;
 import java.util.List;
 
 /**
- * aslndf.
+ * this class provides scoring functions used in AiTurn class to evaluate different actions.
  *
  * @author ucktt
  */
@@ -24,10 +24,10 @@ public class AiScoring {
     private final Team aiTeam;
 
     /**
-     * d;dsi.
+     * constructs an AI scoring instance for the specified game and team.
      *
-     * @param game   sdihf
-     * @param aiTeam adfh
+     * @param game   the current game instance
+     * @param aiTeam the AI team
      */
     public AiScoring(Game game, Team aiTeam) {
         this.game = game;
@@ -35,11 +35,11 @@ public class AiScoring {
     }
 
     /**
-     * asdk;ads.
+     * returns the score for possible movements of the farmer king to the candidate position.
      *
-     * @param farmerKingPosition ;fvhds
-     * @param targetPosition     ;dvhbsdiu
-     * @return dhs
+     * @param farmerKingPosition current position of the farmer king
+     * @param targetPosition candidate position to which the farmer king would move
+     * @return score for each possible position
      */
     //moveFarmerKing helper methods:
     public int getScoreForFarmerKing(Position farmerKingPosition, Position targetPosition) {
@@ -99,17 +99,17 @@ public class AiScoring {
     }
 
     /**
-     * skd;jfhsa'h.
+     * returns the score for placing the unit from hand on the candidate position.
      *
-     * @param currentPosition dfvh
-     * @param targetPosition  dh
-     * @return duhvf
+     * @param candidatePosition the position to evaluate for placement
+     * @param enemyFarmerKingPosition  position of the enemy's farmer king
+     * @return score for the given candidate position
      */
     //placeUnit helper methods:
-    public int getScoreForUnit(Position currentPosition, Position targetPosition) {
-        return -steps(currentPosition, targetPosition)
-                + (2 * enemiesOfUnit(currentPosition))
-                - fellowsOfUnit(currentPosition);
+    public int getPlacementScoreForUnit(Position candidatePosition, Position enemyFarmerKingPosition) {
+        return -steps(candidatePosition, enemyFarmerKingPosition)
+                + (2 * enemiesOfUnit(candidatePosition))
+                - fellowsOfUnit(candidatePosition);
     }
 
     private int steps(Position currentPosition, Position targetPosition) {
@@ -151,12 +151,41 @@ public class AiScoring {
     }
 
     /**
-     * asdfhe.
+     * returns the score for moving the specified unit.
      *
-     * @param unit sduhf
-     * @return asdoihc
+     * @param unitToPlace the unit whose movement score is being calculated
+     * @param unitInFieldPosition the candidate position
+     * @return the movement score for the candidate position
      */
     //moveUnits helper methods:
+    public int getMovementScore(Unit unitToPlace, Position unitInFieldPosition) {
+        Field field = game.getFarmlandBoard().getField(unitInFieldPosition);
+        if (field.isEmpty()) {
+            Position enemyFarmerKingPosition = game.getFarmlandBoard().findPosition(game.getOpponentTeam().getFarmerKing());
+            return (10 * steps(unitInFieldPosition, enemyFarmerKingPosition)) - enemiesOfUnit(unitInFieldPosition);
+        } else {
+            Unit unitInField = field.getUnit();
+            if (unitInField.getTeam() == aiTeam
+                    && !(unitInField instanceof FarmerKing)
+                    && !(unitToPlace instanceof FarmerKing)) {
+                return mergeAction((RegularUnit) unitToPlace, (RegularUnit) unitInField);
+            } else if (unitInField.getTeam() != aiTeam
+                    && !(unitToPlace instanceof FarmerKing)) {
+                return duelAction(unitToPlace, unitInField);
+            } else if (unitInField.getTeam() == aiTeam
+                    && field.getUnit() instanceof FarmerKing) {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * returns the blocking score for the given unit.
+     *
+     * @param unit the unit whose blocking score is being calculated
+     * @return the blocking score, returns 0 if the unit was farmer king
+     */
     public int getBlockScore(Unit unit) {
         if (unit instanceof FarmerKing) {
             return 0;
@@ -167,10 +196,10 @@ public class AiScoring {
     }
 
     /**
-     * sdjf.
+     * returns the score for the situation where unit stays in place "enPlaceMovement".
      *
-     * @param unit adfh
-     * @return dfh
+     * @param unit the unit whose enPlace movement score is being calculated
+     * @return enPlace movement score for the specified unit
      */
     public int getEnPlaceScore(Unit unit) {
         if (unit instanceof FarmerKing) {
@@ -198,35 +227,6 @@ public class AiScoring {
             }
         }
         return max;
-    }
-
-    /**
-     * 'dofh.
-     *
-     * @param unitToPlace         ;dfhv
-     * @param unitInFieldPosition adfh
-     * @return dhv
-     */
-    public int getMovementScore(Unit unitToPlace, Position unitInFieldPosition) {
-        Field field = game.getFarmlandBoard().getField(unitInFieldPosition);
-        if (field.isEmpty()) {
-            Position enemyFarmerKingPosition = game.getFarmlandBoard().findPosition(game.getOpponentTeam().getFarmerKing());
-            return (10 * steps(unitInFieldPosition, enemyFarmerKingPosition)) - enemiesOfUnit(unitInFieldPosition);
-        } else {
-            Unit unitInField = field.getUnit();
-            if (unitInField.getTeam() == aiTeam
-                    && !(unitInField instanceof FarmerKing)
-                    && !(unitToPlace instanceof FarmerKing)) {
-                return mergeAction((RegularUnit) unitToPlace, (RegularUnit) unitInField);
-            } else if (unitInField.getTeam() != aiTeam
-                    && !(unitToPlace instanceof FarmerKing)) {
-                return duelAction(unitToPlace, unitInField);
-            } else if (unitInField.getTeam() == aiTeam
-                    && field.getUnit() instanceof FarmerKing) {
-                return 0;
-            }
-        }
-        return 0;
     }
 
     private int duelAction(Unit attacker, Unit defender) {

@@ -32,14 +32,6 @@ public record Vector2D(int horizontal, int vertical) {
         return new Vector2D(this.horizontal() + vector.horizontal(), this.vertical() + vector.vertical());
     }
 
-//    public Vector2D subtract(Vector2D vector) {
-//        return new Vector2D(this.horizontal() - vector.horizontal(), this.vertical() - vector.vertical());
-//    }
-
-//    public int manhattanDistance(Vector2D vector) {
-//        return Math.abs(this.horizontal() - vector.horizontal()) + Math.abs(this.vertical() - vector.vertical());
-//    }
-
     /**
      * returns a list containing the four directions (up, right, down, left) plus the zero vector.
      * @return a list of direction vector including (0, 0)

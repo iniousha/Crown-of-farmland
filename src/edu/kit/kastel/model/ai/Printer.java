@@ -186,16 +186,6 @@ public final class Printer {
         return String.format(WINNER_DISPLAY_FORMAT, teamName);
     }
 
-    //[<name> no longer blocks.]
-    //<name> moves to <field>.
-    //<name> and <name> on <field> join forces!
-    //Union failed. <name> was eliminated.
-
-    //[<name> no longer blocks.]
-    //<name> moves to <field>.
-    //<name> and <name> on <field> join forces!
-    //Success!
-
     /**
      * returns a formatted string indicating that the specifies team's deck is empty.
      *
@@ -355,4 +345,3 @@ public final class Printer {
         }
     }
 }
-//"/Users/niousha/Downloads/board_boxes.txt"
