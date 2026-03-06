@@ -198,7 +198,6 @@ public class AiTurn {
         }
         return stringBuilder.toString();
     }
-
     private Unit executeUnitMove(Unit winningUnit, Position winningUnitPosition, int index, StringBuilder stringBuilder) {
         if (index < 4) {
             Position targetPosition = winningUnitPosition.move(Vector2D.getFourDirections().get(index));
