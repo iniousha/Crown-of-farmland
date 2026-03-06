@@ -116,6 +116,7 @@ public final class Duel {
         Field targetedField = game.getFarmlandBoard().getField(targetPosition);
         Field selectedField = game.getFarmlandBoard().getField(game.getSavedPosition());
         if (defender instanceof FarmerKing) {
+            game.setSavedPosition(targetPosition);
             stringBuilder.append(Printer.duelWithFarmerKingDisplay(attacker, defender, targetedField));
             stringBuilder.append(System.lineSeparator());
         } else if (defender instanceof RegularUnit) {
