@@ -339,7 +339,7 @@ public class Game {
         }
         currentTeam.setHasPlaced(true);
 
-        if (board.getUnitsForTeam(currentTeam).size() > 5) {
+        if (board.getUnitsForTeam(currentTeam).size() > 6) {
 //            Unit placedUnit = field.getUnit();
             board.removeUnit(position);
 //            stringBuilder.append(Printer.sixthUnitDisplay(placedUnit));
