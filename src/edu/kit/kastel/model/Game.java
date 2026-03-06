@@ -339,11 +339,11 @@ public class Game {
         }
         currentTeam.setHasPlaced(true);
 
-        if (board.getUnitsForTeam(currentTeam).size() > 6) {
-//            Unit placedUnit = field.getUnit();
+        if (board.unitCount(currentTeam) > 5) {
+            Unit placedUnit = field.getUnit();
             board.removeUnit(position);
-//            stringBuilder.append(Printer.sixthUnitDisplay(placedUnit));
-//            stringBuilder.append(System.lineSeparator());
+            stringBuilder.append(Printer.sixthUnitDisplay(placedUnit));
+            stringBuilder.append(System.lineSeparator());
         }
         return stringBuilder.toString();
     }
