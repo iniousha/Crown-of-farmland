@@ -333,7 +333,7 @@ public class Game {
             } else if (unitInField.getTeam() == currentTeam) {
                 stringBuilder.append(Printer.placeDisplay(currentTeam, unitToPlace, field));
                 stringBuilder.append(System.lineSeparator());
-                Merge merge = new Merge((RegularUnit) unitInField, unitToPlace);
+                Merge merge = new Merge(unitToPlace, (RegularUnit) unitInField);
                 stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, position, this));
             }
         }

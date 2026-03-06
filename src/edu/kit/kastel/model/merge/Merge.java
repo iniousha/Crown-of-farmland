@@ -19,16 +19,16 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
 
     /**
      * executes a merge between two units of the same team.
-     * @param targetedUnit the unit on the targeted field
-     * @param movingUnit the unit moving to the targeted field
+     * @param unitInField the unit on the targeted field
+     * @param unitToPlace the unit moving to the targeted field
      * @param targetPosition the position on which the merge happens
      * @param game the current game state
      * @return a formatted message describing whether the merge was successful or not
      */
-    public String mergeResult(Unit targetedUnit, RegularUnit movingUnit,
+    public String mergeResult(Unit unitInField, RegularUnit unitToPlace,
                               Position targetPosition, Game game) {
         StringBuilder stringBuilder = new StringBuilder();
-        MergeResult mergeResult = mergeAction(targetedUnit, movingUnit, targetPosition, game);
+        MergeResult mergeResult = mergeAction(unitInField, unitToPlace, targetPosition, game);
         stringBuilder.append(mergeResult.success()
                 ? Printer.successfulMergeDisplay(mergeResult.unitInField(),
                 mergeResult.unitToPlace(), mergeResult.field())
@@ -44,16 +44,16 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
      * @return the new regular unit after the successful merge. If no merge happened returns null
      */
     public RegularUnit mergeWith() {
-        RegularUnit thisUnit = this.firstUnit();
-        RegularUnit unit = this.secondUnit();
-        CompatibilityType type = checkCompatibility(thisUnit, unit);
+        RegularUnit unitToPlace = this.firstUnit();
+        RegularUnit targetUnit = this.secondUnit();
+        CompatibilityType type = checkCompatibility(unitToPlace, targetUnit);
         int attackPointAB;
         int defencePointAB;
-        int attackPointA = thisUnit.getAttackPoints();
-        int defencePointA = thisUnit.getDefencePoints();
-        int attackPointB = unit.getAttackPoints();
-        int defencePointB = unit.getDefencePoints();
-        String mergedQualifier = unit.getQualifier() + " " + thisUnit.getQualifier();
+        int attackPointA = unitToPlace.getAttackPoints();
+        int defencePointA = unitToPlace.getDefencePoints();
+        int attackPointB = targetUnit.getAttackPoints();
+        int defencePointB = targetUnit.getDefencePoints();
+        String mergedQualifier = targetUnit.getQualifier() + " " + unitToPlace.getQualifier();
         int g3t = MathUtil.g3t(attackPointA, defencePointA, attackPointB, defencePointB);
 
         if (type == CompatibilityType.INCOMPATIBLE) {
@@ -63,37 +63,37 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
         if (type == CompatibilityType.SYMBIOTIC) {
             attackPointAB = attackPointA;
             defencePointAB = defencePointB;
-            RegularUnit mergedUnit = new RegularUnit(mergedQualifier, unit.getRole(), attackPointAB, defencePointAB);
-            mergedUnit.setTeam(thisUnit.getTeam());
+            RegularUnit mergedUnit = new RegularUnit(mergedQualifier, targetUnit.getRole(), attackPointAB, defencePointAB);
+            mergedUnit.setTeam(unitToPlace.getTeam());
             return mergedUnit;
         }
 
         if (type == CompatibilityType.CONSPIRATORIAL) {
             attackPointAB = attackPointA + attackPointB - g3t;
             defencePointAB = defencePointA + defencePointB - g3t;
-            RegularUnit mergedUnit = new RegularUnit(mergedQualifier, unit.getRole(), attackPointAB, defencePointAB);
-            mergedUnit.setTeam(thisUnit.getTeam());
+            RegularUnit mergedUnit = new RegularUnit(mergedQualifier, targetUnit.getRole(), attackPointAB, defencePointAB);
+            mergedUnit.setTeam(unitToPlace.getTeam());
             return mergedUnit;
         }
         if (type == CompatibilityType.PRIME) {
             attackPointAB = attackPointA + attackPointB;
             defencePointAB = defencePointA + defencePointB;
-            RegularUnit mergedUnit = new RegularUnit(mergedQualifier, unit.getRole(), attackPointAB, defencePointAB);
-            mergedUnit.setTeam(thisUnit.getTeam());
+            RegularUnit mergedUnit = new RegularUnit(mergedQualifier, targetUnit.getRole(), attackPointAB, defencePointAB);
+            mergedUnit.setTeam(unitToPlace.getTeam());
             return mergedUnit;
         }
         return null;
     }
 
-    private CompatibilityType checkCompatibility(RegularUnit thisUnit, RegularUnit unit) {
+    private CompatibilityType checkCompatibility(RegularUnit unitToPlace, RegularUnit unitInField) {
 
-        if (thisUnit.getName().equals(unit.getName())) {
+        if (unitToPlace.getName().equals(unitInField.getName())) {
             return CompatibilityType.INCOMPATIBLE;
         }
-        int attackPointA = thisUnit.getAttackPoints();
-        int defencePointA = thisUnit.getDefencePoints();
-        int attackPointB = unit.getAttackPoints();
-        int defencePointB = unit.getDefencePoints();
+        int attackPointA = unitToPlace.getAttackPoints();
+        int defencePointA = unitToPlace.getDefencePoints();
+        int attackPointB = unitInField.getAttackPoints();
+        int defencePointB = unitInField.getDefencePoints();
         int g3t = MathUtil.g3t(attackPointA, defencePointA, attackPointB, defencePointB);
 
         if (attackPointA != attackPointB) {
