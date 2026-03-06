@@ -70,6 +70,8 @@ public class Move implements Command<Game> {
                         handle, attackerWasFaceDown, defenderWasFaceDown, targetPosition));
 
             } else if (selectedUnit.getTeam() == targetedUnit.getTeam()) {
+                stringBuilder.append(Printer.moveDisplay(selectedUnit, targetedField));
+                stringBuilder.append(System.lineSeparator());
                 Merge merge = new Merge((RegularUnit) targetedUnit, movingUnit);
                 stringBuilder.append(merge.mergeResult(targetedUnit, movingUnit, targetPosition, handle));
             }
