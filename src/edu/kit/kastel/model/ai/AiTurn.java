@@ -195,6 +195,9 @@ public class AiTurn {
             winningUnit = executeUnitMove(winningUnit, winningUnitPosition, index, stringBuilder);
             stringBuilder.append(BoardPrinter.boardDisplay(game)).append(System.lineSeparator());
             stringBuilder.append(Printer.displayUnit(winningUnit, game));
+            if (!game.isGameOver()) {
+                stringBuilder.append(System.lineSeparator());
+            }
         }
         return stringBuilder.toString();
     }
