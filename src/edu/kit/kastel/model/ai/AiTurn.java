@@ -77,7 +77,6 @@ public class AiTurn {
             if (!Position.isInBounds(targetPosition.column(), targetPosition.row())) {
                 continue;
             }
-
             Field field = game.getFarmlandBoard().getField(targetPosition);
             if (!field.isEmpty() && field.getUnit().getTeam() != aiTeam) {
                 continue;
