@@ -34,7 +34,7 @@ public final class Main {
             executor.setModel(game);
 
             while (executor.isRunning() && !game.isGameOver() && scanner.hasNextLine()) {
-                executor.handleUserInput();
+                executor.handle();
             }
         } catch (ProgramStartException e) {
             System.err.println(e.getMessage());
