@@ -3,7 +3,6 @@ package edu.kit.kastel.model.unit;
 import edu.kit.kastel.model.Deck;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,7 +11,6 @@ import java.util.List;
  */
 public class Team {
 
-    private static final int INITIAL_LIFE_POINTS = 8000;
     private final String name;
     private final FarmerKing farmerKing;
     private final Deck deck;
@@ -33,7 +31,7 @@ public class Team {
         this.farmerKing.setTeam(this);
         this.deck = deck;
         this.hand = new ArrayList<>();
-        this.lifePoints = INITIAL_LIFE_POINTS;
+        this.lifePoints = 8000;
         this.hasSetPlace = false;
         this.isAiTeam = isAiTeam;
 
@@ -62,7 +60,6 @@ public class Team {
     public boolean isAiTeam() {
         return this.isAiTeam;
     }
-
 
     /**
      * returns the name of the team.
@@ -117,7 +114,7 @@ public class Team {
      * @return list containing the regular units in hand
      */
     public List<RegularUnit> getHand() {
-        return Collections.unmodifiableList(this.hand);
+        return this.hand;
     }
 
     /**
