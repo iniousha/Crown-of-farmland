@@ -158,8 +158,8 @@ public final class MessageFormatter {
      * @return the formatted string representing the flip event
      */
     public static String flipDisplay(Unit unit, Field field) {
-        int attackPoints = ((RegularUnit) unit).getAttackPoints();
-        int defencePoints = ((RegularUnit) unit).getDefencePoints();
+        int attackPoints = unit.getAttackPoints();
+        int defencePoints = unit.getDefencePoints();
 
         return String.format(FLIP_DISPLAY_FORMAT, unit.getName(), attackPoints, defencePoints, field.getPosition().toString());
     }
@@ -203,11 +203,11 @@ public final class MessageFormatter {
      * @param unit the discarded unit
      * @return the formatted message
      */
-    public static String discardedCardDisplay(Team team, Unit unit) {
+    public static String discardedCardDisplay(Team team, RegularUnit unit) {
         String teamName = team.getName();
         String unitName = unit.getName();
-        int attackPoints = ((RegularUnit) unit).getAttackPoints();
-        int defencePoints = ((RegularUnit) unit).getDefencePoints();
+        int attackPoints = unit.getAttackPoints();
+        int defencePoints = unit.getDefencePoints();
         return String.format(DISCARD_DISPLAY_FORMAT, teamName, unitName, attackPoints, defencePoints);
     }
 

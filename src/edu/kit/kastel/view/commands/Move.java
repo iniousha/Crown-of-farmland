@@ -7,8 +7,6 @@ import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.duel.Duel;
 import edu.kit.kastel.model.duel.DuelResult;
 import edu.kit.kastel.model.merge.Merge;
-import edu.kit.kastel.model.unit.FarmerKing;
-import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
@@ -48,7 +46,7 @@ public class Move implements Command<Game> {
         Unit targetedUnit = targetedField.getUnit();
         FarmlandBoard board = handle.getFarmlandBoard();
 
-        stringBuilder.append(handle.endBlocking(selectedUnit));
+        stringBuilder.append(handle.executeEndBlocking(selectedUnit));
         stringBuilder.append(handle.executeEnPlace(selectedUnit, targetPosition));
         if (selectedUnit.isFarmerKing()
                 && targetedUnit != null
@@ -57,22 +55,21 @@ public class Move implements Command<Game> {
             stringBuilder.append(handle.moveUnit(selectedUnit, selectedPosition, targetPosition));
         } else if (targetedUnit == null) {
             stringBuilder.append(handle.moveUnit(selectedUnit, selectedPosition, targetPosition));
-        } else if (selectedUnit instanceof RegularUnit movingUnit) {
+        } else {
+            if (selectedUnit.getTeam() != targetedUnit.getTeam()) {
 
-            if (movingUnit.getTeam() != targetedUnit.getTeam()) {
-
-                boolean attackerWasFaceDown = !movingUnit.isFaceUp();
+                boolean attackerWasFaceDown = !selectedUnit.isFaceUp();
                 boolean defenderWasFaceDown = (!targetedUnit.isFarmerKing()) && !targetedUnit.isFaceUp();
 
-                DuelResult duelResult = Duel.executeDuel(movingUnit, targetedUnit);
-                stringBuilder.append(Duel.duelExecutionDisplay(duelResult, movingUnit, targetedUnit,
+                DuelResult duelResult = Duel.executeDuel(selectedUnit, targetedUnit);
+                stringBuilder.append(Duel.duelExecutionDisplay(duelResult, selectedUnit, targetedUnit,
                         handle, attackerWasFaceDown, defenderWasFaceDown, targetPosition));
 
             } else if (selectedUnit.getTeam() == targetedUnit.getTeam()) {
                 stringBuilder.append(MessageFormatter.moveDisplay(selectedUnit, targetedField));
                 stringBuilder.append(System.lineSeparator());
-                Merge merge = new Merge(movingUnit, (RegularUnit) targetedUnit);
-                stringBuilder.append(merge.mergeResult(targetedUnit, movingUnit, targetPosition, handle));
+                Merge merge = new Merge(selectedUnit, targetedUnit);
+                stringBuilder.append(merge.mergeResult(targetedUnit, selectedUnit, targetPosition, handle));
             }
         }
 
@@ -95,9 +92,8 @@ public class Move implements Command<Game> {
         Field selectedField = handle.getFarmlandBoard().getField(handle.getSavedPosition());
         Field targetedField = handle.getFarmlandBoard().getField(targetPosition);
         Unit selectedUnit = selectedField.getUnit();
-        FarmerKing farmerKing = handle.getCurrentTeam().getFarmerKing();
         FarmlandBoard board = handle.getFarmlandBoard();
-        Position farmerKingPosition = board.findPosition(farmerKing);
+        Position farmerKingPosition = board.findPosition(handle.getCurrentTeam().getFarmerKing());
         Unit targetedUnit = targetedField.getUnit();
 
         if (selectedUnit == null) {
@@ -111,7 +107,8 @@ public class Move implements Command<Game> {
             return "selected unit has already moved this turn.";
         } else if (targetPosition.equals(farmerKingPosition)) {
             return "You can't move to the Farmer King's position.";
-        } else if (selectedUnit.equals(farmerKing)
+        } else if (selectedUnit.isFarmerKing()
+                && selectedUnit.getTeam() == handle.getCurrentTeam()
                 && targetedUnit != null
                 && targetedUnit.getTeam() != handle.getCurrentTeam()) {
             return "farmer king cannot move to the opponent's position.";

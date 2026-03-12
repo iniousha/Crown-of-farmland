@@ -23,41 +23,27 @@ public class RegularUnit extends Unit {
         this.defencePoints = defencePoints;
     }
 
-    /**
-     * returns this regular unit's attack points.
-     * @return this regular unit's attack points
-     */
+    @Override
     public int getAttackPoints() {
         return this.attackPoints;
     }
 
-    /**
-     * returns this regular unit's defence points.
-     * @return this regular unit's defence points
-     */
+    @Override
     public int getDefencePoints() {
         return this.defencePoints;
     }
 
-    /**
-     * checks whether this regular unit is blocking.
-     * @return true if this regular unit is blocking; false otherwise
-     */
+    @Override
     public boolean isBlocking() {
         return this.blocking;
     }
 
-
-    /**
-     * sets this regular unit to blocking state.
-     */
+    @Override
     public void startBlocking() {
         this.blocking = true;
     }
 
-    /**
-     * ends this regular unit's blocking state.
-     */
+    @Override
     public void endBlocking() {
         this.blocking = false;
     }

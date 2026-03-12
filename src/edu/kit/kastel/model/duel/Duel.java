@@ -4,7 +4,6 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.MessageFormatter;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
-import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 
@@ -25,7 +24,7 @@ public final class Duel {
      * @param defender the defending unit
      * @return the result of the duel
      */
-    public static DuelResult executeDuel(RegularUnit attacker, Unit defender) {
+    public static DuelResult executeDuel(Unit attacker, Unit defender) {
         attacker.flip();
         if (!defender.isFarmerKing()) {
             defender.flip();
@@ -35,7 +34,7 @@ public final class Duel {
         int attackPointA = attacker.getAttackPoints();
 
         if (type == DuelType.BLOCKADE && !defender.isFarmerKing()) {
-            int defencePointB = ((RegularUnit) defender).getDefencePoints();
+            int defencePointB = defender.getDefencePoints();
             if (attackPointA > defencePointB) {
                 return new DuelResult(0, null,
                         true, false, true);
@@ -57,7 +56,7 @@ public final class Duel {
         }
 
         if (type == DuelType.STANDARD) {
-            int attackPointB = ((RegularUnit) defender).getAttackPoints();
+            int attackPointB = defender.getAttackPoints();
             if (attackPointA > attackPointB) {
                 int damage = attackPointA - attackPointB;
                 return new DuelResult(damage, defender.getTeam(),
@@ -87,7 +86,7 @@ public final class Duel {
         if (defender.isFarmerKing()) {
             return DuelType.AGAINST_FARMER_KING;
         }
-        if (!defender.isFarmerKing() && ((RegularUnit) defender).isBlocking()) {
+        if (!defender.isFarmerKing() && defender.isBlocking()) {
             return DuelType.BLOCKADE;
         }
         return DuelType.STANDARD;
@@ -97,7 +96,7 @@ public final class Duel {
      * returns a formatted string of the duel logic.
      *
      * @param duelResult          result of the duel
-     * @param attackerUnit        attacker unit
+     * @param attacker        attacker unit
      * @param defender            defender unit
      * @param game                the game in which the duel logic takes place
      * @param attackerWasFaceDown whether the attacker was hidden
@@ -105,12 +104,11 @@ public final class Duel {
      * @param targetPosition      the position in which the duel takes place
      * @return formatted duel message
      */
-    public static String duelExecutionDisplay(DuelResult duelResult, Unit attackerUnit, Unit defender, Game game,
+    public static String duelExecutionDisplay(DuelResult duelResult, Unit attacker, Unit defender, Game game,
                                               boolean attackerWasFaceDown,
                                               boolean defenderWasFaceDown,
                                               Position targetPosition) {
         StringBuilder stringBuilder = new StringBuilder();
-        RegularUnit attacker = (RegularUnit) attackerUnit;
         Field targetedField = game.getFarmlandBoard().getField(targetPosition);
         Field selectedField = game.getFarmlandBoard().getField(game.getSavedPosition());
         if (defender.isFarmerKing()) {
@@ -157,7 +155,7 @@ public final class Duel {
         return stringBuilder.toString();
     }
 
-    private static String flipDisplay(RegularUnit attacker, Unit defender,
+    private static String flipDisplay(Unit attacker, Unit defender,
                                       boolean attackerWasFaceDown, boolean defenderWasFaceDown,
                                       Field selectedField, Field targetedField) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -169,14 +167,14 @@ public final class Duel {
         }
         if (defenderWasFaceDown) {
             stringBuilder.append(String.format("%s (%d/%d) was flipped on %s!",
-                    defender.getName(), ((RegularUnit) defender).getAttackPoints(),
-                    ((RegularUnit) defender).getDefencePoints(), targetedField.getPosition().toString()));
+                    defender.getName(), defender.getAttackPoints(),
+                    defender.getDefencePoints(), targetedField.getPosition().toString()));
             stringBuilder.append(System.lineSeparator());
         }
         return stringBuilder.toString();
     }
 
-    private static String eliminationDisplay(DuelResult duelResult, RegularUnit attacker,
+    private static String eliminationDisplay(DuelResult duelResult, Unit attacker,
                                              Unit defender, Game game, Position targetPosition) {
         StringBuilder stringBuilder = new StringBuilder();
         if (duelResult.attackerEliminated()) {

@@ -130,8 +130,8 @@ public class Team {
      * @param idx the given one based index of the unit to remove
      * @return the unit that is to be removed
      */
-    public Unit removeUnitFromHand(int idx) {
-        Unit unit = hand.get(idx);
+    public RegularUnit removeUnitFromHand(int idx) {
+        RegularUnit unit = hand.get(idx);
         hand.remove(idx);
         return unit;
     }

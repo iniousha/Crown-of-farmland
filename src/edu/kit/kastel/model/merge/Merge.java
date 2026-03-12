@@ -15,7 +15,7 @@ import edu.kit.kastel.model.unit.Unit;
  * @param secondUnit the second unit
  * @author ucktt
  */
-public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
+public record Merge(Unit firstUnit, Unit secondUnit) {
 
     /**
      * executes a merge between two units of the same team.
@@ -25,7 +25,7 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
      * @param game the current game state
      * @return a formatted message describing whether the merge was successful or not
      */
-    public String mergeResult(Unit unitInField, RegularUnit unitToPlace,
+    public String mergeResult(Unit unitInField, Unit unitToPlace,
                               Position targetPosition, Game game) {
         StringBuilder stringBuilder = new StringBuilder();
         MergeResult mergeResult = mergeAction(unitInField, unitToPlace, targetPosition, game);
@@ -44,8 +44,8 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
      * @return the new regular unit after the successful merge. If no merge happened returns null
      */
     public RegularUnit mergeWith() {
-        RegularUnit unitToPlace = this.firstUnit();
-        RegularUnit targetUnit = this.secondUnit();
+        Unit unitToPlace = this.firstUnit();
+        Unit targetUnit = this.secondUnit();
         CompatibilityType type = checkCompatibility(unitToPlace, targetUnit);
         int attackPointAB;
         int defencePointAB;
@@ -85,7 +85,7 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
         return null;
     }
 
-    private CompatibilityType checkCompatibility(RegularUnit unitToPlace, RegularUnit unitInField) {
+    private CompatibilityType checkCompatibility(Unit unitToPlace, Unit unitInField) {
 
         if (unitToPlace.getName().equals(unitInField.getName())) {
             return CompatibilityType.INCOMPATIBLE;
@@ -138,7 +138,7 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
      * @param position    position of the selected field
      * @return the result of the merge between the two units.
      */
-    public MergeResult mergeAction(Unit unitInField, RegularUnit unitToPlace, Position position, Game game) {
+    public MergeResult mergeAction(Unit unitInField, Unit unitToPlace, Position position, Game game) {
         RegularUnit mergedUnit = mergeWith();
         FarmlandBoard board = game.getFarmlandBoard();
         Field field = game.getFarmlandBoard().getField(position);

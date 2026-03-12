@@ -40,7 +40,6 @@ public class AiScoring {
      * @param targetPosition candidate position to which the farmer king would move
      * @return score for each possible position
      */
-    //moveFarmerKing helper methods:
     public int getScoreForFarmerKing(Position farmerKingPosition, Position targetPosition) {
         return fellowsOfFarmerKing(targetPosition)
                 - (2 * enemiesOfFarmerKing(targetPosition))
@@ -104,7 +103,6 @@ public class AiScoring {
      * @param enemyFarmerKingPosition  position of the enemy's farmer king
      * @return score for the given candidate position
      */
-    //placeUnit helper methods:
     public int getPlacementScoreForUnit(Position candidatePosition, Position enemyFarmerKingPosition) {
         return -steps(candidatePosition, enemyFarmerKingPosition)
                 + (2 * enemiesOfUnit(candidatePosition))
@@ -156,7 +154,6 @@ public class AiScoring {
      * @param unitInFieldPosition the candidate position
      * @return the movement score for the candidate position
      */
-    //moveUnits helper methods:
     public int getMovementScore(Unit unitToPlace, Position unitInFieldPosition) {
         Field field = game.getFarmlandBoard().getField(unitInFieldPosition);
         if (field.isEmpty()) {
@@ -167,7 +164,7 @@ public class AiScoring {
             if (unitInField.getTeam() == aiTeam
                     && !(unitInField.isFarmerKing())
                     && !(unitToPlace.isFarmerKing())) {
-                return mergeAction((RegularUnit) unitToPlace, (RegularUnit) unitInField);
+                return mergeAction(unitToPlace, unitInField);
             } else if (unitInField.getTeam() != aiTeam
                     && !(unitToPlace.isFarmerKing())) {
                 return duelAction(unitToPlace, unitInField);
@@ -177,6 +174,39 @@ public class AiScoring {
             }
         }
         return 0;
+    }
+    private int duelAction(Unit attacker, Unit defender) {
+        if (defender.isFarmerKing()) {
+            return attacker.getAttackPoints();
+        } else if (!defender.isFaceUp()) {
+            return attacker.getAttackPoints() - 500;
+        } else if (!defender.isFarmerKing()
+                && defender.isBlocking()) {
+            return attacker.getAttackPoints() - defender.getDefencePoints();
+        } else if (!defender.isFarmerKing() && !attacker.isFarmerKing()) {
+            return 2 * (attacker.getAttackPoints() - defender.getAttackPoints());
+        }
+        return 0;
+    }
+
+    private int mergeAction(Unit unit, Unit neighborUnit) {
+        Merge merge = new Merge(unit, neighborUnit);
+        RegularUnit mergedUnit = merge.mergeWith();
+        if (mergedUnit != null) {
+            return getMergePoint(unit, mergedUnit);
+        } else {
+            int attackPointsB = neighborUnit.getAttackPoints();
+            int defencePointsB = neighborUnit.getDefencePoints();
+            return (-attackPointsB) + (-defencePointsB);
+        }
+    }
+
+    private int getMergePoint(Unit unit, Unit mergedUnit) {
+        int attackPointsA = unit.getAttackPoints();
+        int defencePointsA = unit.getDefencePoints();
+        int attackPointsAB = mergedUnit.getAttackPoints();
+        int defencePointsAB = mergedUnit.getDefencePoints();
+        return attackPointsAB + defencePointsAB - attackPointsA - defencePointsA;
     }
 
     /**
@@ -191,7 +221,7 @@ public class AiScoring {
         }
         Position unitPosition = game.getFarmlandBoard().findPosition(unit);
         int maximumAttackPoint = getMaximumAttackPoints(unitPosition);
-        return Math.max(1, (((RegularUnit) unit).getDefencePoints() - maximumAttackPoint) / 100);
+        return Math.max(1, (unit.getDefencePoints() - maximumAttackPoint) / 100);
     }
 
     /**
@@ -206,7 +236,7 @@ public class AiScoring {
         }
         Position unitPosition = game.getFarmlandBoard().findPosition(unit);
         int maximumAttackPoint = getMaximumAttackPoints(unitPosition);
-        return Math.max(0, (((RegularUnit) unit).getAttackPoints() - maximumAttackPoint) / 100);
+        return Math.max(0, (unit.getAttackPoints() - maximumAttackPoint) / 100);
     }
 
     private int getMaximumAttackPoints(Position unitPosition) {
@@ -219,46 +249,12 @@ public class AiScoring {
             Field field = game.getFarmlandBoard().getField(neighbor);
             if (!field.isEmpty() && field.getUnit().getTeam() != aiTeam
                     && !field.getUnit().isFarmerKing()) {
-                int attackPoints = ((RegularUnit) field.getUnit()).getAttackPoints();
+                int attackPoints = field.getUnit().getAttackPoints();
                 if (attackPoints > max) {
                     max = attackPoints;
                 }
             }
         }
         return max;
-    }
-
-    private int duelAction(Unit attacker, Unit defender) {
-        if (defender.isFarmerKing()) {
-            return ((RegularUnit) attacker).getAttackPoints();
-        } else if (!defender.isFaceUp()) {
-            return ((RegularUnit) attacker).getAttackPoints() - 500;
-        } else if (!defender.isFarmerKing()
-                && ((RegularUnit) defender).isBlocking()) {
-            return ((RegularUnit) attacker).getAttackPoints() - ((RegularUnit) defender).getDefencePoints();
-        } else if (!defender.isFarmerKing() && !attacker.isFarmerKing()) {
-            return 2 * (((RegularUnit) attacker).getAttackPoints() - ((RegularUnit) defender).getAttackPoints());
-        }
-        return 0;
-    }
-
-    private int mergeAction(RegularUnit unit, RegularUnit neighborUnit) {
-        Merge merge = new Merge(unit, neighborUnit);
-        RegularUnit mergedUnit = merge.mergeWith();
-        if (mergedUnit != null) {
-            return getMergePoint(unit, mergedUnit);
-        } else {
-            int attackPointsB = neighborUnit.getAttackPoints();
-            int defencePointsB = neighborUnit.getDefencePoints();
-            return (-attackPointsB) + (-defencePointsB);
-        }
-    }
-
-    private int getMergePoint(RegularUnit unit, RegularUnit mergedUnit) {
-        int attackPointsA = unit.getAttackPoints();
-        int defencePointsA = unit.getDefencePoints();
-        int attackPointsAB = mergedUnit.getAttackPoints();
-        int defencePointsAB = mergedUnit.getDefencePoints();
-        return attackPointsAB + defencePointsAB - attackPointsA - defencePointsA;
     }
 }

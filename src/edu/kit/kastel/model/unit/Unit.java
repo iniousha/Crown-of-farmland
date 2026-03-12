@@ -107,4 +107,37 @@ public abstract class Unit {
     public void flip() {
         this.faceUp = true;
     }
+
+    /**
+     * checks whether this regular unit is blocking.
+     * @return true if this regular unit is blocking; false otherwise
+     */
+    public boolean isBlocking() {
+        return false;
+    }
+
+    /**
+     * sets this regular unit to blocking state.
+     */
+    public void startBlocking() {
+    }
+
+    /**
+     * ends this regular unit's blocking state.
+     */
+    public void endBlocking() {
+    }
+
+    /**
+     * returns this unit's attack points.
+     * @return this unit's attack points
+     */
+    public abstract int getAttackPoints();
+
+    /**
+     * returns this unit's defence points.
+     * @return this unit's defence points
+     */
+    public abstract int getDefencePoints();
 }
+

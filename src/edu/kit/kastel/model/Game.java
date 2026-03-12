@@ -268,12 +268,12 @@ public class Game {
      * @param selectedUnit the specified unit to be unblocked
      * @return formatted message indicating that blocking has ended for the given unit
      */
-    public String endBlocking(Unit selectedUnit) {
+    public String executeEndBlocking(Unit selectedUnit) {
         StringBuilder stringBuilder = new StringBuilder();
-        if (!selectedUnit.isFarmerKing() && ((RegularUnit) selectedUnit).isBlocking()) {
+        if (!selectedUnit.isFarmerKing() && selectedUnit.isBlocking()) {
             stringBuilder.append(MessageFormatter.noLongerBlockDisplay(selectedUnit));
             stringBuilder.append(System.lineSeparator());
-            ((RegularUnit) selectedUnit).endBlocking();
+            selectedUnit.endBlocking();
         }
         return stringBuilder.toString();
     }
@@ -313,7 +313,7 @@ public class Game {
             } else if (unitInField.getTeam() == currentTeam) {
                 stringBuilder.append(MessageFormatter.placeDisplay(currentTeam, unitToPlace, field));
                 stringBuilder.append(System.lineSeparator());
-                Merge merge = new Merge(unitToPlace, (RegularUnit) unitInField);
+                Merge merge = new Merge(unitToPlace, unitInField);
                 stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, position, this));
             }
         }

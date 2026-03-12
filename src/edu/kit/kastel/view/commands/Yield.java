@@ -4,7 +4,6 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.ai.AiTurn;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
-import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
 import edu.kit.kastel.model.MessageFormatter;
@@ -44,7 +43,7 @@ public class Yield implements Command<Game> {
             return Result.error("cannot discard when hand is not full!");
         } else {
             if (optionalIdx != null) {
-                Unit removedUnit = currentTeam.removeUnitFromHand(optionalIdx);
+                RegularUnit removedUnit = currentTeam.removeUnitFromHand(optionalIdx);
                 stringBuilder.append(MessageFormatter.discardedCardDisplay(currentTeam, removedUnit));
                 stringBuilder.append(System.lineSeparator());
             }

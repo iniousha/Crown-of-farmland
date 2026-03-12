@@ -1,7 +1,6 @@
 package edu.kit.kastel.model.merge;
 
 import edu.kit.kastel.model.board.Field;
-import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Unit;
 
 /**
@@ -12,5 +11,5 @@ import edu.kit.kastel.model.unit.Unit;
  * @param field the field where the merge happens
  * @author ucktt
  */
-public record MergeResult(boolean success, Unit unitInField, RegularUnit unitToPlace, Field field) {
+public record MergeResult(boolean success, Unit unitInField, Unit unitToPlace, Field field) {
 }

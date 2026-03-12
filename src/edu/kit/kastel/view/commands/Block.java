@@ -41,7 +41,7 @@ public class Block implements Command<Game> {
         } else if ((handle.isBlockedThisTurn())) {
             return Result.error("unit is already Blocking this Turn.");
         } else {
-            ((RegularUnit) unit).startBlocking();
+            unit.startBlocking();
             handle.setBlockedThisTurn(true);
             unit.setHasMoved(true);
             stringBuilder.append(MessageFormatter.blockDisplay(unit, field));
