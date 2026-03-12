@@ -89,7 +89,7 @@ public class Game {
      *
      * @param yieldFailed true if yield has failed; false otherwise
      */
-    public void setYieldFailed(boolean yieldFailed) {
+    public void setYieldHasFailed(boolean yieldFailed) {
         yieldHasFailed = yieldFailed;
     }
 
@@ -142,9 +142,9 @@ public class Game {
         List<Unit> allUnits = this.farmlandBoard.getUnitsForTeam(this.currentTeam);
         for (Unit unit : allUnits) {
             unit.setHasMoved(false);
-            this.currentTeam.setHasPlaced(false);
+            this.currentTeam.setHasSetPlace(false);
         }
-        setYieldFailed(false);
+        setYieldHasFailed(false);
         setBlockedThisTurn(false);
         toggleTurn();
     }
@@ -317,7 +317,7 @@ public class Game {
                 stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, position, this));
             }
         }
-        currentTeam.setHasPlaced(true);
+        currentTeam.setHasSetPlace(true);
 
         if (board.unitCount(currentTeam) > 5) {
             Unit placedUnit = field.getUnit();

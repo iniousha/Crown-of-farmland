@@ -18,29 +18,4 @@ public record DuelResult(
         boolean attackerEliminated,
         boolean attackerMoves
 ) {
-
-    /**
-     * checks if the defending unit is eliminated.
-     * @return true if the defending unit was eliminated; false if not
-     */
-    public boolean defenderEliminated() {
-
-        return defenderEliminated;
-    }
-
-    /**
-     * checks if the attacking unit is eliminated.
-     * @return true if the attacking unit was eliminated; false if not
-     */
-    public boolean attackerEliminated() {
-        return attackerEliminated;
-    }
-
-    /**
-     * the damage point that the affected team has to take.
-     * @return the damage point
-     */
-    public int damage() {
-        return damage;
-    }
 }

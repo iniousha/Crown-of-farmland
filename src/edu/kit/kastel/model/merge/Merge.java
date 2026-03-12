@@ -46,7 +46,7 @@ public record Merge(Unit firstUnit, Unit secondUnit) {
     public RegularUnit mergeWith() {
         Unit unitToPlace = this.firstUnit();
         Unit targetUnit = this.secondUnit();
-        CompatibilityType type = checkCompatibility(unitToPlace, targetUnit);
+        CompatibilityType type = getCompatibilityType(unitToPlace, targetUnit);
         int attackPointAB;
         int defencePointAB;
         int attackPointA = unitToPlace.getAttackPoints();
@@ -85,7 +85,7 @@ public record Merge(Unit firstUnit, Unit secondUnit) {
         return null;
     }
 
-    private CompatibilityType checkCompatibility(Unit unitToPlace, Unit unitInField) {
+    private CompatibilityType getCompatibilityType(Unit unitToPlace, Unit unitInField) {
 
         if (unitToPlace.getName().equals(unitInField.getName())) {
             return CompatibilityType.INCOMPATIBLE;
@@ -130,15 +130,7 @@ public record Merge(Unit firstUnit, Unit secondUnit) {
         return CompatibilityType.INCOMPATIBLE;
     }
 
-    /**
-     * returns the merge result between two units of the same team.
-     *
-     * @param unitInField unit positioned on the selected field
-     * @param unitToPlace unit to place on the selected field
-     * @param position    position of the selected field
-     * @return the result of the merge between the two units.
-     */
-    public MergeResult mergeAction(Unit unitInField, Unit unitToPlace, Position position, Game game) {
+    private MergeResult mergeAction(Unit unitInField, Unit unitToPlace, Position position, Game game) {
         RegularUnit mergedUnit = mergeWith();
         FarmlandBoard board = game.getFarmlandBoard();
         Field field = game.getFarmlandBoard().getField(position);

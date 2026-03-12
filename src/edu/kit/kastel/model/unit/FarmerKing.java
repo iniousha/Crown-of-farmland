@@ -30,4 +30,14 @@ public class FarmerKing extends Unit {
     public int getDefencePoints() {
         return 0;
     }
+
+    @Override
+    public void endBlocking() {
+        // FarmerKing cannot block, no action needed
+    }
+
+    @Override
+    public void startBlocking() {
+        // FarmerKing cannot block, no action needed
+    }
 }

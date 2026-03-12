@@ -71,13 +71,7 @@ public final class Duel {
         }
     }
 
-    /**
-     * returns the type of the duel the two units are partaking in.
-     *
-     * @param defender the defending unit
-     * @return the type of the duel
-     */
-    public static DuelType getDuelType(Unit defender) {
+    private static DuelType getDuelType(Unit defender) {
         if (defender.isFarmerKing()) {
             return DuelType.AGAINST_FARMER_KING;
         }
@@ -155,15 +149,11 @@ public final class Duel {
                                       Field selectedField, Field targetedField) {
         StringBuilder stringBuilder = new StringBuilder();
         if (attackerWasFaceDown) {
-            stringBuilder.append(String.format("%s (%d/%d) was flipped on %s!",
-                    attacker.getName(), attacker.getAttackPoints(),
-                    attacker.getDefencePoints(), selectedField.getPosition().toString()));
+            stringBuilder.append(MessageFormatter.flipDisplay(attacker, selectedField));
             stringBuilder.append(System.lineSeparator());
         }
         if (defenderWasFaceDown) {
-            stringBuilder.append(String.format("%s (%d/%d) was flipped on %s!",
-                    defender.getName(), defender.getAttackPoints(),
-                    defender.getDefencePoints(), targetedField.getPosition().toString()));
+            stringBuilder.append(MessageFormatter.flipDisplay(defender, targetedField));
             stringBuilder.append(System.lineSeparator());
         }
         return stringBuilder.toString();

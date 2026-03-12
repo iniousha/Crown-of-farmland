@@ -18,7 +18,7 @@ public abstract class Unit {
      * @param role the second part of the unit's name representing the unit's role
      * @param initialFaceUp true if the unit starts face up; false if hidden
      */
-    public Unit(String qualifier, String role, boolean initialFaceUp) {
+    protected Unit(String qualifier, String role, boolean initialFaceUp) {
         this.qualifier = qualifier;
         this.role = role;
         this.team = null;
@@ -81,10 +81,6 @@ public abstract class Unit {
         this.hasMoved = hasMoved;
     }
 
-//    public boolean isMovementEnPlace() {
-//        return this.hasMoved;
-//    }
-
     /**
      * returns whether this unit is a farmerKing.
      * @return true if this unit is a farmerKing; false otherwise
@@ -119,14 +115,12 @@ public abstract class Unit {
     /**
      * sets this regular unit to blocking state.
      */
-    public void startBlocking() {
-    }
+    public abstract void startBlocking();
 
     /**
      * ends this regular unit's blocking state.
      */
-    public void endBlocking() {
-    }
+    public abstract void endBlocking();
 
     /**
      * returns this unit's attack points.

@@ -36,10 +36,10 @@ public class Yield implements Command<Game> {
         List<RegularUnit> hand = currentTeam.getHand();
 
         if (hand.size() == 5 && optionalIdx == null) {
-            handle.setYieldFailed(true);
+            handle.setYieldHasFailed(true);
             return Result.error("player's hand is full!");
         } else if (hand.size() < 5 && optionalIdx != null) {
-            handle.setYieldFailed(true);
+            handle.setYieldHasFailed(true);
             return Result.error("cannot discard when hand is not full!");
         } else {
             if (optionalIdx != null) {

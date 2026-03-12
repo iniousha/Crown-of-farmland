@@ -3,6 +3,7 @@ package edu.kit.kastel.model.unit;
 import edu.kit.kastel.model.Deck;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  */
 public class Team {
 
+    private static final int INITIAL_LIFE_POINTS = 8000;
     private final String name;
     private final FarmerKing farmerKing;
     private final Deck deck;
@@ -31,7 +33,7 @@ public class Team {
         this.farmerKing.setTeam(this);
         this.deck = deck;
         this.hand = new ArrayList<>();
-        this.lifePoints = 8000;
+        this.lifePoints = INITIAL_LIFE_POINTS;
         this.hasSetPlace = false;
         this.isAiTeam = isAiTeam;
 
@@ -60,6 +62,7 @@ public class Team {
     public boolean isAiTeam() {
         return this.isAiTeam;
     }
+
 
     /**
      * returns the name of the team.
@@ -97,7 +100,7 @@ public class Team {
      * sets whether this team has placed a unit on the game board during this turn.
      * @param hasSetPlace true if the team has placed a unit this turn; false otherwise
      */
-    public void setHasPlaced(boolean hasSetPlace) {
+    public void setHasSetPlace(boolean hasSetPlace) {
         this.hasSetPlace = hasSetPlace;
     }
 
@@ -114,7 +117,7 @@ public class Team {
      * @return list containing the regular units in hand
      */
     public List<RegularUnit> getHand() {
-        return this.hand;
+        return Collections.unmodifiableList(this.hand);
     }
 
     /**
