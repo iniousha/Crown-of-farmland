@@ -4,7 +4,7 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.Printer;
 
 import java.util.List;
 

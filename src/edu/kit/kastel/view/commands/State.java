@@ -6,8 +6,8 @@ import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.fileio.BoardPrinter;
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.BoardPrinter;
+import edu.kit.kastel.view.Printer;
 
 /**
  * this class represents the state command.
@@ -17,7 +17,6 @@ public class State implements Command<Game> {
 
     @Override
     public Result execute(Game handle) {
-        handle.clearJustSelected();
         if (handle.hasYieldFailed()) {
             return Result.error("can only use hand or yield after failed yield");
         }

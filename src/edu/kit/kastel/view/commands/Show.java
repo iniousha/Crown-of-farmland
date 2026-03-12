@@ -4,7 +4,7 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.Printer;
 
 /**
  * this class represents the show command.
@@ -14,7 +14,6 @@ public class Show implements Command<Game> {
 
     @Override
     public Result execute(Game handle) {
-        handle.clearJustSelected();
         if (handle.hasYieldFailed()) {
             return Result.error("can only use hand or yield after failed yield");
         }

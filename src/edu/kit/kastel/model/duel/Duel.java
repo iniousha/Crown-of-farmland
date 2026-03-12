@@ -1,7 +1,7 @@
 package edu.kit.kastel.model.duel;
 
 import edu.kit.kastel.model.Game;
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.Printer;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.FarmerKing;

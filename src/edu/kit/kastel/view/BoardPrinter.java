@@ -1,4 +1,4 @@
-package edu.kit.kastel.view.fileio;
+package edu.kit.kastel.view;
 
 import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.Verbosity;
@@ -6,7 +6,6 @@ import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Unit;
-import edu.kit.kastel.view.SymbolSet;
 
 /**
  * * this utility class helps with printing the board output display using the provided static methods.

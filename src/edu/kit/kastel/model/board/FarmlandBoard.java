@@ -1,7 +1,7 @@
 package edu.kit.kastel.model.board;
 
 import edu.kit.kastel.model.Game;
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.Printer;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.SymbolSet;

@@ -12,7 +12,8 @@ import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
-import edu.kit.kastel.view.fileio.BoardPrinter;
+import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.view.BoardPrinter;
 
 import java.util.ArrayList;
 import java.util.Collections;

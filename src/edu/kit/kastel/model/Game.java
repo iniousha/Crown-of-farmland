@@ -1,6 +1,6 @@
 package edu.kit.kastel.model;
 
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.Printer;
 import edu.kit.kastel.model.board.FarmlandBoard;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
@@ -33,7 +33,6 @@ public class Game {
     private Team winner;
     private Position savedPosition;
     private boolean yieldHasFailed;
-    private boolean justSelected;
     private boolean blockedThisTurn;
 
     /**
@@ -114,7 +113,7 @@ public class Game {
 
     /**
      * sets whether the unit has been blocked during this turn.
-     * @param blockedThisTurn true if unit was blocked this turn; false other wise
+     * @param blockedThisTurn true if unit was blocked this turn; false otherwise
      */
     public void setBlockedThisTurn(boolean blockedThisTurn) {
         this.blockedThisTurn = blockedThisTurn;
@@ -213,31 +212,9 @@ public class Game {
      */
     public void setSavedPosition(Position newPosition) {
         this.savedPosition = newPosition;
-        this.justSelected = true;
     }
 
-    /**
-     * checks whether the position is just selected.
-     *
-     * @return true if the position is newly selected; false otherwise
-     */
-    public boolean isJustSelected() {
-        return justSelected;
-    }
 
-    /**
-     * changes the just selected state to false.
-     */
-    public void clearJustSelected() {
-        this.justSelected = false;
-    }
-
-    /**
-     * returns the unit at the specified position.
-     *
-     * @param position the specified position
-     * @return the unit in the given position
-     */
     public Unit getUnitAt(Position position) {
         Field field = getFarmlandBoard().getField(position);
         setSavedPosition(position);

@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * This enum represents all keywords for commands handling a {@link Game}.
+ * This enum represents all available commands for the Krone von Ackarland game.
  * @author ucktt
  */
 public enum ModelKeyword implements Keyword<Game> {
@@ -74,25 +74,25 @@ public enum ModelKeyword implements Keyword<Game> {
 
 
     private static final String VALUE_NAME_DELIMITER = "_";
-    private final CommandProvider<Game> provider;
+    private final CommandProvider<Game> commandProvider;
 
     ModelKeyword(CommandProvider<Game> provider) {
-        this.provider = provider;
+        this.commandProvider = provider;
     }
 
     @Override
     public Command<Game> provide(Arguments arguments) throws InvalidArgumentException {
-        return this.provider.provide(arguments);
+        return this.commandProvider.provide(arguments);
     }
 
     @Override
     public boolean matches(String[] command) {
-        String[] splitKeyword = name().split(VALUE_NAME_DELIMITER);
-        if (command.length < splitKeyword.length) {
+        String[] keywordParts = name().split(VALUE_NAME_DELIMITER);
+        if (command.length < keywordParts.length) {
             return false;
         }
-        for (int i = 0; i < splitKeyword.length; i++) {
-            if (!splitKeyword[i].toLowerCase().equals(command[i])) {
+        for (int i = 0; i < keywordParts.length; i++) {
+            if (!keywordParts[i].equalsIgnoreCase(command[i])) {
                 return false;
             }
         }

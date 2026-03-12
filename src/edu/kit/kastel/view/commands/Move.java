@@ -12,8 +12,8 @@ import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.fileio.BoardPrinter;
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.BoardPrinter;
+import edu.kit.kastel.view.Printer;
 
 /**
  * this class represents the move command.
@@ -35,7 +35,6 @@ public class Move implements Command<Game> {
 
     @Override
     public Result execute(Game handle) {
-        handle.clearJustSelected();
         StringBuilder stringBuilder = new StringBuilder();
 
         String error = handleError(handle);

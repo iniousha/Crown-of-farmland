@@ -10,8 +10,8 @@ import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.fileio.BoardPrinter;
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.BoardPrinter;
+import edu.kit.kastel.view.Printer;
 
 import java.util.HashSet;
 import java.util.List;
@@ -38,7 +38,6 @@ public class Place implements Command<Game> {
     @Override
     public Result execute(Game handle) {
         StringBuilder stringBuilder = new StringBuilder();
-        handle.clearJustSelected();
 
         Result error = handleError(handle);
         if (error != null) {

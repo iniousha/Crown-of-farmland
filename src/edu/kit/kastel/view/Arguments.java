@@ -63,7 +63,12 @@ public class Arguments {
 
         char firstChar = argument.charAt(COLUMN_CHAR_INDEX);
         char secondChar = argument.charAt(ROW_CHAR_INDEX);
-
+        if (firstChar < 'A' || firstChar > 'G') {
+            throw new InvalidArgumentException(String.format(ERROR_INVALID_FIELD_FORMAT));
+        }
+        if (secondChar < '1' || secondChar > '7') {
+            throw new InvalidArgumentException(String.format(ERROR_INVALID_FIELD_FORMAT));
+        }
         int column = Position.convertToInteger(firstChar);
         int row = secondChar - ROW_OFFSET;
         if (!Position.isInBounds(column, row)) {

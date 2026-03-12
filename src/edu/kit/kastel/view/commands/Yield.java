@@ -7,7 +7,7 @@ import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.model.ai.Printer;
+import edu.kit.kastel.view.Printer;
 
 import java.util.List;
 
@@ -35,7 +35,6 @@ public class Yield implements Command<Game> {
         StringBuilder stringBuilder = new StringBuilder();
         Team currentTeam = handle.getCurrentTeam();
         List<RegularUnit> hand = currentTeam.getHand();
-        handle.clearJustSelected();
 
         if (hand.size() == 5 && optionalIdx == null) {
             handle.setYieldFailed(true);

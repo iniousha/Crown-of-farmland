@@ -6,8 +6,8 @@ import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.model.ai.Printer;
-import edu.kit.kastel.view.fileio.BoardPrinter;
+import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.view.BoardPrinter;
 
 /**
  * this class represents the flip command.
@@ -19,7 +19,6 @@ public class Flip implements Command<Game> {
     public Result execute(Game handle) {
         StringBuilder stringBuilder = new StringBuilder();
         Position position = handle.getSavedPosition();
-        handle.clearJustSelected();
 
         if (handle.hasYieldFailed()) {
             return Result.error("can only use hand or yield after failed yield");

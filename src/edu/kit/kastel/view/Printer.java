@@ -1,4 +1,4 @@
-package edu.kit.kastel.model.ai;
+package edu.kit.kastel.view;
 
 import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.board.Field;
