@@ -1,6 +1,5 @@
-package edu.kit.kastel.view;
+package edu.kit.kastel.model;
 
-import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
@@ -14,7 +13,7 @@ import java.util.List;
  *
  * @author ucktt
  */
-public final class Printer {
+public final class MessageFormatter {
 
     private static final String HAND_CARD_FORMAT = "[%d] %s (%d/%d)";
     private static final String HIDDEN_UNIT_FORMAT = "??? (Team Enemy)%nATK: ???%nDEF: ???";
@@ -36,7 +35,7 @@ public final class Printer {
     private static final String DUEL_FARMER_KING_FORMAT = "%s (%d/%d) attacks %s on %s!";
     private static final String DUEL_REGULAR_UNIT_FORMAT = "%s (%d/%d) attacks %s (%d/%d) on %s!";
 
-    private Printer() {
+    private MessageFormatter() {
     }
 
     /**

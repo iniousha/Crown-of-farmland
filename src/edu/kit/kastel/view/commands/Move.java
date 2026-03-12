@@ -12,8 +12,8 @@ import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.BoardPrinter;
-import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.model.BoardFormatter;
+import edu.kit.kastel.model.MessageFormatter;
 
 /**
  * this class represents the move command.
@@ -49,7 +49,7 @@ public class Move implements Command<Game> {
         FarmlandBoard board = handle.getFarmlandBoard();
 
         stringBuilder.append(handle.endBlocking(selectedUnit));
-        stringBuilder.append(handle.getFarmlandBoard().executeEnPlace(selectedUnit, handle, targetPosition));
+        stringBuilder.append(handle.executeEnPlace(selectedUnit, targetPosition));
         if (selectedUnit instanceof FarmerKing
                 && targetedUnit != null
                 && targetedUnit.getTeam() == handle.getCurrentTeam()) {
@@ -69,19 +69,19 @@ public class Move implements Command<Game> {
                         handle, attackerWasFaceDown, defenderWasFaceDown, targetPosition));
 
             } else if (selectedUnit.getTeam() == targetedUnit.getTeam()) {
-                stringBuilder.append(Printer.moveDisplay(selectedUnit, targetedField));
+                stringBuilder.append(MessageFormatter.moveDisplay(selectedUnit, targetedField));
                 stringBuilder.append(System.lineSeparator());
                 Merge merge = new Merge(movingUnit, (RegularUnit) targetedUnit);
                 stringBuilder.append(merge.mergeResult(targetedUnit, movingUnit, targetPosition, handle));
             }
         }
 
-        stringBuilder.append(BoardPrinter.boardDisplay(handle));
+        stringBuilder.append(BoardFormatter.boardDisplay(handle));
         Unit unitToDisplay = board.getField(targetPosition).getUnit();
 
         if (unitToDisplay != null) {
             stringBuilder.append(System.lineSeparator());
-            stringBuilder.append(Printer.displayUnit(unitToDisplay, handle));
+            stringBuilder.append(MessageFormatter.displayUnit(unitToDisplay, handle));
         }
         return Result.success(stringBuilder.toString());
     }

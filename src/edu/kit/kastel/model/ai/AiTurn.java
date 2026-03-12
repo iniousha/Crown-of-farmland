@@ -12,8 +12,8 @@ import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
-import edu.kit.kastel.view.Printer;
-import edu.kit.kastel.view.BoardPrinter;
+import edu.kit.kastel.model.MessageFormatter;
+import edu.kit.kastel.model.BoardFormatter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,9 +106,9 @@ public class AiTurn {
         List<Position> selectedPositions = scoredPositions.get(maxScore);
         targetPosition = select(selectedPositions);
         stringBuilder.append(game.moveUnit(farmerKing, farmerKingPosition, targetPosition));
-        stringBuilder.append(BoardPrinter.boardDisplay(game));
+        stringBuilder.append(BoardFormatter.boardDisplay(game));
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append(Printer.displayUnit(farmerKing, game));
+        stringBuilder.append(MessageFormatter.displayUnit(farmerKing, game));
         stringBuilder.append(System.lineSeparator());
         return stringBuilder.toString();
     }
@@ -126,7 +126,7 @@ public class AiTurn {
             if (!field.isEmpty() && field.getUnit().getTeam() != aiTeam) {
                 continue;
             }
-            if (!field.isEmpty() && field.getUnit() instanceof FarmerKing) {
+            if (!field.isEmpty() && field.getUnit().isFarmerKing()) {
                 continue;
             }
             int score = scoring.getPlacementScoreForUnit(neighbor, enemyFarmerKingPosition);
@@ -139,9 +139,9 @@ public class AiTurn {
         int selectedIndex = getSelectedUnitIndex();
         stringBuilder.append(game.placeUnitsFromHand(List.of(selectedIndex), targetPosition));
         game.setSavedPosition(targetPosition);
-        stringBuilder.append(BoardPrinter.boardDisplay(game));
+        stringBuilder.append(BoardFormatter.boardDisplay(game));
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append(Printer.displayUnit(game.getFarmlandBoard().getField(targetPosition).getUnit(), game));
+        stringBuilder.append(MessageFormatter.displayUnit(game.getFarmlandBoard().getField(targetPosition).getUnit(), game));
         stringBuilder.append(System.lineSeparator());
         return stringBuilder.toString();
     }
@@ -164,7 +164,7 @@ public class AiTurn {
                 break;
             }
             Unit winningUnit = getWinningUnit(aiUnits);
-            if (winningUnit instanceof FarmerKing) {
+            if (winningUnit.isFarmerKing()) {
                 continue;
             }
             Position winningUnitPosition = game.getFarmlandBoard().findPosition(winningUnit);
@@ -184,8 +184,8 @@ public class AiTurn {
             }
             int index = WeightedRandom.weightedRandomSelection(moveScores, random);
             winningUnit = executeUnitMove(winningUnit, winningUnitPosition, index, stringBuilder);
-            stringBuilder.append(BoardPrinter.boardDisplay(game)).append(System.lineSeparator());
-            stringBuilder.append(Printer.displayUnit(winningUnit, game));
+            stringBuilder.append(BoardFormatter.boardDisplay(game)).append(System.lineSeparator());
+            stringBuilder.append(MessageFormatter.displayUnit(winningUnit, game));
             if (!game.isGameOver()) {
                 stringBuilder.append(System.lineSeparator());
             }
@@ -205,7 +205,7 @@ public class AiTurn {
             ((RegularUnit) winningUnit).startBlocking();
             winningUnit.setHasMoved(true);
             game.setSavedPosition(winningUnitPosition);
-            stringBuilder.append(Printer.blockDisplay(winningUnit, game.getFarmlandBoard().getField(winningUnitPosition)));
+            stringBuilder.append(MessageFormatter.blockDisplay(winningUnit, game.getFarmlandBoard().getField(winningUnitPosition)));
             stringBuilder.append(System.lineSeparator());
         } else {
             stringBuilder.append(game.moveUnit(winningUnit, winningUnitPosition, winningUnitPosition));
@@ -221,13 +221,13 @@ public class AiTurn {
         } else {
             Unit unitInField = targetField.getUnit();
             if (unitInField.getTeam() == aiTeam
-                    && !(winningUnit instanceof FarmerKing)
-                    && !(unitInField instanceof FarmerKing)) {
-                stringBuilder.append(Printer.moveDisplay(winningUnit, targetField));
+                    && !(winningUnit.isFarmerKing())
+                    && !(unitInField.isFarmerKing())) {
+                stringBuilder.append(MessageFormatter.moveDisplay(winningUnit, targetField));
                 stringBuilder.append(System.lineSeparator());
                 Merge merge = new Merge((RegularUnit) winningUnit, (RegularUnit) unitInField);
                 stringBuilder.append(merge.mergeResult(unitInField, (RegularUnit) winningUnit, targetPosition, game));
-            } else if (unitInField.getTeam() != aiTeam && !(winningUnit instanceof FarmerKing)) {
+            } else if (unitInField.getTeam() != aiTeam && !(winningUnit.isFarmerKing())) {
                 boolean attackerWasFaceDown = !winningUnit.isFaceUp();
                 boolean defenderWasFaceDown = (unitInField instanceof RegularUnit) && !unitInField.isFaceUp();
                 DuelResult duelResult = Duel.executeDuel((RegularUnit) winningUnit, unitInField);

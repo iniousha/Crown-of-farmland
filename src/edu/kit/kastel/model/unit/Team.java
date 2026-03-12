@@ -25,7 +25,7 @@ public class Team {
      * @param deck the deck owned by the team and from which the cards are drawn
      * @param isAiTeam whether the current team is AI team
      */
-    public Team(String name, Deck deck, Boolean isAiTeam) {
+    public Team(String name, Deck deck, boolean isAiTeam) {
         this.name = name;
         this.farmerKing = new FarmerKing();
         this.farmerKing.setTeam(this);

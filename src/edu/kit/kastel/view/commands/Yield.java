@@ -7,7 +7,7 @@ import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.model.MessageFormatter;
 
 import java.util.List;
 
@@ -45,20 +45,20 @@ public class Yield implements Command<Game> {
         } else {
             if (optionalIdx != null) {
                 Unit removedUnit = currentTeam.removeUnitFromHand(optionalIdx);
-                stringBuilder.append(Printer.discardedCardDisplay(currentTeam, removedUnit));
+                stringBuilder.append(MessageFormatter.discardedCardDisplay(currentTeam, removedUnit));
                 stringBuilder.append(System.lineSeparator());
             }
 
             handle.nextTurn();
             if (handle.getCurrentTeam().isAiTeam()) {
-                stringBuilder.append(Printer.turnDisplay(handle.getCurrentTeam()));
+                stringBuilder.append(MessageFormatter.turnDisplay(handle.getCurrentTeam()));
                 stringBuilder.append(System.lineSeparator());
                 stringBuilder.append(new AiTurn(handle, handle.getRandom()).executeTurn());
 
                 handle.setSavedPosition(null);
                 if (!handle.isGameOver()) {
                     handle.nextTurn();
-                    stringBuilder.append(Printer.turnDisplay(handle.getCurrentTeam()));
+                    stringBuilder.append(MessageFormatter.turnDisplay(handle.getCurrentTeam()));
                 }
             }
             return Result.success(stringBuilder.toString());

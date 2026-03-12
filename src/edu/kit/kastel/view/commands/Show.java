@@ -4,7 +4,7 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.model.MessageFormatter;
 
 /**
  * this class represents the show command.
@@ -23,9 +23,9 @@ public class Show implements Command<Game> {
         }
         Unit unit = handle.getUnitAt(handle.getSavedPosition());
         if (unit == null) {
-            return Result.success(Printer.noUnitDisplay());
+            return Result.success(MessageFormatter.noUnitDisplay());
         } else {
-            return Result.success(Printer.displayUnit(unit, handle));
+            return Result.success(MessageFormatter.displayUnit(unit, handle));
         }
     }
 }

@@ -10,8 +10,8 @@ import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.BoardPrinter;
-import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.model.BoardFormatter;
+import edu.kit.kastel.model.MessageFormatter;
 
 import java.util.HashSet;
 import java.util.List;
@@ -49,16 +49,16 @@ public class Place implements Command<Game> {
 
         stringBuilder.append(handle.placeUnitsFromHand(allIndexes, handle.getSavedPosition()));
         handle.setSavedPosition(handle.getSavedPosition());
-        stringBuilder.append(BoardPrinter.boardDisplay(handle));
+        stringBuilder.append(BoardFormatter.boardDisplay(handle));
 
         Unit unitToDisplay = field.getUnit();
 
         if (unitToDisplay != null) {
             stringBuilder.append(System.lineSeparator());
-            stringBuilder.append(Printer.displayUnit(unitToDisplay, handle));
+            stringBuilder.append(MessageFormatter.displayUnit(unitToDisplay, handle));
         } else if (handle.getSavedPosition() != null) {
             stringBuilder.append(System.lineSeparator());
-            stringBuilder.append(Printer.noUnitDisplay());
+            stringBuilder.append(MessageFormatter.noUnitDisplay());
         }
         return Result.success(stringBuilder.toString());
     }

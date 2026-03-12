@@ -1,6 +1,8 @@
-package edu.kit.kastel.view;
+package edu.kit.kastel.view.parsing;
 
 import edu.kit.kastel.model.Game;
+import edu.kit.kastel.view.Command;
+import edu.kit.kastel.view.CommandProvider;
 import edu.kit.kastel.view.commands.Block;
 import edu.kit.kastel.view.commands.BoardCommand;
 import edu.kit.kastel.view.commands.Flip;

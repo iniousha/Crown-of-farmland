@@ -1,7 +1,5 @@
 package edu.kit.kastel.model.board;
 
-import edu.kit.kastel.model.Game;
-import edu.kit.kastel.view.Printer;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.SymbolSet;
@@ -166,24 +164,5 @@ public class FarmlandBoard {
             }
         }
         return null;
-    }
-
-    /**
-     * executes the in place action.
-     * @param selectedUnit the unit performing this action
-     * @param game the game that provides the current state
-     * @param targetPosition the position on which this action takes place
-     * @return the formatted message if the unit stays in place
-     */
-    public String executeEnPlace(Unit selectedUnit, Game game, Position targetPosition) {
-        StringBuilder stringBuilder = new StringBuilder();
-        Position selectedPosition = game.getSavedPosition();
-        Field targetedField = this.getField(targetPosition);
-        if (selectedPosition.equals(targetPosition)) {
-            selectedUnit.setHasMoved(true);
-            stringBuilder.append(Printer.moveDisplay(selectedUnit, targetedField));
-            stringBuilder.append(System.lineSeparator());
-        }
-        return stringBuilder.toString();
     }
 }

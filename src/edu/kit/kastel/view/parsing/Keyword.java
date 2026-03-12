@@ -1,4 +1,6 @@
-package edu.kit.kastel.view;
+package edu.kit.kastel.view.parsing;
+
+import edu.kit.kastel.view.CommandProvider;
 
 /**
  * this interface represents a keyword that can recognize and provide commands.

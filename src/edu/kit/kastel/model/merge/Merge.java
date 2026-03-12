@@ -2,7 +2,7 @@ package edu.kit.kastel.model.merge;
 
 import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.MathUtil;
-import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.model.MessageFormatter;
 import edu.kit.kastel.model.board.FarmlandBoard;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
@@ -30,9 +30,9 @@ public record Merge(RegularUnit firstUnit, RegularUnit secondUnit) {
         StringBuilder stringBuilder = new StringBuilder();
         MergeResult mergeResult = mergeAction(unitInField, unitToPlace, targetPosition, game);
         stringBuilder.append(mergeResult.success()
-                ? Printer.successfulMergeDisplay(mergeResult.unitInField(),
+                ? MessageFormatter.successfulMergeDisplay(mergeResult.unitInField(),
                 mergeResult.unitToPlace(), mergeResult.field())
-                : Printer.failedMergeDisplay(
+                : MessageFormatter.failedMergeDisplay(
                 mergeResult.unitInField(), mergeResult.unitToPlace(), mergeResult.field()));
         stringBuilder.append(System.lineSeparator());
         return stringBuilder.toString();

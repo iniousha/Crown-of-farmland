@@ -1,6 +1,5 @@
 package edu.kit.kastel.model;
 
-import edu.kit.kastel.view.Printer;
 import edu.kit.kastel.model.board.FarmlandBoard;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
@@ -259,7 +258,7 @@ public class Game {
         farmlandBoard.placeUnit(unitToPlace, targetPosition);
         this.savedPosition = targetPosition;
         unitToPlace.setHasMoved(true);
-        stringBuilder.append(Printer.moveDisplay(unitToPlace, targetedField));
+        stringBuilder.append(MessageFormatter.moveDisplay(unitToPlace, targetedField));
         stringBuilder.append(System.lineSeparator());
         return stringBuilder.toString();
     }
@@ -272,7 +271,7 @@ public class Game {
     public String endBlocking(Unit selectedUnit) {
         StringBuilder stringBuilder = new StringBuilder();
         if (selectedUnit instanceof RegularUnit && ((RegularUnit) selectedUnit).isBlocking()) {
-            stringBuilder.append(Printer.noLongerBlockDisplay(selectedUnit));
+            stringBuilder.append(MessageFormatter.noLongerBlockDisplay(selectedUnit));
             stringBuilder.append(System.lineSeparator());
             ((RegularUnit) selectedUnit).endBlocking();
         }
@@ -309,10 +308,10 @@ public class Game {
 
             if (unitInField == null) {
                 board.placeUnit(unitToPlace, position);
-                stringBuilder.append(Printer.placeDisplay(currentTeam, unitToPlace, field));
+                stringBuilder.append(MessageFormatter.placeDisplay(currentTeam, unitToPlace, field));
                 stringBuilder.append(System.lineSeparator());
             } else if (unitInField.getTeam() == currentTeam) {
-                stringBuilder.append(Printer.placeDisplay(currentTeam, unitToPlace, field));
+                stringBuilder.append(MessageFormatter.placeDisplay(currentTeam, unitToPlace, field));
                 stringBuilder.append(System.lineSeparator());
                 Merge merge = new Merge(unitToPlace, (RegularUnit) unitInField);
                 stringBuilder.append(merge.mergeResult(unitInField, unitToPlace, position, this));
@@ -323,7 +322,25 @@ public class Game {
         if (board.unitCount(currentTeam) > 5) {
             Unit placedUnit = field.getUnit();
             board.removeUnit(position);
-            stringBuilder.append(Printer.sixthUnitDisplay(placedUnit));
+            stringBuilder.append(MessageFormatter.sixthUnitDisplay(placedUnit));
+            stringBuilder.append(System.lineSeparator());
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * executes the in place action.
+     * @param selectedUnit the unit performing this action
+     * @param targetPosition the position on which this action takes place
+     * @return the formatted message if the unit stays in place
+     */
+    public String executeEnPlace(Unit selectedUnit, Position targetPosition) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Position selectedPosition = this.getSavedPosition();
+        Field targetedField = this.getFarmlandBoard().getField(targetPosition);
+        if (selectedPosition.equals(targetPosition)) {
+            selectedUnit.setHasMoved(true);
+            stringBuilder.append(MessageFormatter.moveDisplay(selectedUnit, targetedField));
             stringBuilder.append(System.lineSeparator());
         }
         return stringBuilder.toString();

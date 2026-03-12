@@ -1,20 +1,19 @@
-package edu.kit.kastel.view;
+package edu.kit.kastel.model;
 
-import edu.kit.kastel.model.Game;
-import edu.kit.kastel.model.Verbosity;
 import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Unit;
+import edu.kit.kastel.view.SymbolSet;
 
 /**
  * * this utility class helps with printing the board output display using the provided static methods.
  *
  * @author ucktt
  */
-public final class BoardPrinter {
+public final class BoardFormatter {
 
-    private BoardPrinter() {
+    private BoardFormatter() {
     }
 
     /**

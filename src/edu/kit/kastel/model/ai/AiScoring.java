@@ -166,14 +166,14 @@ public class AiScoring {
         } else {
             Unit unitInField = field.getUnit();
             if (unitInField.getTeam() == aiTeam
-                    && !(unitInField instanceof FarmerKing)
-                    && !(unitToPlace instanceof FarmerKing)) {
+                    && !(unitInField.isFarmerKing())
+                    && !(unitToPlace.isFarmerKing())) {
                 return mergeAction((RegularUnit) unitToPlace, (RegularUnit) unitInField);
             } else if (unitInField.getTeam() != aiTeam
-                    && !(unitToPlace instanceof FarmerKing)) {
+                    && !(unitToPlace.isFarmerKing())) {
                 return duelAction(unitToPlace, unitInField);
             } else if (unitInField.getTeam() == aiTeam
-                    && field.getUnit() instanceof FarmerKing) {
+                    && unitInField.isFarmerKing()) {
                 return 0;
             }
         }
@@ -219,7 +219,7 @@ public class AiScoring {
             }
             Field field = game.getFarmlandBoard().getField(neighbor);
             if (!field.isEmpty() && field.getUnit().getTeam() != aiTeam
-                    && field.getUnit() instanceof RegularUnit) {
+                    && !field.getUnit().isFarmerKing()) {
                 int attackPoints = ((RegularUnit) field.getUnit()).getAttackPoints();
                 if (attackPoints > max) {
                     max = attackPoints;
@@ -230,14 +230,14 @@ public class AiScoring {
     }
 
     private int duelAction(Unit attacker, Unit defender) {
-        if (defender instanceof FarmerKing) {
+        if (defender.isFarmerKing()) {
             return ((RegularUnit) attacker).getAttackPoints();
         } else if (!defender.isFaceUp()) {
             return ((RegularUnit) attacker).getAttackPoints() - 500;
-        } else if (defender instanceof RegularUnit
+        } else if (!defender.isFarmerKing()
                 && ((RegularUnit) defender).isBlocking()) {
             return ((RegularUnit) attacker).getAttackPoints() - ((RegularUnit) defender).getDefencePoints();
-        } else if (defender instanceof RegularUnit && attacker instanceof RegularUnit) {
+        } else if (!defender.isFarmerKing() && !attacker.isFarmerKing()) {
             return 2 * (((RegularUnit) attacker).getAttackPoints() - ((RegularUnit) defender).getAttackPoints());
         }
         return 0;

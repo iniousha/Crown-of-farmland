@@ -1,4 +1,4 @@
-package edu.kit.kastel.view;
+package edu.kit.kastel.view.parsing;
 
 /**
         * Signals that parsing/retrieving an argument failed.

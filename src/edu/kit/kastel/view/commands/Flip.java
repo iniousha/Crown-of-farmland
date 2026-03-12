@@ -6,8 +6,8 @@ import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.Printer;
-import edu.kit.kastel.view.BoardPrinter;
+import edu.kit.kastel.model.MessageFormatter;
+import edu.kit.kastel.model.BoardFormatter;
 
 /**
  * this class represents the flip command.
@@ -43,11 +43,11 @@ public class Flip implements Command<Game> {
             return Result.error("unit is face up.");
         } else {
             unit.flip();
-            stringBuilder.append(Printer.flipDisplay(unit, field));
+            stringBuilder.append(MessageFormatter.flipDisplay(unit, field));
             stringBuilder.append(System.lineSeparator());
-            stringBuilder.append(BoardPrinter.boardDisplay(handle));
+            stringBuilder.append(BoardFormatter.boardDisplay(handle));
             stringBuilder.append(System.lineSeparator());
-            stringBuilder.append(Printer.displayUnit(unit, handle));
+            stringBuilder.append(MessageFormatter.displayUnit(unit, handle));
             return Result.success(stringBuilder.toString());
 
         }

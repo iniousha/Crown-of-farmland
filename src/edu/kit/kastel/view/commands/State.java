@@ -6,8 +6,8 @@ import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
-import edu.kit.kastel.view.BoardPrinter;
-import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.model.BoardFormatter;
+import edu.kit.kastel.model.MessageFormatter;
 
 /**
  * this class represents the state command.
@@ -28,17 +28,17 @@ public class State implements Command<Game> {
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        String board = BoardPrinter.boardDisplay(handle);
+        String board = BoardFormatter.boardDisplay(handle);
 
-        stringBuilder.append(Printer.stateDisplay(handle));
+        stringBuilder.append(MessageFormatter.stateDisplay(handle));
         stringBuilder.append(System.lineSeparator());
         stringBuilder.append(board);
         if (unit != null) {
             stringBuilder.append(System.lineSeparator());
-            stringBuilder.append(Printer.displayUnit(unit, handle));
+            stringBuilder.append(MessageFormatter.displayUnit(unit, handle));
         } else if (handle.getSavedPosition() != null) {
             stringBuilder.append(System.lineSeparator());
-            stringBuilder.append(Printer.noUnitDisplay());
+            stringBuilder.append(MessageFormatter.noUnitDisplay());
         }
         return Result.success(stringBuilder.toString());
     }

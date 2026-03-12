@@ -1,7 +1,7 @@
 package edu.kit.kastel.model.duel;
 
 import edu.kit.kastel.model.Game;
-import edu.kit.kastel.view.Printer;
+import edu.kit.kastel.model.MessageFormatter;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.unit.FarmerKing;
@@ -117,10 +117,10 @@ public final class Duel {
         Field selectedField = game.getFarmlandBoard().getField(game.getSavedPosition());
         if (defender instanceof FarmerKing) {
 
-            stringBuilder.append(Printer.duelWithFarmerKingDisplay(attacker, defender, targetedField));
+            stringBuilder.append(MessageFormatter.duelWithFarmerKingDisplay(attacker, defender, targetedField));
             stringBuilder.append(System.lineSeparator());
         } else if (defender instanceof RegularUnit) {
-            stringBuilder.append(Printer.duelWithRegularUnitDisplay(attacker, defender, targetedField, defenderWasFaceDown));
+            stringBuilder.append(MessageFormatter.duelWithRegularUnitDisplay(attacker, defender, targetedField, defenderWasFaceDown));
             stringBuilder.append(System.lineSeparator());
         }
         stringBuilder.append(flipDisplay(attacker, defender,
@@ -151,7 +151,7 @@ public final class Duel {
         if (game.isGameOver()) {
             Team winnerTeam = game.getWinner();
             if (game.getOpponentTeam().isDeckEmpty()) {
-                stringBuilder.append(Printer.deckEmptyDisplay(game.getOpponentTeam()));
+                stringBuilder.append(MessageFormatter.deckEmptyDisplay(game.getOpponentTeam()));
             }
             stringBuilder.append(String.format("%s wins!", winnerTeam.getName()));
             stringBuilder.append(System.lineSeparator());
