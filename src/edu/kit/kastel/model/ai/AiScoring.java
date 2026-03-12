@@ -6,7 +6,6 @@ import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
 import edu.kit.kastel.model.board.Vector2D;
 import edu.kit.kastel.model.merge.Merge;
-import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
@@ -58,7 +57,7 @@ public class AiScoring {
         Unit fellowPresentUnit = field.getUnit();
         if (fellowPresentUnit != null
                 && fellowPresentUnit.getTeam() == aiTeam
-                && !(fellowPresentUnit instanceof FarmerKing)) {
+                && !(fellowPresentUnit.isFarmerKing())) {
             return 1;
         }
         return 0;
@@ -73,7 +72,7 @@ public class AiScoring {
             if (currentPosition.isAdjacentTo(position, true) && !field.isEmpty()) {
                 Unit unitInField = field.getUnit();
                 Team unitTeam = unitInField.getTeam();
-                if (unitTeam == this.aiTeam && !(unitInField instanceof FarmerKing)) {
+                if (unitTeam == this.aiTeam && !(unitInField.isFarmerKing())) {
                     count++;
                 }
             }
@@ -187,7 +186,7 @@ public class AiScoring {
      * @return the blocking score, returns 0 if the unit was farmer king
      */
     public int getBlockScore(Unit unit) {
-        if (unit instanceof FarmerKing) {
+        if (unit.isFarmerKing()) {
             return 0;
         }
         Position unitPosition = game.getFarmlandBoard().findPosition(unit);
@@ -202,7 +201,7 @@ public class AiScoring {
      * @return enPlace movement score for the specified unit
      */
     public int getEnPlaceScore(Unit unit) {
-        if (unit instanceof FarmerKing) {
+        if (unit.isFarmerKing()) {
             return 0;
         }
         Position unitPosition = game.getFarmlandBoard().findPosition(unit);

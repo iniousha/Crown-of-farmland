@@ -4,7 +4,6 @@ import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.MessageFormatter;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
-import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
@@ -28,14 +27,14 @@ public final class Duel {
      */
     public static DuelResult executeDuel(RegularUnit attacker, Unit defender) {
         attacker.flip();
-        if (defender instanceof RegularUnit) {
+        if (!defender.isFarmerKing()) {
             defender.flip();
         }
 
         DuelType type = getDuelType(defender);
         int attackPointA = attacker.getAttackPoints();
 
-        if (type == DuelType.BLOCKADE && defender instanceof RegularUnit) {
+        if (type == DuelType.BLOCKADE && !defender.isFarmerKing()) {
             int defencePointB = ((RegularUnit) defender).getDefencePoints();
             if (attackPointA > defencePointB) {
                 return new DuelResult(0, null,
@@ -58,7 +57,6 @@ public final class Duel {
         }
 
         if (type == DuelType.STANDARD) {
-            assert defender instanceof RegularUnit;
             int attackPointB = ((RegularUnit) defender).getAttackPoints();
             if (attackPointA > attackPointB) {
                 int damage = attackPointA - attackPointB;
@@ -86,10 +84,10 @@ public final class Duel {
      * @return the type of the duel
      */
     public static DuelType getDuelType(Unit defender) {
-        if (defender instanceof FarmerKing) {
+        if (defender.isFarmerKing()) {
             return DuelType.AGAINST_FARMER_KING;
         }
-        if (defender instanceof RegularUnit && ((RegularUnit) defender).isBlocking()) {
+        if (!defender.isFarmerKing() && ((RegularUnit) defender).isBlocking()) {
             return DuelType.BLOCKADE;
         }
         return DuelType.STANDARD;
@@ -115,11 +113,11 @@ public final class Duel {
         RegularUnit attacker = (RegularUnit) attackerUnit;
         Field targetedField = game.getFarmlandBoard().getField(targetPosition);
         Field selectedField = game.getFarmlandBoard().getField(game.getSavedPosition());
-        if (defender instanceof FarmerKing) {
+        if (defender.isFarmerKing()) {
 
             stringBuilder.append(MessageFormatter.duelWithFarmerKingDisplay(attacker, defender, targetedField));
             stringBuilder.append(System.lineSeparator());
-        } else if (defender instanceof RegularUnit) {
+        } else if (!defender.isFarmerKing()) {
             stringBuilder.append(MessageFormatter.duelWithRegularUnitDisplay(attacker, defender, targetedField, defenderWasFaceDown));
             stringBuilder.append(System.lineSeparator());
         }
