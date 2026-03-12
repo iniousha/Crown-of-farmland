@@ -50,7 +50,7 @@ public class Move implements Command<Game> {
 
         stringBuilder.append(handle.endBlocking(selectedUnit));
         stringBuilder.append(handle.executeEnPlace(selectedUnit, targetPosition));
-        if (selectedUnit instanceof FarmerKing
+        if (selectedUnit.isFarmerKing()
                 && targetedUnit != null
                 && targetedUnit.getTeam() == handle.getCurrentTeam()) {
             handle.getFarmlandBoard().removeUnit(targetPosition);
@@ -62,7 +62,7 @@ public class Move implements Command<Game> {
             if (movingUnit.getTeam() != targetedUnit.getTeam()) {
 
                 boolean attackerWasFaceDown = !movingUnit.isFaceUp();
-                boolean defenderWasFaceDown = (targetedUnit instanceof RegularUnit) && !targetedUnit.isFaceUp();
+                boolean defenderWasFaceDown = (!targetedUnit.isFarmerKing()) && !targetedUnit.isFaceUp();
 
                 DuelResult duelResult = Duel.executeDuel(movingUnit, targetedUnit);
                 stringBuilder.append(Duel.duelExecutionDisplay(duelResult, movingUnit, targetedUnit,

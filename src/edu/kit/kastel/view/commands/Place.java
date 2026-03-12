@@ -108,7 +108,8 @@ public class Place implements Command<Game> {
             return Result.error("cannot place on opponent's unit.");
         }
 
-        if (unitInField instanceof FarmerKing && unitInField.getTeam() == currentTeam) {
+        if (unitInField != null && unitInField.isFarmerKing()
+                && unitInField.getTeam() == currentTeam) {
             return Result.error("cannot place on your own Farmer King.");
         }
         return null;

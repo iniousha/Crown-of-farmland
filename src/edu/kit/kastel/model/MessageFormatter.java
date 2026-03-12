@@ -34,6 +34,7 @@ public final class MessageFormatter {
     private static final String MOVE_DISPLAY_FORMAT = "%s moves to %s.";
     private static final String DUEL_FARMER_KING_FORMAT = "%s (%d/%d) attacks %s on %s!";
     private static final String DUEL_REGULAR_UNIT_FORMAT = "%s (%d/%d) attacks %s (%d/%d) on %s!";
+    private static final String DUEL_HIDDEN_UNIT_FORMAT = "%s (%d/%d) attacks ??? on %s!";
 
     private MessageFormatter() {
     }
@@ -336,7 +337,7 @@ public final class MessageFormatter {
         int defencePoint2 = ((RegularUnit) unit2).getDefencePoints();
         String fieldName = field.getPosition().toString();
         if (defenderWasFaceDown && unit1.getTeam() != unit2.getTeam()) {
-            return String.format("%s (%d/%d) attacks ??? on %s!", unit1Name, attackPoints1,
+            return String.format(DUEL_HIDDEN_UNIT_FORMAT, unit1Name, attackPoints1,
                     defencePoints1, fieldName);
         } else {
             return String.format(DUEL_REGULAR_UNIT_FORMAT, unit1Name, attackPoints1,
