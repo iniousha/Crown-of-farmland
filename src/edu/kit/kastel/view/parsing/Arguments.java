@@ -46,7 +46,9 @@ public class Arguments {
         if (isExhausted()) {
             throw new InvalidArgumentException(ERROR_TOO_FEW_ARGUMENTS);
         }
-        return arguments[argumentIndex++];
+        String argument = arguments[argumentIndex];
+        argumentIndex++;
+        return argument;
     }
 
     /**
@@ -69,7 +71,7 @@ public class Arguments {
         if (secondChar < '1' || secondChar > '7') {
             throw new InvalidArgumentException(String.format(ERROR_INVALID_FIELD_FORMAT));
         }
-        int column = Position.convertToInteger(firstChar);
+        int column = convertToInteger(firstChar);
         int row = secondChar - ROW_OFFSET;
         if (!Position.isInBounds(column, row)) {
             throw new InvalidArgumentException(String.format(ERROR_NOT_IN_BOUNDS));
@@ -115,5 +117,10 @@ public class Arguments {
             indexes.add(parseIdx());
         }
         return indexes;
+    }
+
+    private static int convertToInteger(char character) {
+        char upperCharacter = Character.toUpperCase(character);
+        return upperCharacter - 'A';
     }
 }

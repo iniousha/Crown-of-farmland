@@ -47,15 +47,11 @@ public final class Duel {
             return new DuelResult(0, null,
                     false, false, false
             );
-        }
-
-        if (type == DuelType.AGAINST_FARMER_KING) {
+        } else if (type == DuelType.AGAINST_FARMER_KING) {
             return new DuelResult(attackPointA, defender.getTeam(),
                     false, false, false
             );
-        }
-
-        if (type == DuelType.STANDARD) {
+        } else {
             int attackPointB = defender.getAttackPoints();
             if (attackPointA > attackPointB) {
                 int damage = attackPointA - attackPointB;
@@ -73,7 +69,6 @@ public final class Duel {
                     null, true, true, false
             );
         }
-        return null;
     }
 
     /**

@@ -27,17 +27,6 @@ public record Position(int column, int row) {
         return column >= MIN_COLUMN && column <= MAX_COLUMN && row >= MIN_ROW && row <= MAX_ROW;
     }
 
-    /**
-     * converts a letter character into its corresponding zero based integer.
-     * @param character the character to convert
-     * @return a zero based index of the character
-     */
-    public static int convertToInteger(char character) {
-        char upperCharacter = Character.toUpperCase(character);
-        return upperCharacter - 'A';
-    }
-
-
     @Override
     public String toString() {
 
