@@ -6,6 +6,7 @@ package edu.kit.kastel.view;
  */
 public class SymbolSet {
 
+    private static final String DEFAULT_ASCII_SYMBOL_SET = "++++++++-|+############=N####";
     private final String symbols;
 
     /**
@@ -30,6 +31,6 @@ public class SymbolSet {
      * @return a symbol set using default ASCII characters
      */
     public static SymbolSet defaultAscii() {
-        return new SymbolSet("++++++++-|+############=N####");
+        return new SymbolSet(DEFAULT_ASCII_SYMBOL_SET);
     }
 }

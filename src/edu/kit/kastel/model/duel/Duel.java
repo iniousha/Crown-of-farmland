@@ -138,7 +138,7 @@ public final class Duel {
             if (game.getOpponentTeam().isDeckEmpty()) {
                 stringBuilder.append(MessageFormatter.deckEmptyDisplay(game.getOpponentTeam()));
             }
-            stringBuilder.append(String.format("%s wins!", winnerTeam.getName()));
+            stringBuilder.append(MessageFormatter.winnerDisplay(winnerTeam));
             stringBuilder.append(System.lineSeparator());
         }
         return stringBuilder.toString();
@@ -164,12 +164,12 @@ public final class Duel {
         StringBuilder stringBuilder = new StringBuilder();
         if (duelResult.attackerEliminated()) {
             game.getFarmlandBoard().removeUnit(game.getSavedPosition());
-            stringBuilder.append(String.format("%s was eliminated!", attacker.getName()));
+            stringBuilder.append(MessageFormatter.unitEliminationDisplay(attacker));
             stringBuilder.append(System.lineSeparator());
         }
         if (duelResult.defenderEliminated()) {
             game.getFarmlandBoard().removeUnit(targetPosition);
-            stringBuilder.append(String.format("%s was eliminated!", defender.getName()));
+            stringBuilder.append(MessageFormatter.unitEliminationDisplay(defender));
             stringBuilder.append(System.lineSeparator());
         }
         return stringBuilder.toString();

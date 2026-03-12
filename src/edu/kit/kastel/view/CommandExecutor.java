@@ -17,6 +17,7 @@ public class CommandExecutor {
     private static final String ERROR_PREFIX = "ERROR: ";
     private static final String ERROR_UNKNOWN_COMMAND = ERROR_PREFIX + "unknown command";
     private static final String ERROR_TOO_MANY_ARGUMENTS = ERROR_PREFIX + "too many arguments";
+    private static final String QUIT = "quit";
     private final ModelKeyword[] modelKeywords;
     private final Scanner scanner;
     private final PrintStream output;
@@ -58,7 +59,7 @@ public class CommandExecutor {
     /**
      * sets the running state to false and stops the executor.
      */
-    public void stop() {
+    private void stop() {
         this.isRunning = false;
     }
 
@@ -69,7 +70,7 @@ public class CommandExecutor {
         if (this.isRunning && this.scanner.hasNextLine()) {
             String line = this.scanner.nextLine();
             String trimmed = line.trim();
-            if (trimmed.equalsIgnoreCase("quit")) {
+            if (trimmed.equalsIgnoreCase(QUIT)) {
                 stop();
                 return;
             }

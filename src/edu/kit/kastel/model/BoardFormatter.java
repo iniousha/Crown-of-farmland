@@ -1,8 +1,6 @@
 package edu.kit.kastel.model;
 
 import edu.kit.kastel.model.board.Position;
-import edu.kit.kastel.model.unit.FarmerKing;
-import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.SymbolSet;
 
@@ -12,6 +10,8 @@ import edu.kit.kastel.view.SymbolSet;
  * @author ucktt
  */
 public final class BoardFormatter {
+
+    private static final String COLUMN_NAMES = "    A   B   C   D   E   F   G";
 
     private BoardFormatter() {
     }
@@ -242,42 +242,31 @@ public final class BoardFormatter {
         return getUnitSymbol(unit, game);
     }
 
+    private static String getTeamSymbol(Unit unit) {
+        if (unit.isFarmerKing()) {
+            return unit.getTeam().isAiTeam() ? "Y" : "X";
+        }
+        return unit.getTeam().isAiTeam() ? "y" : "x";
+    }
+
     private static String getUnitSymbol(Unit unit, Game game) {
         if (unit == null) {
             return " ";
         }
+        String unitSymbol = getTeamSymbol(unit);
         boolean star = unit.getTeam() == game.getCurrentTeam() && !unit.hasMoved();
 
         if (star) {
-            switch (unit) {
-                case FarmerKing ignored -> {
-                    return "*" + (!unit.getTeam().isAiTeam() ? "X" : "Y");
-                }
-                case RegularUnit regularUnit when regularUnit.isBlocking() -> {
-                    return "*" + (!unit.getTeam().isAiTeam() ? "x" : "y") + "b";
-                }
-                case RegularUnit regularUnit when !regularUnit.isBlocking() -> {
-                    return "*" + (!unit.getTeam().isAiTeam() ? "x" : "y");
-                }
-                default -> {
-                    return "   ";
-                }
-            }
+            return "*" + unitSymbol + (unit.isBlocking() ? "b" : "");
         }
 
-        if (unit instanceof FarmerKing) {
-            return (!unit.getTeam().isAiTeam()) ? "X" : "Y";
+        if (unit.isBlocking()) {
+            return " " + unitSymbol + "b";
         }
-
-        RegularUnit regularUnit = (RegularUnit) unit;
-        if (regularUnit.isBlocking()) {
-            return " " + (!unit.getTeam().isAiTeam() ? "x" : "y") + 'b';
-        }
-
-        return (!unit.getTeam().isAiTeam()) ? "x" : "y";
+        return unitSymbol;
     }
 
     private static String columnContent() {
-        return "    A   B   C   D   E   F   G";
+        return COLUMN_NAMES;
     }
 }

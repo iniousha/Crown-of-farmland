@@ -21,6 +21,7 @@ public final class DeckReader {
     private static final String ERROR_DECK_SIZE_MISMATCH = "ERROR: invalid deck file: expected %d lines, but found %d lines in %s.";
     private static final String ERROR_INVALID_DECK_SIZE = "ERROR: deck must contain exactly 40 units, but found: %s ";
     private static final String ERROR_LINE_PARSE = "ERROR: could not parse line as Integer: %s.";
+    private static final int MAXIMUM_DECK_SIZE = 40;
 
     private DeckReader() {
     }
@@ -52,7 +53,7 @@ public final class DeckReader {
 
         Deque<RegularUnit> deck = getRegularUnits(units, lineList);
 
-        if (deck.size() != 40) {
+        if (deck.size() != MAXIMUM_DECK_SIZE) {
             throw new ProgramStartException(ERROR_INVALID_DECK_SIZE.formatted(deck.size()));
         }
         return new Deck(deck);

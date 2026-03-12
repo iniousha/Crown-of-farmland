@@ -21,6 +21,10 @@ import java.util.Set;
  */
 public final class ProgramStart {
 
+    private static final String PROGRAM_STARTING_MESSAGE = "Use one of the following commands: select,"
+            + " board, move, flip, block, hand, place, show, yield, state, quit.";
+    private static final int MAXIMUM_TEAM_NAME_LENGTH = 14;
+
     private ProgramStart() {
     }
 
@@ -107,6 +111,13 @@ public final class ProgramStart {
         }
     }
 
+    private static String parseTeamName(String value) throws ProgramStartException {
+        if (value.length() > MAXIMUM_TEAM_NAME_LENGTH) {
+            throw new ProgramStartException("ERROR: team1 name too long");
+        }
+        return value;
+    }
+
     private static Game buildGame(List<ArgumentValue> argumentValues) throws ProgramStartException {
         Long seed = null;
         SymbolSet symbolSet = SymbolSet.defaultAscii();
@@ -119,7 +130,7 @@ public final class ProgramStart {
 
         for (ArgumentValue argumentValue : argumentValues) {
             switch (argumentValue.key()) {
-                case SEED -> seed = ProgramStart.parseSeed(argumentValue.value());
+                case SEED -> seed = parseSeed(argumentValue.value());
                 case BOARD -> symbolSet = SymbolSetReader.read(argumentValue.value());
                 case UNITS -> availableUnits = UnitReader.read(argumentValue.value());
                 case DECK -> {
@@ -128,26 +139,15 @@ public final class ProgramStart {
                 }
                 case DECK1 -> deck1 = DeckReader.read(argumentValue.value(), availableUnits, true);
                 case DECK2 -> deck2 = DeckReader.read(argumentValue.value(), availableUnits, true);
-                case TEAM1 -> {
-                    team1Name = argumentValue.value();
-                    if (team1Name.length() > 14) {
-                        throw new ProgramStartException("ERROR: team1 name too long");
-                    }
-                }
-                case TEAM2 -> {
-                    team2Name = argumentValue.value();
-                    if (team2Name.length() > 14) {
-                        throw new ProgramStartException("ERROR: team2 name too long");
-                    }
-                }
-                case VERBOSITY -> verbosity = ProgramStart.parseVerbosity(argumentValue.value());
+                case TEAM1 -> team1Name = argumentValue.value();
+                case TEAM2 -> team2Name = parseTeamName(argumentValue.value());
+                case VERBOSITY -> verbosity = parseVerbosity(argumentValue.value());
                 default -> throw new ProgramStartException("ERROR: invalid argument: " + argumentValue.key());
             }
         }
 
         Random random = new Random(Objects.requireNonNull(seed));
-        System.out.println("Use one of the following commands: select, board, move, flip, block, hand, place, show, yield, state, quit."
-        );
+        System.out.println(PROGRAM_STARTING_MESSAGE);
         return new Game(team1Name, team2Name, Objects.requireNonNull(deck1), Objects.requireNonNull(deck2), random, verbosity, symbolSet);
     }
 
@@ -157,7 +157,6 @@ public final class ProgramStart {
      * @param key   the program argument identifier
      * @param value the value associated with the argument
      */
-    record ArgumentValue(ProgramArgument key, String value) {
+    private record ArgumentValue(ProgramArgument key, String value) {
     }
-
 }

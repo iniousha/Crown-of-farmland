@@ -1,7 +1,6 @@
 package edu.kit.kastel.model;
 
 import edu.kit.kastel.model.board.Field;
-import edu.kit.kastel.model.unit.FarmerKing;
 import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Team;
 import edu.kit.kastel.model.unit.Unit;
@@ -29,12 +28,13 @@ public final class MessageFormatter {
     private static final String PLACE_DISPLAY_FORMAT = "%s places %s on %s.";
     private static final String SUCCESSFUL_MERGE_FORMAT = "%s and %s on %s join forces!%nSuccess!";
     private static final String FAILED_MERGE_DISPLAY = "%s and %s on %s join forces!%nUnion failed. %s was eliminated.";
-    private static final String SIXTH_UNIT_DISPLAY_FORMAT = "%s was eliminated!";
+    private static final String ELIMINATION_FORMAT = "%s was eliminated!";
     private static final String NO_LONGER_BLOCKS_FORMAT = "%s no longer blocks.";
     private static final String MOVE_DISPLAY_FORMAT = "%s moves to %s.";
     private static final String DUEL_FARMER_KING_FORMAT = "%s (%d/%d) attacks %s on %s!";
     private static final String DUEL_REGULAR_UNIT_FORMAT = "%s (%d/%d) attacks %s (%d/%d) on %s!";
     private static final String DUEL_HIDDEN_UNIT_FORMAT = "%s (%d/%d) attacks ??? on %s!";
+    private static final String EMPTY_DECK_DISPLAY = "%s has no cards left in the deck!";
 
     private MessageFormatter() {
     }
@@ -67,14 +67,14 @@ public final class MessageFormatter {
      * @return a string displaying the unit
      */
     public static String displayUnit(Unit unit, Game game) {
-        if (unit instanceof FarmerKing) {
-            return displayFarmerKing((FarmerKing) unit);
+        if (unit.isFarmerKing()) {
+            return displayFarmerKing(unit);
         } else {
-            return displayRegularUnit((RegularUnit) unit, game);
+            return displayRegularUnit(unit, game);
         }
     }
 
-    private static String displayRegularUnit(RegularUnit currentUnit, Game game) {
+    private static String displayRegularUnit(Unit currentUnit, Game game) {
         Team unitTeam = currentUnit.getTeam();
         Team currentTeam = game.getCurrentTeam();
         String unitName = currentUnit.getName();
@@ -89,7 +89,7 @@ public final class MessageFormatter {
         }
     }
 
-    private static String displayFarmerKing(FarmerKing farmerKing) {
+    private static String displayFarmerKing(Unit farmerKing) {
         String teamName = farmerKing.getTeam().getName();
         return String.format(FARMER_KING_DISPLAY_FORMAT, teamName);
     }
@@ -113,7 +113,6 @@ public final class MessageFormatter {
      * @param game the game to be stated
      * @return string representation of the state of the game
      */
-    //do multiple private methods and build string formatted sentences later
     public static String stateDisplay(Game game) {
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -193,7 +192,7 @@ public final class MessageFormatter {
      * @return a formatted message
      */
     public static String deckEmptyDisplay(Team team) {
-        return team.getName() + " has no cards left in the deck!";
+        return String.format(EMPTY_DECK_DISPLAY, team.getName());
     }
 
     /**
@@ -203,7 +202,7 @@ public final class MessageFormatter {
      * @param unit the discarded unit
      * @return the formatted message
      */
-    public static String discardedCardDisplay(Team team, RegularUnit unit) {
+    public static String discardedCardDisplay(Team team, Unit unit) {
         String teamName = team.getName();
         String unitName = unit.getName();
         int attackPoints = unit.getAttackPoints();
@@ -269,14 +268,14 @@ public final class MessageFormatter {
     }
 
     /**
-     * returns a formatted string indicating that a team tried to place their sixth unit on a field.
+     * returns a formatted string indicating that a unit was eliminated from the game.
      *
      * @param unit the unit that was being placed
      * @return the formatted message
      */
-    public static String sixthUnitDisplay(Unit unit) {
+    public static String unitEliminationDisplay(Unit unit) {
         String unitName = unit.getName();
-        return String.format(SIXTH_UNIT_DISPLAY_FORMAT, unitName);
+        return String.format(ELIMINATION_FORMAT, unitName);
     }
 
     /**
@@ -310,11 +309,10 @@ public final class MessageFormatter {
      */
     public static String duelWithFarmerKingDisplay(Unit unit1, Unit unit2, Field field) {
         String unit1Name = unit1.getName();
-        int attackPoints1 = ((RegularUnit) unit1).getAttackPoints();
-        int defencePoints1 = ((RegularUnit) unit1).getDefencePoints();
+        int attackPoints1 = unit1.getAttackPoints();
+        int defencePoints1 = unit1.getDefencePoints();
         String unit2Name = unit2.getName();
         String fieldName = field.getPosition().toString();
-
         return String.format(DUEL_FARMER_KING_FORMAT, unit1Name, attackPoints1, defencePoints1, unit2Name, fieldName);
     }
 
@@ -329,12 +327,12 @@ public final class MessageFormatter {
      */
     public static String duelWithRegularUnitDisplay(Unit unit1, Unit unit2, Field field, boolean defenderWasFaceDown) {
         String unit1Name = unit1.getName();
-        int attackPoints1 = ((RegularUnit) unit1).getAttackPoints();
-        int defencePoints1 = ((RegularUnit) unit1).getDefencePoints();
+        int attackPoints1 = unit1.getAttackPoints();
+        int defencePoints1 = unit1.getDefencePoints();
 
         String unit2Name = unit2.getName();
-        int attackPoints = ((RegularUnit) unit2).getAttackPoints();
-        int defencePoint2 = ((RegularUnit) unit2).getDefencePoints();
+        int attackPoints = unit2.getAttackPoints();
+        int defencePoint2 = unit2.getDefencePoints();
         String fieldName = field.getPosition().toString();
         if (defenderWasFaceDown && unit1.getTeam() != unit2.getTeam()) {
             return String.format(DUEL_HIDDEN_UNIT_FORMAT, unit1Name, attackPoints1,
