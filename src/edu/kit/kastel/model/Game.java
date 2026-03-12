@@ -270,7 +270,7 @@ public class Game {
      */
     public String endBlocking(Unit selectedUnit) {
         StringBuilder stringBuilder = new StringBuilder();
-        if (selectedUnit instanceof RegularUnit && ((RegularUnit) selectedUnit).isBlocking()) {
+        if (!selectedUnit.isFarmerKing() && ((RegularUnit) selectedUnit).isBlocking()) {
             stringBuilder.append(MessageFormatter.noLongerBlockDisplay(selectedUnit));
             stringBuilder.append(System.lineSeparator());
             ((RegularUnit) selectedUnit).endBlocking();
