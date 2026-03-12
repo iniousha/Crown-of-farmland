@@ -214,7 +214,11 @@ public class Game {
         this.savedPosition = newPosition;
     }
 
-
+    /**
+     * returns the unit at the specified position.
+     * @param position specified position to find the unit at
+     * @return the unit
+     */
     public Unit getUnitAt(Position position) {
         Field field = getFarmlandBoard().getField(position);
         setSavedPosition(position);
