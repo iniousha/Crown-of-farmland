@@ -137,7 +137,6 @@ public class Team {
         hand.remove(idx);
         return unit;
     }
-
     /**
      * reduces this team's life points by the given damage point.
      * @param damage the damage point to apply
