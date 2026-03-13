@@ -27,7 +27,7 @@ public class Select implements Command<Game> {
     @Override
     public Result execute(Game handle) {
         if (handle.hasYieldFailed()) {
-            return Result.error("can only use hand or yield after failed yield");
+            return Result.error(MessageFormatter.failedYieldDisplay());
         }
 
         Unit unit = handle.getUnitAt(this.position);

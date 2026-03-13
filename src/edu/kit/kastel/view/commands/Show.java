@@ -15,11 +15,10 @@ public class Show implements Command<Game> {
     @Override
     public Result execute(Game handle) {
         if (handle.hasYieldFailed()) {
-            return Result.error("can only use hand or yield after failed yield");
+            return Result.error(MessageFormatter.failedYieldDisplay());
         }
-
         if (handle.getSavedPosition() == null) {
-            return Result.error("No field selected.");
+            return Result.error(MessageFormatter.noFieldSelectionDisplay());
         }
         Unit unit = handle.getUnitAt(handle.getSavedPosition());
         if (unit == null) {

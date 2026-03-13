@@ -15,32 +15,36 @@ import edu.kit.kastel.model.BoardFormatter;
  */
 public class Flip implements Command<Game> {
 
+    private static final String ERROR_FLIPPING_OPPONENT_UNIT = "Cannot flip opponent's unit";
+    private static final String ERROR_UNIT_ALREADY_MOVED = "unit has already moved.";
+    private static final String ERROR_UNIT_FACE_UP = "unit is face up.";
+
     @Override
     public Result execute(Game handle) {
         StringBuilder stringBuilder = new StringBuilder();
         Position position = handle.getSavedPosition();
 
         if (handle.hasYieldFailed()) {
-            return Result.error("can only use hand or yield after failed yield");
+            return Result.error(MessageFormatter.failedYieldDisplay());
         }
 
         if (position == null) {
-            return Result.error("No field selected.");
+            return Result.error(MessageFormatter.noFieldSelectionDisplay());
         }
 
         Field field = handle.getFarmlandBoard().getField(handle.getSavedPosition());
         Unit unit = field.getUnit();
 
         if (unit == null) {
-            return Result.error("No unit on selected field.");
+            return Result.error(MessageFormatter.noUnitOnFieldDisplay());
         }
         if (unit.getTeam() != handle.getCurrentTeam()) {
-            return Result.error("Cannot flip opponent's unit.");
+            return Result.error(ERROR_FLIPPING_OPPONENT_UNIT);
         }
         if (unit.hasMoved()) {
-            return Result.error("unit has already moved.");
+            return Result.error(ERROR_UNIT_ALREADY_MOVED);
         } else if (unit.isFaceUp() || unit.isFarmerKing()) {
-            return Result.error("unit is face up.");
+            return Result.error(ERROR_UNIT_FACE_UP);
         } else {
             unit.flip();
             stringBuilder.append(MessageFormatter.flipDisplay(unit, field));
