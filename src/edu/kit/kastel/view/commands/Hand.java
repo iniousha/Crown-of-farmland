@@ -16,7 +16,7 @@ public class Hand implements Command<Game> {
 
     @Override
     public Result execute(Game handle) {
-        List<RegularUnit> hand = handle.hand();
+        List<RegularUnit> hand = handle.getHand();
         return Result.success(MessageFormatter.handToString(hand));
     }
 }

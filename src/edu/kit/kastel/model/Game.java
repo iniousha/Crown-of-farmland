@@ -190,7 +190,7 @@ public class Game {
      *
      * @return the current team's hand
      */
-    public List<RegularUnit> hand() {
+    public List<RegularUnit> getHand() {
         Team currentTeam = getCurrentTeam();
         return currentTeam.getHand();
     }

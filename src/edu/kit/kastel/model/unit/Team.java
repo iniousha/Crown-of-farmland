@@ -121,11 +121,11 @@ public class Team {
     }
 
     /**
-     * returns this team's deck.
-     * @return this team's deck
+     * returns this team's deck size.
+     * @return this team's deck size
      */
-    public Deck getDeck() {
-        return this.deck;
+    public int getDeckSize() {
+        return this.deck.getDeckSize();
     }
 
     /**

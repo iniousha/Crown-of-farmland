@@ -134,8 +134,8 @@ public final class MessageFormatter {
                 .append(System.lineSeparator());
 
         //deck count
-        String currentTeamDeck = "DC: " + currentTeam.getDeck().getDeckSize() + "/40";
-        String opponentTeamDeck = "DC: " + opponentTeam.getDeck().getDeckSize() + "/40";
+        String currentTeamDeck = "DC: " + currentTeam.getDeckSize() + "/40";
+        String opponentTeamDeck = "DC: " + opponentTeam.getDeckSize() + "/40";
         int deckSpace = padding(currentTeamDeck, opponentTeamDeck);
         stringBuilder.append("  ").append(currentTeamDeck).append(" ".repeat(deckSpace)).append(opponentTeamDeck)
                 .append(System.lineSeparator());
