@@ -3,6 +3,7 @@ package edu.kit.kastel.model.unit;
 import edu.kit.kastel.model.Deck;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,7 +13,6 @@ import java.util.List;
 public class Team {
 
     private static final int INITIAL_LIFE_POINTS = 8000;
-
     private final String name;
     private final FarmerKing farmerKing;
     private final Deck deck;
@@ -62,6 +62,7 @@ public class Team {
     public boolean isAiTeam() {
         return this.isAiTeam;
     }
+
 
     /**
      * returns the name of the team.
@@ -137,6 +138,7 @@ public class Team {
         hand.remove(idx);
         return unit;
     }
+
     /**
      * reduces this team's life points by the given damage point.
      * @param damage the damage point to apply
