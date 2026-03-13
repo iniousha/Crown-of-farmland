@@ -289,16 +289,15 @@ public class Game {
 
         FarmlandBoard board = getFarmlandBoard();
         Field field = board.getField(position);
-        List<RegularUnit> hand = getCurrentTeam().getHand();
         Map<Integer, RegularUnit> indexedUnits = new HashMap<>();
         Team currentTeam = getCurrentTeam();
         for (int index : indexes) {
-            indexedUnits.put(index, hand.get(index));
+            indexedUnits.put(index, currentTeam.getHand().get(index));
         }
         List<Integer> sortedIndexes = new ArrayList<>(indexes);
         sortedIndexes.sort(Collections.reverseOrder());
         for (int index : sortedIndexes) {
-            hand.remove(index);
+            currentTeam.removeUnitFromHand(index);
         }
         for (int index : indexes) {
             RegularUnit unitToPlace = indexedUnits.get(index);
