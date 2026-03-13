@@ -43,7 +43,6 @@ public final class ProgramStart {
         argumentIsValid(argumentValues);
         return buildGame(argumentValues);
     }
-
     private static List<ArgumentValue> parseArgs(String[] arguments) throws ProgramStartException {
         List<ArgumentValue> list = new ArrayList<>();
         Set<ProgramArgument> seenKeys = new HashSet<>();
