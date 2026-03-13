@@ -24,6 +24,14 @@ import java.util.Set;
  */
 public class Place implements Command<Game> {
 
+    private static final String ERROR_ALREADY_PLACED_THIS_TURN = "already placed this turn.";
+    private static final String ERROR_NO_INDEX = "no index provided.";
+    private static final String ERROR_DUPLICATE_INDEXES = "cannot run duplicate indexes.";
+    private static final String ERROR_OUT_OF_BOUNDS_INDEX = "index out of bounds.";
+    private static final String ERROR_NOT_ADJACENT_TO_FARMER_KING = "selected field not adjacent to Farmer King.";
+    private static final String ERROR_PLACEMENT_ON_OPPONENT = "cannot place on opponent's unit.";
+    private static final String ERROR_PLACEMENT_ON_FARMER_KING = "cannot place on your own Farmer King.";
+
     private final List<Integer> allIndexes;
 
     /**
@@ -39,7 +47,7 @@ public class Place implements Command<Game> {
     public Result execute(Game handle) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        Result error = handleError(handle);
+        Result error = validatePlacement(handle);
         if (error != null) {
             return error;
         }
@@ -63,13 +71,13 @@ public class Place implements Command<Game> {
         return Result.success(stringBuilder.toString());
     }
 
-    private Result handleError(Game handle) {
+    private Result validatePlacement(Game handle) {
         if (handle.hasYieldFailed()) {
-            return Result.error("can only use hand or yield after failed yield");
+            return Result.error(MessageFormatter.failedYieldDisplay());
         }
 
         if (handle.getSavedPosition() == null) {
-            return Result.error("No field selected.");
+            return Result.error(MessageFormatter.noFieldSelectionDisplay());
         }
 
         Team currentTeam = handle.getCurrentTeam();
@@ -79,38 +87,44 @@ public class Place implements Command<Game> {
         Field field = board.getField(handle.getSavedPosition());
         Unit unitInField = field.getUnit();
 
+        Result indexError = validateIndexes(currentTeam.getHand());
+        if (indexError != null) {
+            return indexError;
+        }
+
         if (currentTeam.hasSetPlace()) {
-            return Result.error("already placed this turn.");
-        }
-
-        if (allIndexes.isEmpty()) {
-            return Result.error("no index provided.");
-        }
-
-        Set<Integer> uniqueIndexes = new HashSet<>(allIndexes);
-        if (uniqueIndexes.size() != allIndexes.size()) {
-            return Result.error("cannot run duplicate indexes.");
-        }
-
-        List<RegularUnit> hand = currentTeam.getHand();
-
-        for (int index : allIndexes) {
-            if (index < 0 || index >= hand.size()) {
-                return Result.error("index out of bounds.");
-            }
+            return Result.error(ERROR_ALREADY_PLACED_THIS_TURN);
         }
 
         if (!handle.getSavedPosition().isAdjacentTo(farmerKingPosition, true)) {
-            return Result.error("selected field not adjacent to Farmer King.");
+            return Result.error(ERROR_NOT_ADJACENT_TO_FARMER_KING);
         }
 
         if (unitInField != null && unitInField.getTeam() != currentTeam) {
-            return Result.error("cannot place on opponent's unit.");
+            return Result.error(ERROR_PLACEMENT_ON_OPPONENT);
         }
 
         if (unitInField != null && unitInField.isFarmerKing()
                 && unitInField.getTeam() == currentTeam) {
-            return Result.error("cannot place on your own Farmer King.");
+            return Result.error(ERROR_PLACEMENT_ON_FARMER_KING);
+        }
+        return null;
+    }
+
+    private Result validateIndexes(List<RegularUnit> hand) {
+        if (allIndexes.isEmpty()) {
+            return Result.error(ERROR_NO_INDEX);
+        }
+
+        Set<Integer> uniqueIndexes = new HashSet<>(allIndexes);
+        if (uniqueIndexes.size() != allIndexes.size()) {
+            return Result.error(ERROR_DUPLICATE_INDEXES);
+        }
+
+        for (int index : allIndexes) {
+            if (index < 0 || index >= hand.size()) {
+                return Result.error(ERROR_OUT_OF_BOUNDS_INDEX);
+            }
         }
         return null;
     }

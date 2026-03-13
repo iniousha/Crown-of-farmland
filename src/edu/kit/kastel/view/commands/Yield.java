@@ -17,6 +17,8 @@ import java.util.List;
  */
 public class Yield implements Command<Game> {
 
+    private static final String ERROR_FULL_HAND = "player's hand is full!";
+    private static final String ERROR_HAND_NOT_FULL = "cannot discard when hand is not full!";
     private final Integer optionalIdx;
 
     /**
@@ -37,10 +39,10 @@ public class Yield implements Command<Game> {
 
         if (hand.size() == 5 && optionalIdx == null) {
             handle.setYieldHasFailed(true);
-            return Result.error("player's hand is full!");
+            return Result.error(ERROR_FULL_HAND);
         } else if (hand.size() < 5 && optionalIdx != null) {
             handle.setYieldHasFailed(true);
-            return Result.error("cannot discard when hand is not full!");
+            return Result.error(ERROR_HAND_NOT_FULL);
         } else {
             if (optionalIdx != null) {
                 RegularUnit removedUnit = currentTeam.removeUnitFromHand(optionalIdx);

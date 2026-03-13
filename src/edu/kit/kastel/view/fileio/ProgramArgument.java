@@ -67,7 +67,7 @@ public enum ProgramArgument {
      * @return the matching program argument, or null if no matches exist
      */
     public static ProgramArgument fromString(String identifier) {
-        for (ProgramArgument programArgument : ProgramArgument.values()) {
+        for (ProgramArgument programArgument : values()) {
             if (programArgument.toString().equals(identifier)) {
                 return programArgument;
             }

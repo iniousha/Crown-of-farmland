@@ -3,7 +3,6 @@ package edu.kit.kastel.view.commands;
 import edu.kit.kastel.model.Game;
 import edu.kit.kastel.model.board.Field;
 import edu.kit.kastel.model.board.Position;
-import edu.kit.kastel.model.unit.RegularUnit;
 import edu.kit.kastel.model.unit.Unit;
 import edu.kit.kastel.view.Command;
 import edu.kit.kastel.view.Result;
@@ -16,30 +15,35 @@ import edu.kit.kastel.model.BoardFormatter;
  */
 public class Block implements Command<Game> {
 
+    private static final String ERROR_CANNOT_BLOCK_OPPONENT_UNIT = "Cannot block opponent's unit.";
+    private static final String ERROR_FARMER_KING_UNIT = "unit is Farmer King.";
+    private static final String ERROR_UNIT_HAS_MOVED = "unit has already moved.";
+    private static final String ERROR_UNIT_ALREADY_BLOCKING = "unit is already Blocking this Turn.";
+
     @Override
     public Result execute(Game handle) {
         StringBuilder stringBuilder = new StringBuilder();
         Position position = handle.getSavedPosition();
 
         if (handle.hasYieldFailed()) {
-            return Result.error("can only use hand or yield after failed yield");
+            return Result.error(MessageFormatter.failedYieldDisplay());
         }
         if (position == null) {
-            return Result.error("No field selected.");
+            return Result.error(MessageFormatter.noFieldSelectionDisplay());
         }
         Field field = handle.getFarmlandBoard().getField(position);
         Unit unit = field.getUnit();
         if (unit == null) {
-            return Result.error("No unit on selected field.");
+            return Result.error(MessageFormatter.noUnitOnFieldDisplay());
         }
         if (unit.getTeam() != handle.getCurrentTeam()) {
-            return Result.error("Cannot block opponent's unit.");
+            return Result.error(ERROR_CANNOT_BLOCK_OPPONENT_UNIT);
         } else if (unit.isFarmerKing()) {
-            return Result.error("unit is Farmer King.");
-        } else if (unit.hasMoved() && !(((RegularUnit) unit).isBlocking())) {
-            return Result.error("unit has already moved.");
+            return Result.error(ERROR_FARMER_KING_UNIT);
+        } else if (unit.hasMoved() && !(unit.isBlocking())) {
+            return Result.error(ERROR_UNIT_HAS_MOVED);
         } else if ((handle.isBlockedThisTurn())) {
-            return Result.error("unit is already Blocking this Turn.");
+            return Result.error(ERROR_UNIT_ALREADY_BLOCKING);
         } else {
             unit.startBlocking();
             handle.setBlockedThisTurn(true);

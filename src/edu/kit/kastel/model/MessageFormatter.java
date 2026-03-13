@@ -35,6 +35,10 @@ public final class MessageFormatter {
     private static final String DUEL_REGULAR_UNIT_FORMAT = "%s (%d/%d) attacks %s (%d/%d) on %s!";
     private static final String DUEL_HIDDEN_UNIT_FORMAT = "%s (%d/%d) attacks ??? on %s!";
     private static final String EMPTY_DECK_DISPLAY = "%s has no cards left in the deck!";
+    private static final String ERROR_YIELD_FAILED = "can only use hand or yield after failed yield";
+    private static final String ERROR_NO_FIELD_SELECTION = "No field selected.";
+    private static final String ERROR_NO_UNIT_ON_FIELD = "no unit found on selected field";
+
 
     private MessageFormatter() {
     }
@@ -341,5 +345,29 @@ public final class MessageFormatter {
             return String.format(DUEL_REGULAR_UNIT_FORMAT, unit1Name, attackPoints1,
                     defencePoints1, unit2Name, attackPoints, defencePoint2, fieldName);
         }
+    }
+
+    /**
+     * returns a string indicating that yield has failed and what commands are allowed to be used.
+     * @return string message
+     */
+    public static String failedYieldDisplay() {
+        return ERROR_YIELD_FAILED;
+    }
+
+    /**
+     * returns a string indicating that no field has been selected.
+     * @return string message
+     */
+    public static String noFieldSelectionDisplay() {
+        return ERROR_NO_FIELD_SELECTION;
+    }
+
+    /**
+     * returns a string indicating that no units were on field.
+     * @return string message
+     */
+    public static String noUnitOnFieldDisplay() {
+        return ERROR_NO_UNIT_ON_FIELD;
     }
 }

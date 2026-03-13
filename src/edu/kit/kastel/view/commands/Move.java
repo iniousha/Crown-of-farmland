@@ -20,7 +20,12 @@ import edu.kit.kastel.model.MessageFormatter;
  */
 public class Move implements Command<Game> {
 
-    Position targetPosition;
+    private static final String ERROR_WRONG_MOVEMENT = "unit can only move one step.";
+    private static final String ERROR_FIELD_NOT_ADJACENT = "selected field not adjacent to targeted field.";
+    private static final String ERROR_ALREADY_MOVED = "selected unit has already moved this turn.";
+    private static final String ERROR_FARMER_KING_POSITION = "You can't move to the Farmer King's position.";
+    private static final String ERROR_FARMER_KING_CANNOT_ATTACK = "farmer king cannot move to the opponent's position.";
+    private final Position targetPosition;
 
     /**
      * constructs a move instance wit the given parameter.
@@ -35,7 +40,7 @@ public class Move implements Command<Game> {
     public Result execute(Game handle) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        String error = handleError(handle);
+        String error = validateMove(handle);
         if (error != null) {
             return Result.error(error);
         }
@@ -83,11 +88,11 @@ public class Move implements Command<Game> {
         return Result.success(stringBuilder.toString());
     }
 
-    private String handleError(Game handle) {
+    private String validateMove(Game handle) {
         if (handle.hasYieldFailed()) {
-            return "can only use hand or yield after failed yield";
+            return MessageFormatter.failedYieldDisplay();
         } else if (handle.getSavedPosition() == null) {
-            return "No field selected.";
+            return MessageFormatter.noFieldSelectionDisplay();
         }
         Field selectedField = handle.getFarmlandBoard().getField(handle.getSavedPosition());
         Field targetedField = handle.getFarmlandBoard().getField(targetPosition);
@@ -95,23 +100,22 @@ public class Move implements Command<Game> {
         FarmlandBoard board = handle.getFarmlandBoard();
         Position farmerKingPosition = board.findPosition(handle.getCurrentTeam().getFarmerKing());
         Unit targetedUnit = targetedField.getUnit();
-
         if (selectedUnit == null) {
-            return "No units selected.";
+            return MessageFormatter.noUnitOnFieldDisplay();
         } else if (handle.getSavedPosition().distanceTo(targetPosition) > 1) {
-            return "unit can only move one step.";
+            return ERROR_WRONG_MOVEMENT;
         } else if (!handle.getSavedPosition().equals(targetPosition)
                 && !handle.getSavedPosition().isAdjacentTo(targetPosition, false)) {
-            return "selected field not adjacent to targeted field.";
+            return ERROR_FIELD_NOT_ADJACENT;
         } else if (selectedUnit.hasMoved()) {
-            return "selected unit has already moved this turn.";
+            return ERROR_ALREADY_MOVED;
         } else if (targetPosition.equals(farmerKingPosition)) {
-            return "You can't move to the Farmer King's position.";
+            return ERROR_FARMER_KING_POSITION;
         } else if (selectedUnit.isFarmerKing()
                 && selectedUnit.getTeam() == handle.getCurrentTeam()
                 && targetedUnit != null
                 && targetedUnit.getTeam() != handle.getCurrentTeam()) {
-            return "farmer king cannot move to the opponent's position.";
+            return ERROR_FARMER_KING_CANNOT_ATTACK;
         } else {
             return null;
         }
