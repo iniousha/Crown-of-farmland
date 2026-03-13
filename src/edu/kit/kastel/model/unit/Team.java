@@ -3,7 +3,6 @@ package edu.kit.kastel.model.unit;
 import edu.kit.kastel.model.Deck;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
