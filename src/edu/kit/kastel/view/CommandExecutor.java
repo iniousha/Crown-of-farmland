@@ -3,7 +3,7 @@ package edu.kit.kastel.view;
 import edu.kit.kastel.model.Game;
 import edu.kit.kastel.view.parsing.Arguments;
 import edu.kit.kastel.view.parsing.InvalidArgumentException;
-import edu.kit.kastel.view.parsing.ModelKeyword;
+import edu.kit.kastel.view.parsing.GameKeyword;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -18,7 +18,8 @@ public class CommandExecutor {
     private static final String ERROR_UNKNOWN_COMMAND = ERROR_PREFIX + "unknown command";
     private static final String ERROR_TOO_MANY_ARGUMENTS = ERROR_PREFIX + "too many arguments";
     private static final String QUIT = "quit";
-    private final ModelKeyword[] modelKeywords;
+    private static final String WHITESPACE_PATTERN = "\\s+";
+    private final GameKeyword[] gameKeywords;
     private final Scanner scanner;
     private final PrintStream output;
     private final PrintStream error;
@@ -36,7 +37,7 @@ public class CommandExecutor {
         this.scanner = reader;
         this.output = output;
         this.error = error;
-        this.modelKeywords = ModelKeyword.values();
+        this.gameKeywords = GameKeyword.values();
         this.isRunning = true;
     }
 
@@ -77,14 +78,14 @@ public class CommandExecutor {
             if (trimmed.isEmpty()) {
                 return;
             }
-            String[] splitLine = trimmed.split("\\s+");
+            String[] splitLine = trimmed.split(WHITESPACE_PATTERN);
             handleCommand(splitLine);
         }
     }
 
     private void handleCommand(String[] splitLine) {
 
-        for (ModelKeyword keyword : modelKeywords) {
+        for (GameKeyword keyword : gameKeywords) {
             if (keyword.matches(splitLine)) {
                 String[] arguments = new String[splitLine.length - keyword.words()];
                 for (int i = 0; i < arguments.length; i++) {
@@ -93,7 +94,7 @@ public class CommandExecutor {
                 Arguments args = new Arguments(arguments);
                 Command<Game> command;
                 try {
-                    command = keyword.provide(args);
+                    command = keyword.create(args);
                 } catch (InvalidArgumentException e) {
                     this.error.println(ERROR_PREFIX + e.getMessage());
                     return;

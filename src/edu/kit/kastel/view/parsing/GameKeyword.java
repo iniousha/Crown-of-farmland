@@ -2,7 +2,7 @@ package edu.kit.kastel.view.parsing;
 
 import edu.kit.kastel.model.Game;
 import edu.kit.kastel.view.Command;
-import edu.kit.kastel.view.CommandProvider;
+import edu.kit.kastel.view.CommandCreator;
 import edu.kit.kastel.view.commands.Block;
 import edu.kit.kastel.view.commands.BoardCommand;
 import edu.kit.kastel.view.commands.Flip;
@@ -22,7 +22,7 @@ import java.util.Optional;
  * This enum represents all available commands for the Krone von Ackarland game.
  * @author ucktt
  */
-public enum ModelKeyword implements Keyword<Game> {
+public enum GameKeyword implements Keyword<Game> {
 
     /**
      * the keyword for the {@link Select select} command.
@@ -76,15 +76,15 @@ public enum ModelKeyword implements Keyword<Game> {
 
 
     private static final String VALUE_NAME_DELIMITER = "_";
-    private final CommandProvider<Game> commandProvider;
+    private final CommandCreator<Game> commandCreator;
 
-    ModelKeyword(CommandProvider<Game> provider) {
-        this.commandProvider = provider;
+    GameKeyword(CommandCreator<Game> provider) {
+        this.commandCreator = provider;
     }
 
     @Override
-    public Command<Game> provide(Arguments arguments) throws InvalidArgumentException {
-        return this.commandProvider.provide(arguments);
+    public Command<Game> create(Arguments arguments) throws InvalidArgumentException {
+        return this.commandCreator.create(arguments);
     }
 
     @Override

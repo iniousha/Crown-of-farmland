@@ -1,13 +1,13 @@
 package edu.kit.kastel.view.parsing;
 
-import edu.kit.kastel.view.CommandProvider;
+import edu.kit.kastel.view.CommandCreator;
 
 /**
- * this interface represents a keyword that can recognize and provide commands.
+ * this interface represents a keyword that can recognize and create commands.
  * @param <T> the type of the execution context
  * @author ucktt
  */
-public interface Keyword<T> extends CommandProvider<T> {
+public interface Keyword<T> extends CommandCreator<T> {
     /**
      * checks whether this keyword matches any of the command strings.
      * @param command the command to match
